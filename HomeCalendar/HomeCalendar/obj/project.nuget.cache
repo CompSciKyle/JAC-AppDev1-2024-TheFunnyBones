@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "qrAqNCM8i35WtETG9SBAEB4vGppx99+K5P+9YB9WUIaPZyoGAdf4GdqcUrShpx3MJPuVgszCC0aMIu5C9E5MkA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\2276840\\Source\\Repos\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\2276840\\.nuget\\packages\\docfx.console\\2.59.4\\docfx.console.2.59.4.nupkg.sha512"
+  ],
+  "logs": []
+}
