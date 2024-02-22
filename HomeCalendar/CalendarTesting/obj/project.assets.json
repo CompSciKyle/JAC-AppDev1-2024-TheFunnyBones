@@ -5539,11 +5539,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\2276840\\Source\\Repos\\HomeCalendar\\CalendarTesting\\CalendarTesting.csproj",
+      "projectUniqueName": "C:\\Users\\2276840\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\CalendarTesting\\CalendarTesting.csproj",
       "projectName": "CalendarTesting",
-      "projectPath": "C:\\Users\\2276840\\Source\\Repos\\HomeCalendar\\CalendarTesting\\CalendarTesting.csproj",
+      "projectPath": "C:\\Users\\2276840\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\CalendarTesting\\CalendarTesting.csproj",
       "packagesPath": "C:\\Users\\2276840\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\2276840\\Source\\Repos\\HomeCalendar\\CalendarTesting\\obj\\",
+      "outputPath": "C:\\Users\\2276840\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\CalendarTesting\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -5565,8 +5565,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\2276840\\Source\\Repos\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj": {
-              "projectPath": "C:\\Users\\2276840\\Source\\Repos\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj"
+            "C:\\Users\\2276840\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj": {
+              "projectPath": "C:\\Users\\2276840\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj"
             }
           }
         }
