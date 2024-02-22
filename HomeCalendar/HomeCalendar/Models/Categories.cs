@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Xml;
 using System.Linq.Expressions;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -29,6 +30,7 @@ namespace Calendar
         private List<Category> _Categories = new List<Category>();
         private string? _FileName;
         private string? _DirName;
+        private SQLiteConnection _connection;
 
         // ====================================================================
         // Properties
@@ -49,6 +51,18 @@ namespace Calendar
         /// </value>
         public String? DirName { get { return _DirName; } }
 
+        public SQLiteConnection Connection 
+        { 
+            get 
+            { 
+                return _connection; 
+            }
+            private set
+            {
+                _connection = value;
+            }
+        }
+
         // ====================================================================
         // Constructor
         // ====================================================================
@@ -58,6 +72,19 @@ namespace Calendar
         public Categories()
         {
             SetCategoriesToDefaults();
+        }
+        public Categories(SQLiteConnection connection, bool existingConnection)
+        {
+            if(existingConnection)
+            {
+
+            }
+            else
+            {
+                Connection = connection;
+                Connection.Open();
+                SetCategoriesToDefaults();
+            }
         }
 
         // ====================================================================
@@ -204,6 +231,10 @@ namespace Calendar
             // ---------------------------------------------------------------
             // Add Defaults
             // ---------------------------------------------------------------
+
+            /*      
+             *  |   Id(PK)   |    Description    |    CategoryType(FK)    |
+             */ 
             Add("School", Category.CategoryType.Event);
             Add("Personal", Category.CategoryType.Event);
             Add("VideoGames", Category.CategoryType.Event);
@@ -235,15 +266,22 @@ namespace Calendar
         /// categories.Add("Birthdays", Category.CategoryType.Event);
         /// </code>
         /// </example>
+        /// 
+
+        //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
         public void Add(String desc, Category.CategoryType type)
         {
-            int new_num = 1;
-            if (_Categories.Count > 0)
-            {
-                new_num = (from c in _Categories select c.Id).Max();
-                new_num++;
-            }
-            _Categories.Add(new Category(new_num, desc, type));
+            //int new_num = 1;
+            //if (_Categories.Count > 0)
+            //{
+            //    new_num = (from c in _Categories select c.Id).Max();
+            //    new_num++;
+            //}
+            //_Categories.Add(new Category(new_num, desc, type));
+
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"INSERT INTO categories(Description, TypeId) VALUES(${desc}, ${type})";
+            cmd.ExecuteNonQuery();
         }
 
         // ====================================================================
