@@ -82,8 +82,6 @@ namespace Calendar
             else
             {
                 Connection = connection;
-                Connection.Open();
-                SetCategoriesToDefaults();
             }
         }
 
