@@ -314,21 +314,29 @@ namespace Calendar
         /// </example>
         public void Delete(int Id)
         {
+            //try
+            //{
+            //    int i = _Categories.FindIndex(x => x.Id == Id);
+            //    if (i == -1)
+            //    {
+            //        throw new Exception("Error, ID cannot be found");
+            //    }
+            //    _Categories.RemoveAt(i);
+
+            //}catch (Exception ex) 
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
             try
             {
-                int i = _Categories.FindIndex(x => x.Id == Id);
-                if (i == -1)
-                {
-                    throw new Exception("Error, ID cannot be found");
-                }
-                _Categories.RemoveAt(i);
-
-            }catch (Exception ex) 
-            {
-                Console.WriteLine(ex.Message);
+                var cmd = new SQLiteCommand(Connection);
+                cmd.CommandText = $"DELETE FROM categories WHERE Id = ${Id}";
+                cmd.ExecuteNonQuery();
             }
-
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         // ====================================================================
