@@ -271,13 +271,13 @@ namespace Calendar
         //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
         public void Add(String desc, Category.CategoryType type)
         {
-            //int new_num = 1;
-            //if (_Categories.Count > 0)
-            //{
-            //    new_num = (from c in _Categories select c.Id).Max();
-            //    new_num++;
-            //}
-            //_Categories.Add(new Category(new_num, desc, type));
+            int new_num = 1;
+            if (_Categories.Count > 0)
+            {
+                new_num = (from c in _Categories select c.Id).Max();
+                new_num++;
+            }
+            _Categories.Add(new Category(new_num, desc, type));
 
             var cmd = new SQLiteCommand(Connection);
             cmd.CommandText = $"INSERT INTO categories(Description, TypeId) VALUES(${desc}, ${type})";

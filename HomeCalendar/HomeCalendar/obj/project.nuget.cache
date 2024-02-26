@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YXTL9Fzo06z0aMcNFVsRQ/9h+TknQZ3OJp1j+2sWA3GNN8xXQajm+qo/K6ttlbNrcQMJrJ12Kl629+pb3XZ0Lw==",
+  "dgSpecHash": "yry/Oy4+MAiMkq3bMcc6zOebIP42QR8SoaSs9XoSw+lZqS2DTSl5p5LP0O8jZj2thbyYsA61UAwwH00Tpgj2TQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
+  "projectFilePath": "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\2275556\\.nuget\\packages\\docfx.console\\2.59.4\\docfx.console.2.59.4.nupkg.sha512",
     "C:\\Users\\2275556\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
