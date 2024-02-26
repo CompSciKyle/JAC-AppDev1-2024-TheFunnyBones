@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NCYTy4BtNb8OISQ3b2anGjmGX4z9GyucroG0ikmFj1Ftfwcc49ZMQ3e9U8nrFnLc+vLjtczeQTxeNHq+9G8xzw==",
+  "dgSpecHash": "SyAs59/VPzBbgAOkO5y5NtFup4YnbU163Ll/vrlerbIPeGcMK8pgC0KNBnwb/TZDCzoMD0wd/JVc7T5SowbgXQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\CalendarTesting\\CalendarTesting.csproj",
+  "projectFilePath": "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\CalendarTesting\\CalendarTesting.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\2275556\\.nuget\\packages\\coverlet.collector\\3.2.0\\coverlet.collector.3.2.0.nupkg.sha512",
     "C:\\Users\\2275556\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",

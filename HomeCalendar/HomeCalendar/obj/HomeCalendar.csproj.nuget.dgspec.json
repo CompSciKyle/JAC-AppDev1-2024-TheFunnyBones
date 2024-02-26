@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj": {}
+    "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj": {}
   },
   "projects": {
-    "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj": {
+    "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
+        "projectUniqueName": "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
         "projectName": "HomeCalendar",
-        "projectPath": "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
+        "projectPath": "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\HomeCalendar.csproj",
         "packagesPath": "C:\\Users\\2275556\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\2275556\\Source\\Repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\obj\\",
+        "outputPath": "C:\\Users\\2275556\\source\\repos\\JAC-AppDev1-2024-TheFunnyBones\\HomeCalendar\\HomeCalendar\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
