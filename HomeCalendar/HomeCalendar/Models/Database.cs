@@ -83,7 +83,7 @@ namespace Calendar
             REFERENCES categories (Id))";
             cmd.ExecuteNonQuery();
 
-            //cmd.Dispose();
+            cmd.Dispose();
 
         }
 
