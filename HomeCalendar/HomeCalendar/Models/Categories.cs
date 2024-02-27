@@ -51,11 +51,11 @@ namespace Calendar
         /// </value>
         public String? DirName { get { return _DirName; } }
 
-        public SQLiteConnection Connection 
-        { 
-            get 
-            { 
-                return _connection; 
+        public SQLiteConnection Connection
+        {
+            get
+            {
+                return _connection;
             }
             private set
             {
@@ -75,7 +75,7 @@ namespace Calendar
         }
         public Categories(SQLiteConnection connection, bool existingConnection)
         {
-            if(existingConnection)
+            if (existingConnection)
             {
 
             }
@@ -232,7 +232,7 @@ namespace Calendar
 
             /*      
              *  |   Id(PK)   |    Description    |    CategoryType(FK)    |
-             */ 
+             */
             Add("School", Category.CategoryType.Event);
             Add("Personal", Category.CategoryType.Event);
             Add("VideoGames", Category.CategoryType.Event);
@@ -252,22 +252,22 @@ namespace Calendar
             _Categories.Add(category);
         }
 
-        /// <summary>
-        /// Adds a new category to the list of categories
-        /// </summary>
-        /// <param name="desc">A description of the category being added.</param>
-        /// <param name="type">The type of category you want to add.</param>
-        /// <example>
-        /// Adding a new category to the list of categories.
-        /// <code>
-        /// Categories categories = new Categories();
-        /// categories.Add("Birthdays", Category.CategoryType.Event);
-        /// </code>
-        /// </example>
-        /// 
+    /// <summary>
+    /// Adds a new category to the list of categories
+    /// </summary>
+    /// <param name="desc">A description of the category being added.</param>
+    /// <param name="type">The type of category you want to add.</param>
+    /// <example>
+    /// Adding a new category to the list of categories.
+    /// <code>
+    /// Categories categories = new Categories();
+    /// categories.Add("Birthdays", Category.CategoryType.Event);
+    /// </code>
+    /// </example>
+    /// 
 
-        //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
-        public void Add(String desc, Category.CategoryType type)
+    //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
+    public void Add(string desc, Category.CategoryType type)
         {
             int new_num = 1;
             if (_Categories.Count > 0)
@@ -278,8 +278,13 @@ namespace Calendar
             _Categories.Add(new Category(new_num, desc, type));
 
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = $"INSERT INTO categories(Description, TypeId) VALUES(${desc}, ${type})";
+
+
+            cmd.CommandText = "INSERT INTO categories(Description, TypeId) VALUES (@desc, @type)";
+            cmd.Parameters.AddWithValue("@desc", desc);
+            cmd.Parameters.AddWithValue("@type", (int)type);
             cmd.ExecuteNonQuery();
+
         }
 
         public void UpdateProperties(int id, string description, Category.CategoryType type)
@@ -321,7 +326,8 @@ namespace Calendar
                 }
                 _Categories.RemoveAt(i);
 
-            }catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -351,12 +357,40 @@ namespace Calendar
         /// </example>
         public List<Category> List()
         {
+            // OLD METHOD
+            //List<Category> newList = new List<Category>();
+
+            //foreach (Category category in _Categories)
+            //{
+            //    newList.Add(new Category(category));
+            //}
+            //return newList;
+
+
+            //NEW METHOD
+
             List<Category> newList = new List<Category>();
-            foreach (Category category in _Categories)
+
+            // Open a connection to the database
+            //_connection.Open();
+
+            // Create a command to select all categories from the database
+            var cmd = new SQLiteCommand("SELECT * FROM categories;", Connection);
+
+
+            using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
-                newList.Add(new Category(category));
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["Id"]);
+                    string description = Convert.ToString(reader["Description"]);
+                    Category.CategoryType type = (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), Convert.ToString(reader["TypeId"]));
+                    newList.Add(new Category(id, description, type));
+                }
             }
+
             return newList;
+
         }
 
         // ====================================================================
@@ -395,7 +429,7 @@ namespace Calendar
                             type = Category.CategoryType.Availability;
                             break;
                         default:
-                            type = Category.CategoryType.Event; 
+                            type = Category.CategoryType.Event;
                             break;
                     }
                     this.Add(new Category(int.Parse(id), desc, type));
