@@ -82,8 +82,6 @@ namespace Calendar
             else
             {
                 Connection = connection;
-                Connection.Open();
-                SetCategoriesToDefaults();
             }
         }
 
@@ -283,6 +281,20 @@ namespace Calendar
             cmd.CommandText = $"INSERT INTO categories(Description, TypeId) VALUES(${desc}, ${type})";
             cmd.ExecuteNonQuery();
         }
+
+        public void UpdateProperties(int id, string description, Category.CategoryType type)
+        {
+
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"UPDATE categories SET Description = @Description, TypeId = @TypeId WHERE Id = @Id";
+
+            cmd.Parameters.AddWithValue("@Description", description);
+            cmd.Parameters.AddWithValue("@TypeId", type);
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            cmd.ExecuteNonQuery();
+        }
+
 
         // ====================================================================
         // Delete category

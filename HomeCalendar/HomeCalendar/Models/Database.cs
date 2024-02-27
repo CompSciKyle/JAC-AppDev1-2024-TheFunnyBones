@@ -50,10 +50,10 @@ namespace Calendar
             //File.Create(filename ).Close();
             string cs = @"Data Source=" + filename + ";Foreign Keys=1";
 
-            Database._connection = new SQLiteConnection(cs);
-            Database._connection.Open();
+            _connection = new SQLiteConnection(cs);
+            dbConnection.Open();
 
-            var cmd = new SQLiteCommand(Database.dbConnection);
+            var cmd = new SQLiteCommand(dbConnection);
             cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
             cmd.ExecuteNonQuery();
 
@@ -96,7 +96,9 @@ namespace Calendar
             CloseDatabaseAndReleaseFile();
 
             // your code
-            Database._connection.Open();
+            string cs = @"Data Source=" + filename + ";Foreign Keys=1";
+            _connection = new SQLiteConnection(cs);
+            dbConnection.Open();
         }
 
         // ===================================================================
