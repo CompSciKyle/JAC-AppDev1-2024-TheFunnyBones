@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml;
 using System.Linq.Expressions;
 using System.Data.SQLite;
+using System.Configuration;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -51,11 +52,11 @@ namespace Calendar
         /// </value>
         public String? DirName { get { return _DirName; } }
 
-        public SQLiteConnection Connection 
-        { 
-            get 
-            { 
-                return _connection; 
+        public SQLiteConnection Connection
+        {
+            get
+            {
+                return _connection;
             }
             private set
             {
@@ -75,15 +76,14 @@ namespace Calendar
         }
         public Categories(SQLiteConnection connection, bool existingConnection)
         {
-            if(existingConnection)
+            if (existingConnection)
             {
+                Connection = connection;
 
             }
             else
             {
                 Connection = connection;
-                Connection.Open();
-                SetCategoriesToDefaults();
             }
         }
 
@@ -105,12 +105,31 @@ namespace Calendar
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            Category? c = _Categories.Find(x => x.Id == i);
-            if (c == null)
+            //Category? c = _Categories.Find(x => x.Id == i);
+            //if (c == null)
+            //{
+            //    throw new Exception("Cannot find category with id " + i.ToString());
+            //}
+            //return c;
+
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = "SELECT * FROM categories WHERE Id = @Id";
+            cmd.Parameters.AddWithValue("@Id", i);
+
+            using (var reader = cmd.ExecuteReader())
             {
-                throw new Exception("Cannot find category with id " + i.ToString());
+                if (reader.Read())
+                {
+                    int categoryId = Convert.ToInt32(reader["Id"]);
+                    string description = Convert.ToString(reader["Description"]);
+                    Category.CategoryType type = (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), Convert.ToString(reader["TypeId"]));
+                    return new Category(categoryId, description, type);
+                }
+                else
+                {
+                    throw new Exception($"Cannot find category with id {i}");
+                }
             }
-            return c;
         }
 
         // ====================================================================
@@ -234,7 +253,7 @@ namespace Calendar
 
             /*      
              *  |   Id(PK)   |    Description    |    CategoryType(FK)    |
-             */ 
+             */
             Add("School", Category.CategoryType.Event);
             Add("Personal", Category.CategoryType.Event);
             Add("VideoGames", Category.CategoryType.Event);
@@ -269,7 +288,7 @@ namespace Calendar
         /// 
 
         //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
-        public void Add(String desc, Category.CategoryType type)
+        public void Add(string desc, Category.CategoryType type)
         {
             int new_num = 1;
             if (_Categories.Count > 0)
@@ -280,21 +299,28 @@ namespace Calendar
             _Categories.Add(new Category(new_num, desc, type));
 
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = $"INSERT INTO categories(Description, TypeId) VALUES(${desc}, ${type})";
+
+
+            cmd.CommandText = "INSERT INTO categories(Description, TypeId) VALUES (@desc, @type)";
+            cmd.Parameters.AddWithValue("@desc", desc);
+            cmd.Parameters.AddWithValue("@type", (int)type);
             cmd.ExecuteNonQuery();
+
         }
 
         public void UpdateProperties(int id, string description, Category.CategoryType type)
         {
 
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = $"UPDATE categories SET Description = @Description, TypeId = @TypeId WHERE Id = @Id";
+
+            cmd.CommandText = "UPDATE categories SET Description = @Description, TypeId = @TypeId WHERE Id = @Id";
 
             cmd.Parameters.AddWithValue("@Description", description);
-            cmd.Parameters.AddWithValue("@TypeId", type);
+            cmd.Parameters.AddWithValue("@TypeId", (int)type);
             cmd.Parameters.AddWithValue("@Id", id);
-
             cmd.ExecuteNonQuery();
+
+
         }
 
 
@@ -361,12 +387,40 @@ namespace Calendar
         /// </example>
         public List<Category> List()
         {
+            // OLD METHOD
+            //List<Category> newList = new List<Category>();
+
+            //foreach (Category category in _Categories)
+            //{
+            //    newList.Add(new Category(category));
+            //}
+            //return newList;
+
+
+            //NEW METHOD
+
             List<Category> newList = new List<Category>();
-            foreach (Category category in _Categories)
+
+            // Open a connection to the database
+            //_connection.Open();
+
+            // Create a command to select all categories from the database
+            var cmd = new SQLiteCommand("SELECT * FROM categories;", Connection);
+
+
+            using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
-                newList.Add(new Category(category));
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["Id"]);
+                    string description = Convert.ToString(reader["Description"]);
+                    Category.CategoryType type = (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), Convert.ToString(reader["TypeId"]));
+                    newList.Add(new Category(id, description, type));
+                }
             }
+
             return newList;
+
         }
 
         // ====================================================================
@@ -405,7 +459,7 @@ namespace Calendar
                             type = Category.CategoryType.Availability;
                             break;
                         default:
-                            type = Category.CategoryType.Event; 
+                            type = Category.CategoryType.Event;
                             break;
                     }
                     this.Add(new Category(int.Parse(id), desc, type));
