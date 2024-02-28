@@ -53,7 +53,7 @@ namespace Calendar
             /// <summary>
             /// A occasion throughout a specific amount of time.
             /// </summary>
-            Event,
+            Event = 1, // Starts at one because inside of the table its ID is also one
             /// <summary>
             /// A occasion that lasts the whole day.
             /// </summary>
