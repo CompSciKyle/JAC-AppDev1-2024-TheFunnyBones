@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml;
 using System.Linq.Expressions;
 using System.Data.SQLite;
+using System.Configuration;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -77,6 +78,7 @@ namespace Calendar
         {
             if (existingConnection)
             {
+                Connection = connection;
 
             }
             else
@@ -103,12 +105,31 @@ namespace Calendar
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            Category? c = _Categories.Find(x => x.Id == i);
-            if (c == null)
+            //Category? c = _Categories.Find(x => x.Id == i);
+            //if (c == null)
+            //{
+            //    throw new Exception("Cannot find category with id " + i.ToString());
+            //}
+            //return c;
+
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = "SELECT * FROM categories WHERE Id = @Id";
+            cmd.Parameters.AddWithValue("@Id", i);
+
+            using (var reader = cmd.ExecuteReader())
             {
-                throw new Exception("Cannot find category with id " + i.ToString());
+                if (reader.Read())
+                {
+                    int categoryId = Convert.ToInt32(reader["Id"]);
+                    string description = Convert.ToString(reader["Description"]);
+                    Category.CategoryType type = (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), Convert.ToString(reader["TypeId"]));
+                    return new Category(categoryId, description, type);
+                }
+                else
+                {
+                    throw new Exception($"Cannot find category with id {i}");
+                }
             }
-            return c;
         }
 
         // ====================================================================
@@ -252,22 +273,22 @@ namespace Calendar
             _Categories.Add(category);
         }
 
-    /// <summary>
-    /// Adds a new category to the list of categories
-    /// </summary>
-    /// <param name="desc">A description of the category being added.</param>
-    /// <param name="type">The type of category you want to add.</param>
-    /// <example>
-    /// Adding a new category to the list of categories.
-    /// <code>
-    /// Categories categories = new Categories();
-    /// categories.Add("Birthdays", Category.CategoryType.Event);
-    /// </code>
-    /// </example>
-    /// 
+        /// <summary>
+        /// Adds a new category to the list of categories
+        /// </summary>
+        /// <param name="desc">A description of the category being added.</param>
+        /// <param name="type">The type of category you want to add.</param>
+        /// <example>
+        /// Adding a new category to the list of categories.
+        /// <code>
+        /// Categories categories = new Categories();
+        /// categories.Add("Birthdays", Category.CategoryType.Event);
+        /// </code>
+        /// </example>
+        /// 
 
-    //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
-    public void Add(string desc, Category.CategoryType type)
+        //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
+        public void Add(string desc, Category.CategoryType type)
         {
             int new_num = 1;
             if (_Categories.Count > 0)
@@ -291,13 +312,15 @@ namespace Calendar
         {
 
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = $"UPDATE categories SET Description = @Description, TypeId = @TypeId WHERE Id = @Id";
+
+            cmd.CommandText = "UPDATE categories SET Description = @Description, TypeId = @TypeId WHERE Id = @Id";
 
             cmd.Parameters.AddWithValue("@Description", description);
-            cmd.Parameters.AddWithValue("@TypeId", type);
+            cmd.Parameters.AddWithValue("@TypeId", (int)type);
             cmd.Parameters.AddWithValue("@Id", id);
-
             cmd.ExecuteNonQuery();
+
+
         }
 
 
