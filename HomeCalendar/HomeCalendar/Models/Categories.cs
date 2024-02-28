@@ -79,7 +79,7 @@ namespace Calendar
             if (existingConnection)
             {
                 Connection = connection;
-
+                SetCategoriesToDefaults();
             }
             else
             {
@@ -254,6 +254,29 @@ namespace Calendar
             /*      
              *  |   Id(PK)   |    Description    |    CategoryType(FK)    |
              */
+            var cmd = new SQLiteCommand(Connection);
+
+            cmd.CommandText = "DELETE FROM categories";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DELETE FROM categoryTypes";
+            cmd.ExecuteNonQuery();
+
+
+
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "Event");
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "AllDayEvent");
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "Holiday");
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "Availability");
+            cmd.ExecuteNonQuery();
+
+
             Add("School", Category.CategoryType.Event);
             Add("Personal", Category.CategoryType.Event);
             Add("VideoGames", Category.CategoryType.Event);
@@ -356,13 +379,22 @@ namespace Calendar
             try
             {
                 var cmd = new SQLiteCommand(Connection);
-                cmd.CommandText = $"DELETE FROM categories WHERE Id = ${Id}";
+
+                cmd.CommandText = "DELETE FROM events WHERE CategoryId = @Id";
+                cmd.Parameters.AddWithValue("@Id", Id);
                 cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "DELETE FROM categories WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", Id);
+                cmd.ExecuteNonQuery();
+                
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+
+
         }
 
         // ====================================================================

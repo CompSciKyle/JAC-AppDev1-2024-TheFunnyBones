@@ -54,6 +54,10 @@ namespace Calendar
             dbConnection.Open();
 
             var cmd = new SQLiteCommand(dbConnection);
+            cmd.CommandText = "DROP TABLE IF EXISTS events";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DROP TABLE IF EXISTS categories";
+            cmd.ExecuteNonQuery();
             cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
             cmd.ExecuteNonQuery();
 
@@ -61,18 +65,16 @@ namespace Calendar
             Description TEXT)";
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = "DROP TABLE IF EXISTS categories";
-            cmd.ExecuteNonQuery();
 
             cmd.CommandText = @"CREATE TABLE categories(Id INTEGER PRIMARY KEY,
             Description TEXT,
             TypeId INTEGER NOT NULL,
             FOREIGN KEY (TypeId)
-            REFERENCES categoryTypes (Id))";
+            REFERENCES categoryTypes (Id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE)";
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = "DROP TABLE IF EXISTS events";
-            cmd.ExecuteNonQuery();
 
             cmd.CommandText = @"CREATE TABLE events(Id INTEGER PRIMARY KEY,
             StartDateTime TEXT,
@@ -80,7 +82,10 @@ namespace Calendar
             DurationInMinutes DOUBLE,
             CategoryId INTEGER NOT NULL,
             FOREIGN KEY (CategoryId)
-            REFERENCES categories (Id))";
+            REFERENCES categories (Id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+)";
             cmd.ExecuteNonQuery();
 
             //cmd.Dispose();
