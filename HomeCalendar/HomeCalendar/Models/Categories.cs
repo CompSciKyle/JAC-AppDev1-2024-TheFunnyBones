@@ -79,7 +79,7 @@ namespace Calendar
             if (existingConnection)
             {
                 Connection = connection;
-
+                SetCategoriesToDefaults();
             }
             else
             {
@@ -254,6 +254,29 @@ namespace Calendar
             /*      
              *  |   Id(PK)   |    Description    |    CategoryType(FK)    |
              */
+            var cmd = new SQLiteCommand(Connection);
+
+            cmd.CommandText = "DELETE FROM categories";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DELETE FROM categoryTypes";
+            cmd.ExecuteNonQuery();
+
+
+
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "Event");
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "AllDayEvent");
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "Holiday");
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+            cmd.Parameters.AddWithValue("@desc", "Availability");
+            cmd.ExecuteNonQuery();
+
+
             Add("School", Category.CategoryType.Event);
             Add("Personal", Category.CategoryType.Event);
             Add("VideoGames", Category.CategoryType.Event);
@@ -342,19 +365,21 @@ namespace Calendar
         {
             try
             {
-                int i = _Categories.FindIndex(x => x.Id == Id);
-                if (i == -1)
-                {
-                    throw new Exception("Error, ID cannot be found");
-                }
-                _Categories.RemoveAt(i);
+                var cmd = new SQLiteCommand(Connection);
 
+                cmd.CommandText = "DELETE FROM events WHERE CategoryId = @Id";
+                cmd.Parameters.AddWithValue("@Id", Id);
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "DELETE FROM categories WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", Id);
+                cmd.ExecuteNonQuery();
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-
 
         }
 
