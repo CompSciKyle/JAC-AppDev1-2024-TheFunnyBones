@@ -172,7 +172,7 @@ namespace Calendar
         /// </example>
         public HomeCalendar()
         {
-            _categories = new Categories();
+            //_categories = new Categories();
             _events = new Events();
         }
 
@@ -191,7 +191,7 @@ namespace Calendar
         /// </example>
         public HomeCalendar(String calendarFileName)
         {
-            _categories = new Categories();
+            //_categories = new Categories();
             _events = new Events();
             ReadFromFile(calendarFileName);
         }
@@ -256,8 +256,8 @@ namespace Calendar
                 _FileName = Path.GetFileName(calendarFileName);
 
                 // read the events and categories from their respective files
-                _categories.ReadFromFile(folder + "\\" + filenames[0]);
-                _events.ReadFromFile(folder + "\\" + filenames[1]);
+                //_categories.ReadFromFile(folder + "\\" + filenames[0]);Doesnt exist in the file anymore
+                _events.ReadFromFile(folder + "\\" + filenames[0]);
 
                 // Save information about calendar file
                 _DirName = Path.GetDirectoryName(calendarFileName);
@@ -322,7 +322,7 @@ namespace Calendar
             // save the events and categories into their own files
             // ---------------------------------------------------------------
             _events.SaveToFile(eventpath);
-            _categories.SaveToFile(categorypath);
+            //_categories.SaveToFile(categorypath);
 
             // ---------------------------------------------------------------
             // save filenames of events and categories to calendar file

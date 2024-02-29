@@ -37,7 +37,7 @@ namespace Calendar
         /// <value>
         /// The date you begin the event.
         /// </value>
-        public DateTime StartDateTime { get;  }
+        public DateTime StartDateTime { get; }
         /// <summary>
         /// How long the event will last in minutes.
         /// </summary>
