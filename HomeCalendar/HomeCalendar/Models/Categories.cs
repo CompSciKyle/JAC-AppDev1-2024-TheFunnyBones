@@ -267,7 +267,7 @@ namespace Calendar
 
             List<Category> newList = new List<Category>();
 
-            var cmd = new SQLiteCommand("SELECT * FROM categories;", Connection);
+            var cmd = new SQLiteCommand("SELECT Id, Description, TypeId FROM categories;", Connection);
 
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())
