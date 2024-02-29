@@ -27,43 +27,29 @@ namespace Calendar
     /// </summary>
     public class Categories
     {
-        private static String DefaultFileName = "calendarCategories.txt";
         private SQLiteConnection _connection;
 
-        public SQLiteConnection Connection
+        private SQLiteConnection Connection
         {
             get
             {
                 return _connection;
             }
-            private set
+            set
             {
                 _connection = value;
             }
         }
 
-        // ====================================================================
-        // Constructor
-        // ====================================================================
-        /// <summary>
-        /// Creates a instance of categories with default values set inside of it.
-        /// </summary>
-        public Categories()
-        {
-            SetCategoriesToDefaults();
-        }
-
         public Categories(SQLiteConnection connection, bool existingConnection)
         {
+            Connection = connection;
+
             if (existingConnection)
             {
-                Connection = connection;
                 SetCategoriesToDefaults();
             }
-            else
-            {
-                Connection = connection;
-            }
+
         }
 
         // ====================================================================
@@ -86,7 +72,7 @@ namespace Calendar
         {
 
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = "SELECT * FROM categories WHERE Id = @Id";
+            cmd.CommandText = "SELECT Id, Description,TypeId FROM categories WHERE Id = @Id";
             cmd.Parameters.AddWithValue("@Id", i);
 
             using (var reader = cmd.ExecuteReader())
@@ -105,7 +91,7 @@ namespace Calendar
             }
         }
 
-       
+
         // ====================================================================
         // set categories to default
         // ====================================================================
@@ -126,7 +112,7 @@ namespace Calendar
             // ---------------------------------------------------------------
             // Reset the Tables
             // ---------------------------------------------------------------
-       
+
             var cmd = new SQLiteCommand(Connection);
 
             cmd.CommandText = "DELETE FROM categories";
@@ -138,19 +124,12 @@ namespace Calendar
             // Add Defaults
             // ---------------------------------------------------------------
 
-            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
-            cmd.Parameters.AddWithValue("@desc", "Event");
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
-            cmd.Parameters.AddWithValue("@desc", "AllDayEvent");
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
-            cmd.Parameters.AddWithValue("@desc", "Holiday");
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
-            cmd.Parameters.AddWithValue("@desc", "Availability");
-            cmd.ExecuteNonQuery();
-
+            foreach (string name in Enum.GetNames(typeof(Category.CategoryType)))
+            {
+                cmd.CommandText = @"INSERT INTO categoryTypes(Description) VALUES (@desc)";
+                cmd.Parameters.AddWithValue("@desc", name);
+                cmd.ExecuteNonQuery();
+            }
 
             Add("School", Category.CategoryType.Event);
             Add("Personal", Category.CategoryType.Event);
@@ -176,8 +155,6 @@ namespace Calendar
         /// </code>
         /// </example>
         /// 
-
-        //Format = |   Id(PK)   |    Description    |    CategoryType(FK)    |
         public void Add(string desc, Category.CategoryType type)
         {
 
@@ -233,7 +210,7 @@ namespace Calendar
                 cmd.CommandText = "DELETE FROM categories WHERE Id = @Id";
                 cmd.Parameters.AddWithValue("@Id", Id);
                 cmd.ExecuteNonQuery();
-                
+
             }
             catch (Exception ex)
             {
@@ -267,7 +244,7 @@ namespace Calendar
 
             List<Category> newList = new List<Category>();
 
-            var cmd = new SQLiteCommand("SELECT * FROM categories;", Connection);
+            var cmd = new SQLiteCommand("SELECT Id, Description, TypeId FROM categories;", Connection);
 
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())

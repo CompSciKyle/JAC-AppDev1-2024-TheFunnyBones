@@ -30,21 +30,24 @@ namespace Calendar
         /// <value>
         /// A unique identifier for a category.
         /// </value>
-        public int Id { get;  }
+        public int Id { get;}
+
         /// <summary>
         /// Get or sets the description for the category.
         /// </summary>
         /// <value>
         /// Used to describe a category.
         /// </value>
-        public String Description { get; }
+        public String Description { get;}
+
         /// <summary>
         /// Get or sets the type of Category.
         /// </summary>
         /// <value>
         /// Identifies the length of the category.
         /// </value>
-        public CategoryType Type { get; }
+        public CategoryType Type { get;}
+
         /// <summary>
         /// Lists all posible types of categories.
         /// </summary>

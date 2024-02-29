@@ -172,7 +172,7 @@ namespace Calendar
         /// </example>
         public HomeCalendar()
         {
-            _categories = new Categories();
+            //_categories = new Categories();
             _events = new Events();
         }
 
@@ -191,7 +191,7 @@ namespace Calendar
         /// </example>
         public HomeCalendar(String calendarFileName)
         {
-            _categories = new Categories();
+            //_categories = new Categories();
             _events = new Events();
             ReadFromFile(calendarFileName);
         }
