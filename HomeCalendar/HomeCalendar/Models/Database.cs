@@ -70,9 +70,7 @@ namespace Calendar
             Description TEXT,
             TypeId INTEGER NOT NULL,
             FOREIGN KEY (TypeId)
-            REFERENCES categoryTypes (Id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE)";
+            REFERENCES categoryTypes (Id))";
             cmd.ExecuteNonQuery();
 
 
@@ -82,10 +80,7 @@ namespace Calendar
             DurationInMinutes DOUBLE,
             CategoryId INTEGER NOT NULL,
             FOREIGN KEY (CategoryId)
-            REFERENCES categories (Id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
-)";
+            REFERENCES categories (Id))";
             cmd.ExecuteNonQuery();
 
             //cmd.Dispose();
