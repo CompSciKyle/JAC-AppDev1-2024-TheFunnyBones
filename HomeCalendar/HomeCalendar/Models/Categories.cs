@@ -14,16 +14,9 @@ using System.Configuration;
 
 namespace Calendar
 {
-    // ====================================================================
-    // CLASS: categories
-    //        - A collection of category items,
-    //        - Read / write to file
-    //        - etc
-    // ====================================================================
-
     /// <summary>
-    /// Represents a collection of categories that can be managed, It provides functionality to retrieve categories from reading from a file,
-    /// and can create them by writing to a file and save it, setting default ones and adding and deleting them.
+    /// Represents a collection of categories that can be managed, It provides functionality to retrieve categories from a database,
+    /// create them, setting default ones and adding and deleting them.
     /// </summary>
     public class Categories
     {
@@ -40,7 +33,11 @@ namespace Calendar
                 _connection = value;
             }
         }
-
+        /// <summary>
+        /// Initializes an instance of the categories class. Sets the connection to the database and if an existing connection exists the categories are set to default
+        /// </summary>
+        /// <param name="connection">The connection to the database</param>
+        /// <param name="existingConnection">If true sets default values to categories and if false connection is set to the database</param>
         public Categories(SQLiteConnection connection, bool existingConnection)
         {
             Connection = connection;
@@ -53,10 +50,10 @@ namespace Calendar
         }
 
         // ====================================================================
-        // get a specific category from the list where the id is the one specified
+        // get a specific category from the database where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets a specific category from the list of categories by the specified ID.
+        /// Gets a specific category from the database by the specified ID.
         /// </summary>
         /// <param name="i">Represents the id of category you want to retrieve.</param>
         /// <returns>The category with the id you inputed.</returns>
@@ -64,7 +61,7 @@ namespace Calendar
         /// <example>
         /// Finding a category by ID.
         /// <code>
-        /// Categories categories = new Categories();
+        /// Categories categories = new Categories(conn, true);
         /// Category myCategory = categories.GetCategoryFromId(4);
         /// </code>
         /// </example>
@@ -96,12 +93,12 @@ namespace Calendar
         // set categories to default
         // ====================================================================
         /// <summary>
-        /// Resets the list of categories back to the default values.
+        /// Resets the database back to the default values.
         /// </summary>
         /// <example>
         /// Setting the categories back to default.
         /// <code>
-        /// Categories categories = new Categories();
+        /// Categories categories = new Categories(conn, true);
         /// categories.Add("Birthdays", Category.CategoryType.Event);
         /// categories.SetCategoriesToDefaults();
         /// </code>
@@ -143,14 +140,14 @@ namespace Calendar
         }
 
         /// <summary>
-        /// Adds a new category to the list of categories
+        /// Adds a new category to the database 
         /// </summary>
         /// <param name="desc">A description of the category being added.</param>
         /// <param name="type">The type of category you want to add.</param>
         /// <example>
-        /// Adding a new category to the list of categories.
+        /// Adding a new category to the database.
         /// <code>
-        /// Categories categories = new Categories();
+        /// Categories categories = new Categories(conn, true);
         /// categories.Add("Birthdays", Category.CategoryType.Event);
         /// </code>
         /// </example>
@@ -166,7 +163,19 @@ namespace Calendar
             cmd.ExecuteNonQuery();
 
         }
-
+        /// <summary>
+        /// Updates a category's description and category type from the database using a specified id 
+        /// </summary>
+        /// <param name="id">Represents the id of the category you want to update</param>
+        /// <param name="description">An updated description of the category to update</param>
+        /// <param name="type">An updated category type of the category to update</param>
+        /// <example>
+        /// Updating a category from the database.
+        /// <code>
+        /// Categories categories = new Categories(conn, true);
+        /// categories.UpdateProperties(4, "Doctor Appointment", Category.CategoryType.Event)
+        /// </code>
+        /// </example>
         public void UpdateProperties(int id, string description, Category.CategoryType type)
         {
 
@@ -187,31 +196,18 @@ namespace Calendar
         // Delete category
         // ====================================================================
         /// <summary>
-        /// Allows you to delete the category with the specified Id from the list of catogries.
+        /// Allows you to delete the category with the specified Id from the database.
         /// </summary>
         /// <param name="Id">The Id of that category you want to delete.</param>
         /// <example>
         /// The following example demonstrates how to delete a category with the specified ID.
         /// <code>
-        /// Categories categories = new Categories();
+        /// Categories categories = new Categories(conn, true);
         /// categories.Delete(5);
         /// </code>
         /// </example>
         public void Delete(int Id)
         {
-            //try
-            //{
-            //    int i = _Categories.FindIndex(x => x.Id == Id);
-            //    if (i == -1)
-            //    {
-            //        throw new Exception("Error, ID cannot be found");
-            //    }
-            //    _Categories.RemoveAt(i);
-
-            //}catch (Exception ex) 
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
             try
             {
                 var cmd = new SQLiteCommand(Connection);
@@ -233,21 +229,15 @@ namespace Calendar
 
         }
 
-        // ====================================================================
-        // Return list of categories
-        // Note:  make new copy of list, so user cannot modify what is part of
-        //        this instance
-        // ====================================================================
-
         /// <summary>
         /// Creates a copy of the list with all the categories.
         /// </summary>
-        /// <returns>A duplicated list of all the categories.</returns>
+        /// <returns>A list of all the categories.</returns>
         /// <example>
-        /// Duplicating the categories to a new list.
+        /// Getting the categories in a list.
         /// <code>
         /// <![CDATA[
-        /// Categories categories = new Categories();
+        /// Categories categories = new Categories(conn, true);
         /// categories.Add("Birthdays", Category.CategoryType.Event);
         /// List<Category>newList = categories.List();
         /// ]]>
