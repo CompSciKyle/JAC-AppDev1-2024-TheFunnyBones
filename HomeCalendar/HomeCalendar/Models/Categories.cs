@@ -44,6 +44,7 @@ namespace Calendar
 
             if (existingConnection)
             {
+                SetCategoryTypesToDefault();
                 SetCategoriesToDefaults();
             }
 
@@ -114,6 +115,28 @@ namespace Calendar
 
             cmd.CommandText = "DELETE FROM categories";
             cmd.ExecuteNonQuery();
+
+            // ---------------------------------------------------------------
+            // Add Defaults
+            // ---------------------------------------------------------------
+            Add("School", Category.CategoryType.Event);
+            Add("Personal", Category.CategoryType.Event);
+            Add("VideoGames", Category.CategoryType.Event);
+            Add("Medical", Category.CategoryType.Event);
+            Add("Sleep", Category.CategoryType.Event);
+            Add("Vacation", Category.CategoryType.AllDayEvent);
+            Add("Travel days", Category.CategoryType.AllDayEvent);
+            Add("Canadian Holidays", Category.CategoryType.Holiday);
+            Add("US Holidays", Category.CategoryType.Holiday);
+        }
+
+        private void SetCategoryTypesToDefault()
+        {
+
+            // ---------------------------------------------------------------
+            // Reset the Tables
+            // ---------------------------------------------------------------
+            var cmd = new SQLiteCommand(Connection);
             cmd.CommandText = "DELETE FROM categoryTypes";
             cmd.ExecuteNonQuery();
 
@@ -127,16 +150,6 @@ namespace Calendar
                 cmd.Parameters.AddWithValue("@desc", name);
                 cmd.ExecuteNonQuery();
             }
-
-            Add("School", Category.CategoryType.Event);
-            Add("Personal", Category.CategoryType.Event);
-            Add("VideoGames", Category.CategoryType.Event);
-            Add("Medical", Category.CategoryType.Event);
-            Add("Sleep", Category.CategoryType.Event);
-            Add("Vacation", Category.CategoryType.AllDayEvent);
-            Add("Travel days", Category.CategoryType.AllDayEvent);
-            Add("Canadian Holidays", Category.CategoryType.Holiday);
-            Add("US Holidays", Category.CategoryType.Holiday);
         }
 
         /// <summary>
