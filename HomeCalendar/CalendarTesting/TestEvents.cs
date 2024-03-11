@@ -3,6 +3,7 @@ using Xunit;
 using System.IO;
 using System.Collections.Generic;
 using Calendar;
+using System.Data.SQLite;
 
 namespace CalendarCodeTests
 {
@@ -11,7 +12,7 @@ namespace CalendarCodeTests
         int numberOfEventsInFile = TestConstants.numberOfEventsInFile;
         String testInputFile = TestConstants.testEventsInputFile;
         int maxIDInEventFile = TestConstants.maxIDInEventFile;
-        Event firstEventInFile = new Event(1, new DateTime(2021, 1, 10), 3, 40, "App Dev Homework");
+        Event firstEventInFile = TestConstants.firstEventInFile;
 
 
         // ========================================================================
@@ -20,57 +21,43 @@ namespace CalendarCodeTests
         public void EventsObject_New()
         {
             // Arrange
-
+            string folder = TestConstants.GetSolutionDir();
+            string newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
             // Act
-            Events Events = new Events();
+            Events events = new Events(conn, true);
 
             // Assert 
-            Assert.IsType<Events>(Events);
+            Assert.IsType<Events>(events);
 
-            Assert.True(typeof(Events).GetProperty("FileName").CanWrite == false);
-            Assert.True(typeof(Events).GetProperty("DirName").CanWrite == false);
-
-        }
-
+        }   
 
         // ========================================================================
 
         [Fact]
-        public void EventsMethod_ReadFromFile_NotExist_ThrowsException()
+        public void EventsMethod_ReadFromDatabase_ValidateCorrectDataWasRead()
         {
+
             // Arrange
-            String badFile = "abc.txt";
-            Events Events = new Events();
-
-            // Act and Assert
-            Assert.Throws<System.IO.FileNotFoundException>(() => Events.ReadFromFile(badFile));
-
-        }
-
-        // ========================================================================
-
-        [Fact]
-        public void EventsMethod_ReadFromFile_ValidateCorrectDataWasRead()
-        {
-            // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
+            String folder = TestConstants.GetSolutionDir();
+            String existingDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            Database.existingDatabase(existingDB);
+            SQLiteConnection conn = Database.dbConnection;
 
             // Act
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            List<Event> list = Events.List();
+            Events events = new Events(conn, false);
+            List<Event> list = events.List();
             Event firstEvent = list[0];
 
             // Assert
             Assert.Equal(numberOfEventsInFile, list.Count);
             Assert.Equal(firstEventInFile.Id, firstEvent.Id);
+            Assert.Equal(firstEventInFile.StartDateTime, firstEvent.StartDateTime);
             Assert.Equal(firstEventInFile.DurationInMinutes, firstEvent.DurationInMinutes);
-            Assert.Equal(firstEventInFile.Details, firstEvent.Details);
             Assert.Equal(firstEventInFile.Category, firstEvent.Category);
+            Assert.Equal(firstEventInFile.Details, firstEvent.Details);
 
-            String fileDir = Path.GetFullPath(Path.Combine(Events.DirName, ".\\"));
-            Assert.Equal(dir, fileDir);
-            Assert.Equal(testInputFile, Events.FileName);
 
         }
 
@@ -80,12 +67,14 @@ namespace CalendarCodeTests
         public void EventsMethod_List_ReturnsListOfEvents()
         {
             // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            Database.existingDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn, false);
 
             // Act
-            List<Event> list = Events.List();
+            List<Event> list = events.List();
 
             // Assert
             Assert.Equal(numberOfEventsInFile, list.Count);
@@ -93,7 +82,7 @@ namespace CalendarCodeTests
         }
 
         // ========================================================================
-
+        // ******* TODO ********
         [Fact]
         public void EventsMethod_List_ModifyListDoesNotModifyEventsInstance()
         {
@@ -117,22 +106,27 @@ namespace CalendarCodeTests
         public void EventsMethod_Add()
         {
             // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            int category = 57;
-            double DurationInMinutes = 98.1;
+            String folder = TestConstants.GetSolutionDir();
+            String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            String messyDB = $"{folder}\\messy.db";
+            System.IO.File.Copy(goodDB, messyDB, true);
+            Database.existingDatabase(messyDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn, false);
+            string details = "New Event";
+            int category = 3;
+            double durationInMinutes = 98.1;
+
 
             // Act
-            Events.Add(DateTime.Now,category,DurationInMinutes,"new Event");
-            List<Event> EventsList = Events.List();
-            int sizeOfList = Events.List().Count;
-
+            events.Add(DateTime.Now, category, durationInMinutes, details);
+            List<Event> eventsList = events.List();
+            int sizeOfList = events.List().Count;
+            
             // Assert
-            Assert.Equal(numberOfEventsInFile+1, sizeOfList);
-            Assert.Equal(maxIDInEventFile + 1, EventsList[sizeOfList - 1].Id);
-            Assert.Equal(DurationInMinutes, EventsList[sizeOfList - 1].DurationInMinutes);
-
+            Assert.Equal(numberOfEventsInFile + 1, sizeOfList);
+            Assert.Equal(maxIDInEventFile + 1, eventsList[sizeOfList - 1].Id);
+            Assert.Equal(durationInMinutes, eventsList[sizeOfList - 1].DurationInMinutes);
         }
 
         // ========================================================================
@@ -141,19 +135,23 @@ namespace CalendarCodeTests
         public void EventsMethod_Delete()
         {
             // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
+            String folder = TestConstants.GetSolutionDir();
+            String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            String messyDB = $"{folder}\\messy.db";
+            System.IO.File.Copy(goodDB, messyDB, true);
+            Database.existingDatabase(messyDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn, false);
             int IdToDelete = 3;
 
             // Act
-            Events.Delete(IdToDelete);
-            List<Event> EventsList = Events.List();
-            int sizeOfList = EventsList.Count;
+            events.Delete(IdToDelete);
+            List<Event> eventsList = events.List();
+            int sizeOfList = eventsList.Count;
 
             // Assert
             Assert.Equal(numberOfEventsInFile - 1, sizeOfList);
-            Assert.False(EventsList.Exists(e => e.Id == IdToDelete), "correct Event item deleted");
+            Assert.False(eventsList.Exists(e => e.Id == IdToDelete), "correct Event item deleted");
 
         }
 
@@ -163,19 +161,22 @@ namespace CalendarCodeTests
         public void EventsMethod_Delete_InvalidIDDoesntCrash()
         {
             // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            int IdToDelete = 1006;
-            int sizeOfList = Events.List().Count;
+            String folder = TestConstants.GetSolutionDir();
+            String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            String messyDB = $"{folder}\\messyDB";
+            System.IO.File.Copy(goodDB, messyDB, true);
+            Database.existingDatabase(messyDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn, false);
+            int IdToDelete = 9999;
+            int sizeOfList = events.List().Count;
 
             // Act
             try
             {
-                Events.Delete(IdToDelete);
-                Assert.Equal(sizeOfList, Events.List().Count);
+                events.Delete(IdToDelete);
+                Assert.Equal(sizeOfList, events.List().Count);
             }
-
             // Assert
             catch
             {
@@ -186,67 +187,67 @@ namespace CalendarCodeTests
 
         // ========================================================================
 
-        [Fact]
-        public void EventMethod_WriteToFile()
-        {
-            // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            string fileName = TestConstants.EventOutputTestFile;
-            String outputFile = dir + "\\" + fileName;
-            File.Delete(outputFile);
+        //[Fact]
+        //public void EventMethod_WriteToFile()
+        //{
+        //    // Arrange
+        //    String dir = TestConstants.GetSolutionDir();
+        //    Events Events = new Events();
+        //    Events.ReadFromFile(dir + "\\" + testInputFile);
+        //    string fileName = TestConstants.EventOutputTestFile;
+        //    String outputFile = dir + "\\" + fileName;
+        //    File.Delete(outputFile);
 
-            // Act
-            Events.SaveToFile(outputFile);
+        //    // Act
+        //    Events.SaveToFile(outputFile);
 
-            // Assert
-            Assert.True(File.Exists(outputFile), "output file created");
-            Assert.True(TestConstants.FileEquals(dir + "\\" + testInputFile, outputFile), "Input /output files are the same");
-            String fileDir = Path.GetFullPath(Path.Combine(Events.DirName, ".\\"));
-            Assert.Equal(dir, fileDir);
-            Assert.Equal(fileName, Events.FileName);
+        //    // Assert
+        //    Assert.True(File.Exists(outputFile), "output file created");
+        //    Assert.True(TestConstants.FileEquals(dir + "\\" + testInputFile, outputFile), "Input /output files are the same");
+        //    String fileDir = Path.GetFullPath(Path.Combine(Events.DirName, ".\\"));
+        //    Assert.Equal(dir, fileDir);
+        //    Assert.Equal(fileName, Events.FileName);
 
-            // Cleanup
-            if (TestConstants.FileEquals(dir + "\\" + testInputFile, outputFile))
-            {
-                File.Delete(outputFile);
-            }
+        //    // Cleanup
+        //    if (TestConstants.FileEquals(dir + "\\" + testInputFile, outputFile))
+        //    {
+        //        File.Delete(outputFile);
+        //    }
 
-        }
+        //}
 
-        // ========================================================================
+        //// ========================================================================
 
-        [Fact]
-        public void EventMethod_WriteToFile_VerifyNewEventWrittenCorrectly()
-        {
-            // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            string fileName = TestConstants.EventOutputTestFile;
-            String outputFile = dir + "\\" + fileName;
-            File.Delete(outputFile);
+        //[Fact]
+        //public void EventMethod_WriteToFile_VerifyNewEventWrittenCorrectly()
+        //{
+        //    // Arrange
+        //    String dir = TestConstants.GetSolutionDir();
+        //    Events Events = new Events();
+        //    Events.ReadFromFile(dir + "\\" + testInputFile);
+        //    string fileName = TestConstants.EventOutputTestFile;
+        //    String outputFile = dir + "\\" + fileName;
+        //    File.Delete(outputFile);
 
-            // Act
-            Events.Add(DateTime.Now, 14, 35.27, "McDonalds");
-            List<Event> listBeforeSaving = Events.List();
-            Events.SaveToFile(outputFile);
-            Events.ReadFromFile(outputFile);
-            List<Event> listAfterSaving = Events.List();
+        //    // Act
+        //    Events.Add(DateTime.Now, 14, 35.27, "McDonalds");
+        //    List<Event> listBeforeSaving = Events.List();
+        //    Events.SaveToFile(outputFile);
+        //    Events.ReadFromFile(outputFile);
+        //    List<Event> listAfterSaving = Events.List();
 
-            Event beforeSaving = listBeforeSaving[listBeforeSaving.Count - 1];
-            Event afterSaving = listAfterSaving.Find(e => e.Id == beforeSaving.Id);
+        //    Event beforeSaving = listBeforeSaving[listBeforeSaving.Count - 1];
+        //    Event afterSaving = listAfterSaving.Find(e => e.Id == beforeSaving.Id);
 
-            // Assert
-            Assert.Equal(beforeSaving.Id, afterSaving.Id);
-            Assert.Equal(beforeSaving.Category, afterSaving.Category);
-            Assert.Equal(beforeSaving.Details, afterSaving.Details);
-            Assert.Equal(beforeSaving.DurationInMinutes, afterSaving.DurationInMinutes);
+        //    // Assert
+        //    Assert.Equal(beforeSaving.Id, afterSaving.Id);
+        //    Assert.Equal(beforeSaving.Category, afterSaving.Category);
+        //    Assert.Equal(beforeSaving.Details, afterSaving.Details);
+        //    Assert.Equal(beforeSaving.DurationInMinutes, afterSaving.DurationInMinutes);
 
-        }
+        //}
 
-        // ========================================================================
+        //// ========================================================================
 
         [Fact]
         public void EventMethod_WriteToFile_WriteToLastFileWrittenToByDefault()
@@ -275,6 +276,30 @@ namespace CalendarCodeTests
             {
                 File.Delete(outputFile);
             }
+
+        }
+
+        // ========================================================================
+
+        [Fact]
+        public void EventsMethod_UpdateCategory()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn, true);
+            String details = "Shopping with DavyDav";
+            int id = 9;
+
+            // Act
+            events.UpdateProperties(id, DateTime.Now, 30.0, details);
+            Events event = events.GetEventFromId(id);
+
+            // Assert 
+            Assert.Equal(details, event.Details);
+            Assert.Equal(DateTime.Now(), event.StartDateTime);
 
         }
     }
