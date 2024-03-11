@@ -38,6 +38,13 @@ namespace Calendar
         /// </summary>
         /// <param name="connection">The connection to the database</param>
         /// <param name="existingConnection">If true sets default values to categories and if false connection is set to the database</param>
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// Categories categories = new Categories(conn, true);
+        /// ]]>
+        /// </code>
+        /// </example>
         public Categories(SQLiteConnection connection, bool existingConnection)
         {
             Connection = connection;
@@ -62,8 +69,10 @@ namespace Calendar
         /// <example>
         /// Finding a category by ID.
         /// <code>
+        /// <![CDATA[
         /// Categories categories = new Categories(conn, true);
-        /// Category myCategory = categories.GetCategoryFromId(4);
+        /// Category myCategory = categories.GetCategoryFromId(4); 
+        /// ]]>
         /// </code>
         /// </example>
         public Category GetCategoryFromId(int i)
@@ -99,9 +108,11 @@ namespace Calendar
         /// <example>
         /// Setting the categories back to default.
         /// <code>
+        /// <![CDATA[
         /// Categories categories = new Categories(conn, true);
         /// categories.Add("Birthdays", Category.CategoryType.Event);
         /// categories.SetCategoriesToDefaults();
+        /// ]]>
         /// </code>
         /// </example>
         public void SetCategoriesToDefaults()
@@ -160,8 +171,10 @@ namespace Calendar
         /// <example>
         /// Adding a new category to the database.
         /// <code>
+        /// <![CDATA[
         /// Categories categories = new Categories(conn, true);
         /// categories.Add("Birthdays", Category.CategoryType.Event);
+        /// ]]>
         /// </code>
         /// </example>
         /// 
@@ -185,8 +198,10 @@ namespace Calendar
         /// <example>
         /// Updating a category from the database.
         /// <code>
+        /// <![CDATA[
         /// Categories categories = new Categories(conn, true);
         /// categories.UpdateProperties(4, "Doctor Appointment", Category.CategoryType.Event)
+        /// ]]>
         /// </code>
         /// </example>
         public void UpdateProperties(int id, string description, Category.CategoryType type)
@@ -215,8 +230,10 @@ namespace Calendar
         /// <example>
         /// The following example demonstrates how to delete a category with the specified ID.
         /// <code>
+        /// <![CDATA[
         /// Categories categories = new Categories(conn, true);
         /// categories.Delete(5);
+        /// ]]>
         /// </code>
         /// </example>
         public void Delete(int Id)
@@ -247,7 +264,7 @@ namespace Calendar
         /// </summary>
         /// <returns>A list of all the categories.</returns>
         /// <example>
-        /// Getting the categories in a list.
+        /// Getting the categories from the database into a list.
         /// <code>
         /// <![CDATA[
         /// Categories categories = new Categories(conn, true);
