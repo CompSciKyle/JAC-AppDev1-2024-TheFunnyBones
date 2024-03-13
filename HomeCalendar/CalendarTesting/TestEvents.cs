@@ -26,7 +26,7 @@ namespace CalendarCodeTests
             Database.newDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
             // Act
-            Events events = new Events(conn, true);
+            Events events = new Events(conn);
 
             // Assert 
             Assert.IsType<Events>(events);
@@ -46,7 +46,7 @@ namespace CalendarCodeTests
             SQLiteConnection conn = Database.dbConnection;
 
             // Act
-            Events events = new Events(conn, false);
+            Events events = new Events(conn);
             List<Event> list = events.List();
             Event firstEvent = list[0];
 
@@ -71,7 +71,7 @@ namespace CalendarCodeTests
             String newDB = $"{folder}\\{TestConstants.testDBInputFile}";
             Database.existingDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn, false);
+            Events events = new Events(conn);
 
             // Act
             List<Event> list = events.List();
@@ -82,24 +82,24 @@ namespace CalendarCodeTests
         }
 
         // ========================================================================
-        // ******* TODO ********
         [Fact]
         public void EventsMethod_List_ModifyListDoesNotModifyEventsInstance()
         {
             // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            List<Event> list = Events.List();
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            Database.existingDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn);
+            List<Event> list = events.List();
 
             // Act
             list[0].DurationInMinutes = list[0].DurationInMinutes + 21.03; 
 
             // Assert
-            Assert.NotEqual(list[0].DurationInMinutes, Events.List()[0].DurationInMinutes);
+            Assert.NotEqual(list[0].DurationInMinutes, events.List()[0].DurationInMinutes);
 
         }
-
         // ========================================================================
 
         [Fact]
@@ -112,7 +112,7 @@ namespace CalendarCodeTests
             System.IO.File.Copy(goodDB, messyDB, true);
             Database.existingDatabase(messyDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn, false);
+            Events events = new Events(conn);
             string details = "New Event";
             int category = 3;
             double durationInMinutes = 98.1;
@@ -141,7 +141,7 @@ namespace CalendarCodeTests
             System.IO.File.Copy(goodDB, messyDB, true);
             Database.existingDatabase(messyDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn, false);
+            Events events = new Events(conn);
             int IdToDelete = 3;
 
             // Act
@@ -167,7 +167,7 @@ namespace CalendarCodeTests
             System.IO.File.Copy(goodDB, messyDB, true);
             Database.existingDatabase(messyDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn, false);
+            Events events = new Events(conn);
             int IdToDelete = 9999;
             int sizeOfList = events.List().Count;
 
@@ -249,35 +249,35 @@ namespace CalendarCodeTests
 
         //// ========================================================================
 
-        [Fact]
-        public void EventMethod_WriteToFile_WriteToLastFileWrittenToByDefault()
-        {
-            // Arrange
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
-            Events.ReadFromFile(dir + "\\" + testInputFile);
-            string fileName = TestConstants.EventOutputTestFile;
-            String outputFile = dir + "\\" + fileName;
-            File.Delete(outputFile);
-            Events.SaveToFile(outputFile); // output file is now last file that was written to.
-            File.Delete(outputFile);  // Delete the file
+        //[Fact]
+        //public void EventMethod_WriteToFile_WriteToLastFileWrittenToByDefault()
+        //{
+        //    // Arrange
+        //    String dir = TestConstants.GetSolutionDir();
+        //    Events Events = new Events();
+        //    Events.ReadFromFile(dir + "\\" + testInputFile);
+        //    string fileName = TestConstants.EventOutputTestFile;
+        //    String outputFile = dir + "\\" + fileName;
+        //    File.Delete(outputFile);
+        //    Events.SaveToFile(outputFile); // output file is now last file that was written to.
+        //    File.Delete(outputFile);  // Delete the file
 
-            // Act
-            Events.SaveToFile(); // should write to same file as before
+        //    // Act
+        //    Events.SaveToFile(); // should write to same file as before
 
-            // Assert
-            Assert.True(File.Exists(outputFile), "output file created");
-            String fileDir = Path.GetFullPath(Path.Combine(Events.DirName, ".\\"));
-            Assert.Equal(dir, fileDir);
-            Assert.Equal(fileName, Events.FileName);
+        //    // Assert
+        //    Assert.True(File.Exists(outputFile), "output file created");
+        //    String fileDir = Path.GetFullPath(Path.Combine(Events.DirName, ".\\"));
+        //    Assert.Equal(dir, fileDir);
+        //    Assert.Equal(fileName, Events.FileName);
 
-            // Cleanup
-            if (TestConstants.FileEquals(dir + "\\" + testInputFile, outputFile))
-            {
-                File.Delete(outputFile);
-            }
+        //    // Cleanup
+        //    if (TestConstants.FileEquals(dir + "\\" + testInputFile, outputFile))
+        //    {
+        //        File.Delete(outputFile);
+        //    }
 
-        }
+        //}
 
         // ========================================================================
 
@@ -289,17 +289,35 @@ namespace CalendarCodeTests
             String newDB = $"{folder}\\newDB.db";
             Database.newDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn, true);
-            String details = "Shopping with DavyDav";
+            Events events = new Events(conn);
+            string details = "Shopping with DavyDav";
             int id = 9;
 
             // Act
-            events.UpdateProperties(id, DateTime.Now, 30.0, details);
-            Events event = events.GetEventFromId(id);
+            events.UpdateProperties(id, DateTime.Now, 3, 30.0, details);
+            Event chosenEvent = GetEventFromId(events, id);
 
             // Assert 
-            Assert.Equal(details, event.Details);
-            Assert.Equal(DateTime.Now(), event.StartDateTime);
+            Assert.Equal(details, chosenEvent.Details);
+            Assert.Equal(DateTime.Now, chosenEvent.StartDateTime);
+            Assert.Equal(3, chosenEvent.Category);
+            Assert.Equal(30.0, chosenEvent.DurationInMinutes);
+
+        }
+
+        private Event GetEventFromId(Events events, int id)
+        {
+            List<Event> listOfEvents = events.List();
+            foreach(Event ev in listOfEvents)
+            {
+                if(ev.Id == id)
+                {
+                    return ev;
+                }
+
+            }
+
+            throw (new Exception("Cannot find event with that id"));
 
         }
     }
