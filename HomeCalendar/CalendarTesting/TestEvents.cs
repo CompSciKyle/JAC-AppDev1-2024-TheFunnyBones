@@ -26,7 +26,7 @@ namespace CalendarCodeTests
             Database.newDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
             // Act
-            Events events = new Events(conn);
+            Events events = new Events(conn, true);
 
             // Assert 
             Assert.IsType<Events>(events);
@@ -46,7 +46,7 @@ namespace CalendarCodeTests
             SQLiteConnection conn = Database.dbConnection;
 
             // Act
-            Events events = new Events(conn);
+            Events events = new Events(conn, false);
             List<Event> list = events.List();
             Event firstEvent = list[0];
 
@@ -71,7 +71,7 @@ namespace CalendarCodeTests
             String newDB = $"{folder}\\{TestConstants.testDBInputFile}";
             Database.existingDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn);
+            Events events = new Events(conn, false);
 
             // Act
             List<Event> list = events.List();
@@ -90,7 +90,7 @@ namespace CalendarCodeTests
             String newDB = $"{folder}\\{TestConstants.testDBInputFile}";
             Database.existingDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn);
+            Events events = new Events(conn, );
             List<Event> list = events.List();
 
             // Act
@@ -112,7 +112,7 @@ namespace CalendarCodeTests
             System.IO.File.Copy(goodDB, messyDB, true);
             Database.existingDatabase(messyDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn);
+            Events events = new Events(conn, false);
             string details = "New Event";
             int category = 3;
             double durationInMinutes = 98.1;
@@ -141,7 +141,7 @@ namespace CalendarCodeTests
             System.IO.File.Copy(goodDB, messyDB, true);
             Database.existingDatabase(messyDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn);
+            Events events = new Events(conn, false);
             int IdToDelete = 3;
 
             // Act
@@ -167,7 +167,7 @@ namespace CalendarCodeTests
             System.IO.File.Copy(goodDB, messyDB, true);
             Database.existingDatabase(messyDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn);
+            Events events = new Events(conn, false);
             int IdToDelete = 9999;
             int sizeOfList = events.List().Count;
 
@@ -289,7 +289,7 @@ namespace CalendarCodeTests
             String newDB = $"{folder}\\newDB.db";
             Database.newDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
-            Events events = new Events(conn);
+            Events events = new Events(conn, true);
             string details = "Shopping with DavyDav";
             int id = 9;
 
