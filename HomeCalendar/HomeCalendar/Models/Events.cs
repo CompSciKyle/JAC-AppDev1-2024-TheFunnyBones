@@ -14,23 +14,14 @@ using System.Data.SQLite;
 
 namespace Calendar
 {
-    // ====================================================================
-    // CLASS: Events
-    //        - A collection of Event items,
-    //        - Read / write to file
-    //        - etc
-    // ====================================================================
 
     /// <summary>
-    /// 
+    /// Represents a collection of events that can be managed, It provides functionality to retrieve events from a database, 
+    /// add events, delete and update them as well.
     /// </summary>
     public class Events
     {
         private SQLiteConnection _connection;
-
-        // ====================================================================
-        // Properties
-        // ====================================================================
 
         private SQLiteConnection Connection
         {
@@ -44,6 +35,11 @@ namespace Calendar
             }
         }
 
+        /// <summary>
+        /// Initializes an instance of the events class. sets the connection to the database
+        /// </summary>
+        /// <param name="connection">The connection to the database</param>
+        /// <param name="existingConnection">If true ___ and if false connection is set to the database</param>
         public Events(SQLiteConnection connection, bool existingConnection)
         {
             Connection = connection;
@@ -56,6 +52,13 @@ namespace Calendar
         // ====================================================================
         // Add Event
         // ====================================================================
+        /// <summary>
+        /// Adds a new event to the database.
+        /// </summary>
+        /// <param name="date">The date of the event</param>
+        /// <param name="category">The category id the event is associated woth</param>
+        /// <param name="duration">The duration in minutes of the event</param>
+        /// <param name="details">The description and details of the event</param>
         public void Add(DateTime date, int category, Double duration, String details)
         {
             var cmd = new SQLiteCommand(Connection);
@@ -72,6 +75,10 @@ namespace Calendar
         // ====================================================================
         // Delete Event
         // ====================================================================
+        /// <summary>
+        /// Removes an event from the database
+        /// </summary>
+        /// <param name="Id">The id of the event to delete</param>
         public void Delete(int Id)
         {
             try
@@ -89,7 +96,14 @@ namespace Calendar
             }
 
         }
-
+        /// <summary>
+        /// Updates an event from the database
+        /// </summary>
+        /// <param name="id">The id of the event you want to update</param>
+        /// <param name="date">The updated date of the event</param>
+        /// <param name="category">The updated category id the event is associated woth</param>
+        /// <param name="duration">The updated duration in minutes of the event</param>
+        /// <param name="details">The updated description and details of the event</param>
         public void UpdateProperties(int id, DateTime date, int category, Double duration, String details)
         {
 
@@ -106,12 +120,10 @@ namespace Calendar
 
 
         }
-        // ====================================================================
-        // Return list of Events
-        // Note:  make new copy of list, so user cannot modify what is part of
-        //        this instance
-        // ====================================================================
-
+        /// <summary>
+        /// Creates a list that contains all the events 
+        /// </summary>
+        /// <returns>A list of all the events</returns>
         public List<Event> List()
         {
             List<Event> newList = new List<Event>();
