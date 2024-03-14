@@ -45,11 +45,11 @@ namespace Calendar
         /// ]]>
         /// </code>
         /// </example>
-        public Categories(SQLiteConnection connection, bool existingConnection)
+        public Categories(SQLiteConnection connection, bool isNewDB)
         {
             Connection = connection;
 
-            if (existingConnection)
+            if (isNewDB)
             {
                 SetCategoryTypesToDefault();
                 SetCategoriesToDefaults();
