@@ -95,7 +95,7 @@ namespace CalendarCodeTests
         public static String testEventsInputFile = "test_events.evts";
         public static int maxIDInEventFile = 9;
         //public static Event firstEventInFile { get { return Event1; } }
-        public static Event firstEventInFile = new Event(new DateTime(2018, 1, 10, 10, 0, 0), 3, 40.0, "App Dev Homework");
+        public static Event firstEventInFile = new Event(1, new DateTime(2018, 1, 10, 10, 0, 0), 3, 40.0, "App Dev Homework");
         public static string EventOutputTestFile = "test_output.evts";
 
         public static string testCalendarFile = "test.Calendar";
