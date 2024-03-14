@@ -39,8 +39,15 @@ namespace Calendar
         /// Initializes an instance of the events class. sets the connection to the database
         /// </summary>
         /// <param name="connection">The connection to the database</param>
-        /// <param name="existingConnection">If true ___ and if false connection is set to the database</param>
-        public Events(SQLiteConnection connection, bool existingConnection)
+        /// <example>
+        /// Creating an instance of the events class
+        /// <code>
+        /// <![CDATA[
+        /// Events evts = new Events(conn);
+        /// ]]>
+        /// </code>
+        /// </example>
+        public Events(SQLiteConnection connection) 
         {
             Connection = connection;
         }
@@ -54,6 +61,19 @@ namespace Calendar
         /// <param name="category">The category id the event is associated woth</param>
         /// <param name="duration">The duration in minutes of the event</param>
         /// <param name="details">The description and details of the event</param>
+        /// <example>
+        /// Adding and event
+        /// <code>
+        /// <![CDATA[
+        /// Events evts = new Events(conn);
+        /// DateTime dateOfEvent = new DateTime(2024, 04, 15);
+        /// int categoryIdOfEvent = 3
+        /// Double duration = 30,00
+        /// string description = "a fun time!"
+        /// evts.add(dateOfEvent,categoryIdOfEvent, duration, description);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void Add(DateTime date, int category, Double duration, String details)
         {
             var cmd = new SQLiteCommand(Connection);
@@ -74,6 +94,15 @@ namespace Calendar
         /// Removes an event from the database
         /// </summary>
         /// <param name="Id">The id of the event to delete</param>
+        /// <example>
+        /// Delete an event
+        /// <code>
+        /// <![CDATA[
+        /// Events evts = new Events(conn);
+        /// evts.Delete(3);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void Delete(int Id)
         {
             try
@@ -99,6 +128,19 @@ namespace Calendar
         /// <param name="category">The updated category id the event is associated woth</param>
         /// <param name="duration">The updated duration in minutes of the event</param>
         /// <param name="details">The updated description and details of the event</param>
+        /// <example>
+        /// Updating an event
+        /// <code>
+        /// <![CDATA[
+        /// Events evts = new Events(conn);
+        /// DateTime dateOfEvent = new DateTime(2024, 04, 15);
+        /// int categoryIdOfEvent = 3
+        /// Double duration = 30,00
+        /// string description = "Updated description!"
+        /// evts.add(2, dateOfEvent, categoryIdOfEvent, duration, description);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void UpdateProperties(int id, DateTime date, int category, Double duration, String details)
         {
 
@@ -119,6 +161,15 @@ namespace Calendar
         /// Creates a list that contains all the events 
         /// </summary>
         /// <returns>A list of all the events</returns>
+        /// <example>
+        /// Getting a list of the events 
+        /// <code>
+        /// <![CDATA[
+        /// Events evts = new Events(conn);
+        /// List<Event> evtsList = evts.List();
+        /// ]]>
+        /// </code>
+        /// </example>
         public List<Event> List()
         {
             List<Event> newList = new List<Event>();
