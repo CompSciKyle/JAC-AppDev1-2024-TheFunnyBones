@@ -44,14 +44,9 @@ namespace Calendar
             }
         }
 
-        public Events(SQLiteConnection connection, bool existingConnection)
+        public Events(SQLiteConnection connection)
         {
             Connection = connection;
-
-            if (existingConnection)
-            {
-
-            }
         }
         // ====================================================================
         // Add Event
