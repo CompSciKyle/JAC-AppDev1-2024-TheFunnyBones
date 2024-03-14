@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Runtime.ConstrainedExecution;
 
 // ============================================================================
@@ -101,6 +104,7 @@ namespace Calendar
         private string? _databaseFile;
         private Categories _categories;
         private Events _events;
+        private SQLiteConnection _connection;
 
         // ====================================================================
         // Properties
@@ -114,7 +118,7 @@ namespace Calendar
         /// <value>
         /// The name of the folder.
         /// </value>
-        public String? DatabaseFile { get { return _databaseFile; } }
+        private String? DatabaseFile { get { return _databaseFile; } }
    
 
         // Properties (categories and events object)
@@ -124,14 +128,16 @@ namespace Calendar
         /// <value>
         /// A bunch of groups that have similar items inside of it.
         /// </value>
-        public Categories categories { get { return _categories; } }
+        private Categories categories { get { return _categories; } }
         /// <summary>
         /// Gets all the events.
         /// </summary>
         /// <value>
         /// A plan you have for specific amount of time.
         /// </value>
-        public Events events { get { return _events; } }
+        private Events events { get { return _events; } }
+
+        private SQLiteConnection Connection { get { return _connection; } set { _connection = value; } }
 
         // -------------------------------------------------------------------
         // Constructor (existing calendar ... must specify file)
@@ -146,10 +152,11 @@ namespace Calendar
         /// HomeCalendar homeCalendar = new HomeCalendar("CompSciCalendar.txt");
         /// </code>
         /// </example>
-        public HomeCalendar(String databaseFile)
+        public HomeCalendar(string databaseFile)
         {
-            Database.newDatabase(databaseFile);
-            _categories = new Categories(Database.dbConnection, true);
+            Database.existingDatabase(databaseFile);
+            Connection = Database.dbConnection;
+            _categories = new Categories(Database.dbConnection, false);
             _events = new Events(Database.dbConnection);
         }
 
@@ -265,39 +272,41 @@ namespace Calendar
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
 
-            var query = from c in _categories.List()
-                        join e in _events.List() on c.Id equals e.Category
-                        where e.StartDateTime >= Start && e.StartDateTime <= End
-                        select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes};
-
-            // ------------------------------------------------------------------------
-            // create a CalendarItem list with totals,
-            // ------------------------------------------------------------------------
             List<CalendarItem> items = new List<CalendarItem>();
             Double totalBusyTime = 0;
 
-            foreach (var e in query.OrderBy(q => q.StartDateTime))
+            var cmd = new SQLiteCommand("SELECT c.Id, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end ORDER BY e.StartDateTime;", Connection);
+            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy/dd/MM HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy/dd/MM HH:mm:ss"));
+
+            using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
-                // filter out unwanted categories if filter flag is on
-                if (FilterFlag && CategoryID != e.CatId)
+                while (reader.Read())
                 {
-                    continue;
+                    // filter out unwanted categories if filter flag is on
+                    if (FilterFlag && CategoryID != Convert.ToInt32(reader["e.Id"]))
+                    {
+                        continue;
+                    }
+
+                    // keep track of running totals while ignoring availability time
+                    Category categoryFromId = _categories.GetCategoryFromId(Convert.ToInt32(reader["c.Id"]));
+                    if (categoryFromId.Type != Category.CategoryType.Availability)
+                        totalBusyTime = totalBusyTime + Convert.ToDouble(reader["e.DurationInMinutes"]);
+
+                    items.Add(new CalendarItem
+                    {
+                        CategoryID = Convert.ToInt32(reader["c.Id"]),
+                        EventID = Convert.ToInt32(reader["e.Id"]),
+                        ShortDescription = Convert.ToString(reader["e.Details"]),
+                        StartDateTime = Convert.ToDateTime(reader["e.StartDateTime"]),
+                        DurationInMinutes = Convert.ToDouble(reader["e.DurationInMinutes"]),
+                        Category = Convert.ToString(reader["c.Description"]),
+                        BusyTime = totalBusyTime
+                    });
+
                 }
-
-                // keep track of running totals
-                totalBusyTime = totalBusyTime + e.DurationInMinutes;
-                items.Add(new CalendarItem
-                {
-                    CategoryID = e.CatId,
-                    EventID = e.EventId,
-                    ShortDescription = e.Details,
-                    StartDateTime = e.StartDateTime,
-                    DurationInMinutes = e.DurationInMinutes,
-                    Category = e.Category,
-                    BusyTime = totalBusyTime
-                });
             }
-
             return items;
         }
 
@@ -435,38 +444,33 @@ namespace Calendar
         /// </example>
         public List<CalendarItemsByMonth> GetCalendarItemsByMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            // -----------------------------------------------------------------------
-            // get all items first
-            // -----------------------------------------------------------------------
-            List<CalendarItem> items = GetCalendarItems(Start, End, FilterFlag, CategoryID);
+            var cmd = new SQLiteCommand("SELECT CONCAT(YEAR(e.StartDateTime), '/', MONTH(e.StartDateTime)) as \"Month\", c.Id, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY CONCAT(YEAR(e.StartDateTime), '/', MONTH(e.StartDateTime)) ORDER BY e.StartDateTime;", Connection);
+            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy/dd/MM HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy/dd/MM HH:mm:ss"));
 
-            // -----------------------------------------------------------------------
-            // Group by year/month
-            // -----------------------------------------------------------------------
-            var GroupedByMonth = items.GroupBy(c => c.StartDateTime.Year.ToString("D4") + "/" + c.StartDateTime.Month.ToString("D2"));
+            //var GroupedByMonth = items.GroupBy(c => c.StartDateTime.Year.ToString("D4") + "/" + c.StartDateTime.Month.ToString("D2"));
 
             // -----------------------------------------------------------------------
             // create new list
             // -----------------------------------------------------------------------
             var summary = new List<CalendarItemsByMonth>();
-            foreach (var MonthGroup in GroupedByMonth)
+            using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
-                // calculate totalBusyTime for this month, and create list of items
-                double total = 0;
-                var itemsList = new List<CalendarItem>();
-                foreach (var item in MonthGroup)
+                while (reader.Read())
                 {
-                    total = total + item.DurationInMinutes;
-                    itemsList.Add(item);
-                }
+                    // calculate totalBusyTime for this month, and create list of items
+                    double total = 0;
 
-                // Add new CalendarItemsByMonth to our list
-                summary.Add(new CalendarItemsByMonth
-                {
-                    Month = MonthGroup.Key,
-                    Items = itemsList,
-                    TotalBusyTime = total
-                });
+                    total = total + Convert.ToDouble(reader["e.DurationInMinutes"]);                  
+
+                    // Add new CalendarItemsByMonth to our list
+                    summary.Add(new CalendarItemsByMonth
+                    {
+                        Month = Convert.ToString(reader["Month"]),
+                        Items = GetCalendarItems(Start, End, FilterFlag, CategoryID),
+                        TotalBusyTime = total
+                    });
+                }
             }
 
             return summary;
@@ -988,8 +992,6 @@ namespace Calendar
 
 
 
-
-       
 
     }
 }
