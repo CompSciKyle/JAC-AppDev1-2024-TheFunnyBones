@@ -204,7 +204,7 @@ namespace CalendarCodeTests
 
             // Assert 
             Assert.Equal(details, chosenEvent.Details);
-            Assert.Equal(DateTime.Now, chosenEvent.StartDateTime);
+            Assert.Equal(DateTime.Now, chosenEvent.StartDateTime)
             Assert.Equal(3, chosenEvent.Category);
             Assert.Equal(30.0, chosenEvent.DurationInMinutes);
 
