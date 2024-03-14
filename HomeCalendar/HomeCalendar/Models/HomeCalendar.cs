@@ -265,7 +265,7 @@ namespace Calendar
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
 
-            var query = from c in Categories.List()
+            var query = from c in _categories.List()
                         join e in _events.List() on c.Id equals e.Category
                         where e.StartDateTime >= Start && e.StartDateTime <= End
                         select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes };
