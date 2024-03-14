@@ -94,7 +94,8 @@ namespace CalendarCodeTests
         public static int numberOfEventsInFile = 9;
         public static String testEventsInputFile = "test_events.evts";
         public static int maxIDInEventFile = 9;
-        public static Event firstEventInFile { get { return Event1; } }
+        //public static Event firstEventInFile { get { return Event1; } }
+        public static Event firstEventInFile = new Event(new DateTime(2018, 1, 10, 10, 0, 0), 3, 40.0, "App Dev Homework");
         public static string EventOutputTestFile = "test_output.evts";
 
         public static string testCalendarFile = "test.Calendar";
@@ -289,7 +290,7 @@ namespace CalendarCodeTests
         {
             Dictionary<string, object> dict = new Dictionary<string, object> {
                 { "Month","TOTALS" }  };
-            dict.Add("Work", CalendarItem5.DurationInMinutes + CalendarItem8.DurationInMinutes 
+            dict.Add("Work", CalendarItem5.DurationInMinutes + CalendarItem8.DurationInMinutes
                              + CalendarItem9.DurationInMinutes);
             dict.Add("Fun", CalendarItem1.DurationInMinutes);
             dict.Add("On call", CalendarItem4.DurationInMinutes);
