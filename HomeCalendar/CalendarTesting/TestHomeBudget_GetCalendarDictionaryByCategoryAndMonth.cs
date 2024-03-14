@@ -21,11 +21,10 @@ namespace CalendarCodeTests
         {
             // Arrange
             string folder = TestConstants.GetSolutionDir();
-            string inFile = TestConstants.GetSolutionDir() + "\\" + testInputFile;
             String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
-            HomeCalendar homeCalendar = new HomeCalendar(messyDB, inFile, false);
+            HomeCalendar homeCalendar = new HomeCalendar(messyDB);
 
             int maxRecords = TestConstants.CalendarItemsByCategoryAndMonth_MaxRecords;
             Dictionary<string, object> firstRecord = TestConstants.getCalendarItemsByCategoryAndMonthFirstRecord();
@@ -45,11 +44,10 @@ namespace CalendarCodeTests
         {
             // Arrange
             string folder = TestConstants.GetSolutionDir();
-            string inFile = TestConstants.GetSolutionDir() + "\\" + testInputFile;
             String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
-            HomeCalendar homeCalendar = new HomeCalendar(messyDB, inFile, false);
+            HomeCalendar homeCalendar = new HomeCalendar(messyDB);
 
             int maxRecords = TestConstants.CalendarItemsByMonth_MaxRecords; 
             Dictionary<string,object> firstRecord = TestConstants.getCalendarItemsByCategoryAndMonthFirstRecord();
@@ -70,11 +68,10 @@ namespace CalendarCodeTests
         {
             // Arrange
             string folder = TestConstants.GetSolutionDir();
-            string inFile = TestConstants.GetSolutionDir() + "\\" + testInputFile;
             String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
-            HomeCalendar homeCalendar = new HomeCalendar(messyDB, inFile, false);
+            HomeCalendar homeCalendar = new HomeCalendar(messyDB);
             Dictionary<string, object> totalsRecord = TestConstants.getCalendarItemsByCategoryAndMonthTotalsRecord();
 
             // Act
@@ -94,11 +91,10 @@ namespace CalendarCodeTests
         {
             // Arrange
             string folder = TestConstants.GetSolutionDir();
-            string inFile = TestConstants.GetSolutionDir() + "\\" + testInputFile;
             String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
-            HomeCalendar homeCalendar = new HomeCalendar(messyDB, inFile, false);
+            HomeCalendar homeCalendar = new HomeCalendar(messyDB);
             List<Dictionary<string, object>> expectedResults = TestConstants.getCalendarItemsByCategoryAndMonthCat2();
 
             // Act
@@ -121,11 +117,10 @@ namespace CalendarCodeTests
         {
             // Arrange
             string folder = TestConstants.GetSolutionDir();
-            string inFile = TestConstants.GetSolutionDir() + "\\" + testInputFile;
             String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
-            HomeCalendar homeCalendar = new HomeCalendar(messyDB, inFile, false);
+            HomeCalendar homeCalendar = new HomeCalendar(messyDB);
             List<Dictionary<string, object>> expectedResults = TestConstants.getCalendarItemsByCategoryAndMonth2020();
             // Act
             List<Dictionary<string, object>> gotResults = homeCalendar.GetCalendarDictionaryByCategoryAndMonth(new DateTime(2020,1,1), new DateTime(2020,12,31), false, 10);

@@ -268,7 +268,7 @@ namespace Calendar
             var query = from c in _categories.List()
                         join e in _events.List() on c.Id equals e.Category
                         where e.StartDateTime >= Start && e.StartDateTime <= End
-                        select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes };
+                        select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes};
 
             // ------------------------------------------------------------------------
             // create a CalendarItem list with totals,
