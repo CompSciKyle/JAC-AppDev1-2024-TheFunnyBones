@@ -43,11 +43,6 @@ namespace Calendar
         public Events(SQLiteConnection connection, bool existingConnection)
         {
             Connection = connection;
-
-            if (existingConnection)
-            {
-
-            }
         }
         // ====================================================================
         // Add Event

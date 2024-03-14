@@ -98,8 +98,7 @@ namespace Calendar
 
 
     {
-        private string? _FileName;
-        private string? _DirName;
+        private string? _databaseFile;
         private Categories _categories;
         private Events _events;
 
@@ -108,40 +107,15 @@ namespace Calendar
         // ===================================================================
 
         // Properties (location of files etc)
-        /// <summary>
-        /// Gets the file name. 
-        /// </summary>
-        /// <value>
-        /// The name of the file.
-        /// </value>
-        public String? FileName { get { return _FileName; } }
+
         /// <summary>
         /// Gets the directory name.
         /// </summary>
         /// <value>
         /// The name of the folder.
         /// </value>
-        public String? DirName { get { return _DirName; } }
-        /// <summary>
-        /// Gets the path using the file name and the directory name.
-        /// </summary>
-        /// <value>
-        /// The hierachy that leads to that name.
-        /// </value>
-        public String? PathName
-        {
-            get
-            {
-                if (_FileName != null && _DirName != null)
-                {
-                    return Path.GetFullPath(_DirName + "\\" + _FileName);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        public String? DatabaseFile { get { return _databaseFile; } }
+   
 
         // Properties (categories and events object)
         /// <summary>
@@ -160,23 +134,6 @@ namespace Calendar
         public Events events { get { return _events; } }
 
         // -------------------------------------------------------------------
-        // Constructor (new... default categories, no events)
-        // -------------------------------------------------------------------
-        /// <summary>
-        /// Initilizes a instance of the HomeCalandar with default categories and default events.
-        /// </summary>
-        /// <example>
-        /// <code>
-        /// HomeCalendar homeCalendar = new HomeCalendar();
-        /// </code>
-        /// </example>
-        public HomeCalendar()
-        {
-            //_categories = new Categories();
-            _events = new Events();
-        }
-
-        // -------------------------------------------------------------------
         // Constructor (existing calendar ... must specify file)
         // -------------------------------------------------------------------
         /// <summary>
@@ -189,156 +146,12 @@ namespace Calendar
         /// HomeCalendar homeCalendar = new HomeCalendar("CompSciCalendar.txt");
         /// </code>
         /// </example>
-        public HomeCalendar(String calendarFileName)
+        public HomeCalendar(String databaseFile)
         {
-            //_categories = new Categories();
-            _events = new Events();
-            ReadFromFile(calendarFileName);
+            Database.newDatabase(databaseFile);
+            _categories = new Categories(Database.dbConnection, true);
+            _events = new Events(Database.dbConnection);
         }
-        public HomeCalendar(String databaseFile, String eventsXMLFile, bool newDB = false)
-        {
-            // if database exists, and user doesn't want a new database, open existing DB
-            if (!newDB && File.Exists(databaseFile))
-            {
-                Database.existingDatabase(databaseFile);
-            }
-
-            // file did not exist, or user wants a new database, so open NEW DB
-            else
-            {
-                Database.newDatabase(databaseFile);
-                newDB = true;
-            }
-
-            // create the category object
-            _categories = new Categories(Database.dbConnection, newDB);
-
-            // create the _events course
-            _events = new Events();
-            _events.ReadFromFile(eventsXMLFile);
-        }
-
-
-        #region OpenNewAndSave
-        // ---------------------------------------------------------------
-        // Read
-        // Throws Exception if any problem reading this file
-        // ---------------------------------------------------------------
-        /// <summary>
-        ///  Reads the calendar file using the file name and saves information about the categories and events.
-        /// </summary>
-        /// <param name="calendarFileName"> The name of the calendar file you want to read.</param>
-        /// <exception cref="Exception"> Throws if the file does not exist or if the info cannot be retrieved.</exception>
-        /// <example>
-        /// Reads from a file using the file path.
-        /// <code>
-        /// HomeCalendar homeCalendar = new HomeCalendar();
-        /// homeCalendar.ReadFromFile("CompSciCalendar.txt");
-        /// </code>
-        /// </example>
-        public void ReadFromFile(String? calendarFileName)
-        {
-            // ---------------------------------------------------------------
-            // read the calendar file and process
-            // ---------------------------------------------------------------
-            try
-            {
-                // get filepath name (throws exception if it doesn't exist)
-                calendarFileName = CalendarFiles.VerifyReadFromFileName(calendarFileName, "");
-
-                // If file exists, read it
-                string[] filenames = System.IO.File.ReadAllLines(calendarFileName);
-
-                // ----------------------------------------------------------------
-                // Save information about the calendar file
-                // ----------------------------------------------------------------
-                string? folder = Path.GetDirectoryName(calendarFileName);
-                _FileName = Path.GetFileName(calendarFileName);
-
-                // read the events and categories from their respective files
-                //_categories.ReadFromFile(folder + "\\" + filenames[0]);Doesnt exist in the file anymore
-                _events.ReadFromFile(folder + "\\" + filenames[0]);
-
-                // Save information about calendar file
-                _DirName = Path.GetDirectoryName(calendarFileName);
-                _FileName = Path.GetFileName(calendarFileName);
-
-            }
-
-            // ----------------------------------------------------------------
-            // throw new exception if we cannot get the info that we need
-            // ----------------------------------------------------------------
-            catch (Exception e)
-            {
-                throw new Exception("Could not read calendar info: \n" + e.Message);
-            }
-
-        }
-
-        // ====================================================================
-        // save to a file
-        // saves the following files:
-        //  filepath_events.evts  # events file
-        //  filepath_categories.cats # categories files
-        //  filepath # a file containing the names of the events and categories files.
-        //  Throws exception if we cannot write to that file (ex: invalid dir, wrong permissions)
-        // ====================================================================
-        /// <summary>
-        /// Writes all the exisitng info about the events and the categories to the file with the specified file path.
-        /// </summary>
-        /// <param name="filepath">The file path for the file you want to write to.</param>
-        /// <example>
-        /// Saving to a file using a file path.
-        /// <code>
-        /// HomeCalendar homeCalendar = new HomeCalendar();
-        /// homeCalendar.SaveToFile("CompSciCalendar.txt");
-        /// </code>
-        /// </example>
-        public void SaveToFile(String filepath)
-        {
-
-            // ---------------------------------------------------------------
-            // just in case filepath doesn't exist, reset path info
-            // ---------------------------------------------------------------
-            _DirName = null;
-            _FileName = null;
-
-            // ---------------------------------------------------------------
-            // get filepath name (throws exception if we can't write to the file)
-            // ---------------------------------------------------------------
-            filepath = CalendarFiles.VerifyWriteToFileName(filepath, "");
-
-            String? path = Path.GetDirectoryName(Path.GetFullPath(filepath));
-            String file = Path.GetFileNameWithoutExtension(filepath);
-            String ext = Path.GetExtension(filepath);
-
-            // ---------------------------------------------------------------
-            // construct file names for events and categories
-            // ---------------------------------------------------------------
-            String eventpath = path + "\\" + file + "_events" + ".evts";
-            String categorypath = path + "\\" + file + "_categories" + ".cats";
-
-            // ---------------------------------------------------------------
-            // save the events and categories into their own files
-            // ---------------------------------------------------------------
-            _events.SaveToFile(eventpath);
-            //_categories.SaveToFile(categorypath);
-
-            // ---------------------------------------------------------------
-            // save filenames of events and categories to calendar file
-            // ---------------------------------------------------------------
-            string[] files = { Path.GetFileName(categorypath), Path.GetFileName(eventpath) };
-            System.IO.File.WriteAllLines(filepath, files);
-
-            // ----------------------------------------------------------------
-            // save filename info for later use
-            // ----------------------------------------------------------------
-            _DirName = path;
-            _FileName = Path.GetFileName(filepath);
-        }
-        #endregion OpenNewAndSave
-
-        #region GetList
 
 
 
