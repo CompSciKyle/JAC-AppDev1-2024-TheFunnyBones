@@ -276,9 +276,11 @@ namespace Calendar
             Double totalBusyTime = 0;
 
 
-            var cmd = new SQLiteCommand("SELECT c.Id as CategoryId, e.Id as EventId, e.StartDateTime as EventStartDateTime, c.Description as CategoryDescription, e.Details as EventDetails, e.DurationInMinutes as EventDurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end ORDER BY e.StartDateTime;", Connection);
+            var cmd = new SQLiteCommand("SELECT c.Id as 'CategoryId', e.Id as 'EventId', e.StartDateTime as 'EventStartDateTime', c.Description as 'CategoryDescription', e.Details as 'EventDetails', e.DurationInMinutes as 'EventDurationInMinutes' FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end ORDER BY e.StartDateTime;", Connection);
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
+
+        
 
 
 
@@ -289,7 +291,7 @@ namespace Calendar
                 while (reader.Read())
                 {
                     //filter out unwanted categories if filter flag is on
-                    if (FilterFlag && CategoryID != Convert.ToInt32(reader["EventId"]))
+                    if (FilterFlag && CategoryID != Convert.ToInt32(reader["CategoryId"]))
                     {
                         continue;
                     }
