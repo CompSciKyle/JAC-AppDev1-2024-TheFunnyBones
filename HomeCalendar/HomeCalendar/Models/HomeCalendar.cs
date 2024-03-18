@@ -449,7 +449,7 @@ namespace Calendar
         /// </example>
         public List<CalendarItemsByMonth> GetCalendarItemsByMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            var cmd = new SQLiteCommand("SELECT STRFTIME('%Y-%m', e.StartDateTime) as \"Month\", c.Id, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY STRFTIME('%Y-%m', e.StartDateTime) ORDER BY e.StartDateTime;", Connection);
+            var cmd = new SQLiteCommand("SELECT STRFTIME('%Y/%m', e.StartDateTime) as Month, c.Id as CategoryId, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY STRFTIME('%Y/%m', e.StartDateTime) ORDER BY STRFTIME('%Y/%m', e.StartDateTime);", Connection);
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
@@ -464,15 +464,23 @@ namespace Calendar
                 while (reader.Read())
                 {
                     // calculate totalBusyTime for this month, and create list of items
-                    double total = 0;
 
-                    total = total + Convert.ToDouble(reader["e.DurationInMinutes"]);
+                    double total = 0;
+                    List<CalendarItem> calendarItems = GetCalendarItems(Start, End, FilterFlag, CategoryID);
+                    foreach (CalendarItem item in calendarItems)
+                    {
+                        Category categoryFromId = _categories.GetCategoryFromId(item.CategoryID);
+                        if (categoryFromId.Type != Category.CategoryType.Availability)
+                            total += item.BusyTime;
+                        
+                    }
+                    
 
                     // Add new CalendarItemsByMonth to our list
                     summary.Add(new CalendarItemsByMonth
                     {
                         Month = Convert.ToString(reader["Month"]),
-                        Items = GetCalendarItems(Start, End, FilterFlag, CategoryID),
+                        Items = calendarItems,
                         TotalBusyTime = total
                     });
                 }
