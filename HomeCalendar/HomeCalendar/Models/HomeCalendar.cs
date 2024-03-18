@@ -128,14 +128,14 @@ namespace Calendar
         /// <value>
         /// A bunch of groups that have similar items inside of it.
         /// </value>
-        private Categories categories { get { return _categories; } }
+        public Categories categories { get { return _categories; } }
         /// <summary>
         /// Gets all the events.
         /// </summary>
         /// <value>
         /// A plan you have for specific amount of time.
         /// </value>
-        private Events events { get { return _events; } }
+        public Events events { get { return _events; } }
 
         private SQLiteConnection Connection { get { return _connection; } set { _connection = value; } }
 
