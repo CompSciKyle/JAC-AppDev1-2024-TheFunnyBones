@@ -127,10 +127,15 @@ namespace CalendarCodeTests
             HomeCalendar homeCalendar = new HomeCalendar(messyDB);
             List<CalendarItemsByCategory> validCalendarItemsByCategory = TestConstants.getCalendarItemsByCategory2018();
             CalendarItemsByCategory firstRecord = validCalendarItemsByCategory[0];
+            DateTime dateOne = new DateTime(2018, 1, 1);
+            DateTime dateTwo = new DateTime(2018, 12, 31);
+            dateOne.ToString("yyyy-MM-dd H:mm:ss");
+            dateTwo.ToString("yyyy-MM-dd H:mm:ss");
+
 
 
             // Act
-            List<CalendarItemsByCategory> CalendarItemsByCategory = homeCalendar.GetCalendarItemsByCategory(new DateTime(2018, 1, 1), new DateTime(2018, 12, 31), false, 9);
+            List<CalendarItemsByCategory> CalendarItemsByCategory = homeCalendar.GetCalendarItemsByCategory(dateOne, dateTwo, false, 9);
             CalendarItemsByCategory firstRecordTest = CalendarItemsByCategory[0];
 
             // Assert
