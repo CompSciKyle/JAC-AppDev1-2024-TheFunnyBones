@@ -276,8 +276,8 @@ namespace Calendar
             Double totalBusyTime = 0;
 
             var cmd = new SQLiteCommand("SELECT c.Id, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end ORDER BY e.StartDateTime;", Connection);
-            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy/dd/MM HH:mm:ss"));
-            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy/dd/MM HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
@@ -444,9 +444,9 @@ namespace Calendar
         /// </example>
         public List<CalendarItemsByMonth> GetCalendarItemsByMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            var cmd = new SQLiteCommand("SELECT CONCAT(YEAR(e.StartDateTime), '/', MONTH(e.StartDateTime)) as \"Month\", c.Id, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY CONCAT(YEAR(e.StartDateTime), '/', MONTH(e.StartDateTime)) ORDER BY e.StartDateTime;", Connection);
-            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy/dd/MM HH:mm:ss"));
-            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy/dd/MM HH:mm:ss"));
+            var cmd = new SQLiteCommand("SELECT STRFTIME('%Y-%m', e.StartDateTime) as \"Month\", c.Id, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY STRFTIME('%Y-%m', e.StartDateTime) ORDER BY e.StartDateTime;", Connection);
+            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
             //var GroupedByMonth = items.GroupBy(c => c.StartDateTime.Year.ToString("D4") + "/" + c.StartDateTime.Month.ToString("D2"));
 
@@ -461,7 +461,7 @@ namespace Calendar
                     // calculate totalBusyTime for this month, and create list of items
                     double total = 0;
 
-                    total = total + Convert.ToDouble(reader["e.DurationInMinutes"]);                  
+                    total = total + Convert.ToDouble(reader["DurationInMinutes"]);                  
 
                     // Add new CalendarItemsByMonth to our list
                     summary.Add(new CalendarItemsByMonth
