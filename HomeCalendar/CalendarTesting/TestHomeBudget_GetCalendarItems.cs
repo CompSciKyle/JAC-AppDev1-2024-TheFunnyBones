@@ -10,7 +10,9 @@ namespace CalendarCodeTests
     public class TestHomeCalendar_GetCalendarItems
     {
         string testInputFile = TestConstants.testEventsInputFile;
-        
+        private Categories _categories;
+
+
 
         // ========================================================================
         // Get Events Method tests
@@ -53,7 +55,7 @@ namespace CalendarCodeTests
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
             HomeCalendar homeCalendar = new HomeCalendar(messyDB);
-
+            _categories = new Categories(Database.dbConnection, false);
             // Act
             List<CalendarItem> CalendarItems = homeCalendar.GetCalendarItems(null, null, false, 9);
 
@@ -61,7 +63,11 @@ namespace CalendarCodeTests
             double busyTime = 0;
             foreach (CalendarItem CalendarItem in CalendarItems)
             {
-                busyTime = busyTime + CalendarItem.DurationInMinutes;
+                if (_categories.GetCategoryFromId(CalendarItem.CategoryID).Type != Category.CategoryType.Availability)
+                {
+                    busyTime = busyTime + CalendarItem.DurationInMinutes;
+                }
+                
                 Assert.Equal(busyTime, CalendarItem.BusyTime);
             }
 
