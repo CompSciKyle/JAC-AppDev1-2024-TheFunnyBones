@@ -280,11 +280,6 @@ namespace Calendar
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
-        
-
-
-
-
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
