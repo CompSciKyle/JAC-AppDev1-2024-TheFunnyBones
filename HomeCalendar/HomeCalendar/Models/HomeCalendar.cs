@@ -280,7 +280,6 @@ namespace Calendar
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
-
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
@@ -471,12 +470,14 @@ namespace Calendar
 
                     double total = 0;
                     DateTime time = Convert.ToDateTime(reader["Month"]);
-                    List<CalendarItem> calendarItems = GetCalendarItems(time, time.AddMonths(1), FilterFlag, CategoryID);
+                    List<CalendarItem> calendarItems = GetCalendarItems(time.AddMinutes(-1), time.AddMonths(1), FilterFlag, CategoryID);
                     foreach (CalendarItem item in calendarItems)
                     {
                         Category categoryFromId = _categories.GetCategoryFromId(item.CategoryID);
                         if (categoryFromId.Type != Category.CategoryType.Availability)
+                        {
                             total += item.DurationInMinutes;
+                        }
 
                     }
 
@@ -662,7 +663,9 @@ namespace Calendar
                         {
                             Category categoryFromId = _categories.GetCategoryFromId(item.CategoryID);
                             if (categoryFromId.Type != Category.CategoryType.Availability)
+                            {
                                 total += item.DurationInMinutes;
+                            }
                             items.Add(item);
 
                         }
@@ -950,43 +953,35 @@ namespace Calendar
             // get all items by month 
             // -----------------------------------------------------------------------
             List<CalendarItemsByMonth> GroupedByMonth = GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
-
             // -----------------------------------------------------------------------
             // loop over each month
             // -----------------------------------------------------------------------
             var summary = new List<Dictionary<string, object>>();
             var totalBusyTimePerCategory = new Dictionary<String, Double>();
-
             foreach (var MonthGroup in GroupedByMonth)
             {
                 // create record object for this month
                 Dictionary<string, object> record = new Dictionary<string, object>();
                 record["Month"] = MonthGroup.Month;
                 record["TotalBusyTime"] = MonthGroup.TotalBusyTime;
-
                 // break up the month items into categories
                 var GroupedByCategory = MonthGroup.Items.GroupBy(c => c.Category);
-
                 // -----------------------------------------------------------------------
                 // loop over each category
                 // -----------------------------------------------------------------------
                 foreach (var CategoryGroup in GroupedByCategory.OrderBy(g => g.Key))
                 {
-
                     // calculate totals for the cat/month, and create list of items
                     double totalCategoryBusyTimeForThisMonth = 0;
                     var details = new List<CalendarItem>();
-
                     foreach (var item in CategoryGroup)
                     {
                         totalCategoryBusyTimeForThisMonth = totalCategoryBusyTimeForThisMonth + item.DurationInMinutes;
                         details.Add(item);
                     }
-
                     // add new properties and values to our record object
                     record["items:" + CategoryGroup.Key] = details;
                     record[CategoryGroup.Key] = totalCategoryBusyTimeForThisMonth;
-
                     // keep track of totals for each category
                     if (totalBusyTimePerCategory.TryGetValue(CategoryGroup.Key, out Double currentTotalBusyTimeForCategory))
                     {
@@ -997,7 +992,6 @@ namespace Calendar
                         totalBusyTimePerCategory[CategoryGroup.Key] = totalCategoryBusyTimeForThisMonth;
                     }
                 }
-
                 // add record to collection
                 summary.Add(record);
             }
@@ -1006,7 +1000,6 @@ namespace Calendar
             // ---------------------------------------------------------------------------
             Dictionary<string, object> totalsRecord = new Dictionary<string, object>();
             totalsRecord["Month"] = "TOTALS";
-
             foreach (var cat in categories.List())
             {
                 try
@@ -1016,14 +1009,12 @@ namespace Calendar
                 catch { }
             }
             summary.Add(totalsRecord);
-
-
             return summary;
         }
-
-
-
-
     }
 }
+
+
+
+
 
