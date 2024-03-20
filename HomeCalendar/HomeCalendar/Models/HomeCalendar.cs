@@ -471,7 +471,7 @@ namespace Calendar
 
                     double total = 0;
                     DateTime time = Convert.ToDateTime(reader["Month"]);
-                    List<CalendarItem> calendarItems = GetCalendarItems(time, time.AddMonths(1), FilterFlag, CategoryID);
+                    List<CalendarItem> calendarItems = GetCalendarItems(time.AddMinutes(-1), time.AddMonths(1), FilterFlag, CategoryID);
                     foreach (CalendarItem item in calendarItems)
                     {
                         Category categoryFromId = _categories.GetCategoryFromId(item.CategoryID);
