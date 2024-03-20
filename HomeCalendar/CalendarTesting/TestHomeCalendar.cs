@@ -4,10 +4,31 @@
 //using System.Collections.Generic;
 //using Calendar;
 
-//namespace CalendarCodeTests
-//{
-//    public class TestHomeCalendar
-//    {
+using Calendar;
+
+namespace CalendarCodeTests
+{
+    public class TestHomeCalendar
+    {
+        [Fact]
+        public void HomeCalendar_Categories_Are_Still_Set_To_Default()
+        {
+            //Arrange
+            string folder = TestConstants.GetSolutionDir();
+            string newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            HomeCalendar myHomeCalendar = new HomeCalendar(newDB);
+
+            //Act
+            Categories myCategories = myHomeCalendar.categories;
+            Events myEvents = myHomeCalendar.events;
+            //Assert
+
+            Assert.Empty(myEvents.List());
+            Assert.NotEmpty(myCategories.List());
+        }
+    }
+}
 //        string testInputFile = TestConstants.testCalendarFile;
 
 
