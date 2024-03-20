@@ -452,6 +452,14 @@ namespace Calendar
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
+            if (FilterFlag)
+            {
+                cmd = new SQLiteCommand("SELECT STRFTIME('%Y/%m', e.StartDateTime) as Month, c.Id as CategoryId, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end AND c.Id == @catId GROUP BY STRFTIME('%Y/%m', e.StartDateTime) ORDER BY STRFTIME('%Y/%m', e.StartDateTime);", Connection);
+                cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
+                cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
+                cmd.Parameters.AddWithValue("@catId", CategoryID);
+            }
+
             //var GroupedByMonth = items.GroupBy(c => c.StartDateTime.Year.ToString("D4") + "/" + c.StartDateTime.Month.ToString("D2"));
 
             // -----------------------------------------------------------------------
