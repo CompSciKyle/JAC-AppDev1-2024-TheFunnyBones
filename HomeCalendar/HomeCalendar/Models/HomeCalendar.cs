@@ -631,38 +631,51 @@ namespace Calendar
         /// </example>
         public List<CalendarItemsByCategory> GetCalendarItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            // -----------------------------------------------------------------------
-            // get all items first
-            // -----------------------------------------------------------------------
-            List<CalendarItem> filteredItems = GetCalendarItems(Start, End, FilterFlag, CategoryID);
+            Start = Start ?? new DateTime(1900, 1, 1);
+            End = End ?? new DateTime(2500, 1, 1);
 
-            // -----------------------------------------------------------------------
-            // Group by Category
-            // -----------------------------------------------------------------------
-            var GroupedByCategory = filteredItems.GroupBy(c => c.Category);
+            var cmd = new SQLiteCommand("SELECT c.Id as CategoryId, e.Id, e.StartDateTime, c.Description as CategoryName, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY c.Description ORDER BY c.Description", Connection);
+            cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
             // -----------------------------------------------------------------------
             // create new list
             // -----------------------------------------------------------------------
             var summary = new List<CalendarItemsByCategory>();
-            foreach (var CategoryGroup in GroupedByCategory.OrderBy(g => g.Key))
+            using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
-                // calculate totalBusyTime for this category, and create list of items
-                double total = 0;
-                var items = new List<CalendarItem>();
-                foreach (var item in CategoryGroup)
+                while (reader.Read())
                 {
-                    total = total + item.DurationInMinutes;
-                    items.Add(item);
-                }
+                    // calculate totalBusyTime for this month, and create list of items
+                    if (FilterFlag && CategoryID != Convert.ToInt32(reader["CategoryId"]))
+                    {
+                        continue;
+                    }
+                    // calculate totalBusyTime for this category, and create list of items
+                    double total = 0;
+                    string categoryName = Convert.ToString(reader["CategoryName"]);
+                    List<CalendarItem> calendarItems = GetCalendarItems(Start, End, FilterFlag, CategoryID);
+                    var items = new List<CalendarItem>();
+                    foreach (CalendarItem item in calendarItems)
+                    {
+                        if (item.Category == categoryName)
+                        {
+                            Category categoryFromId = _categories.GetCategoryFromId(item.CategoryID);
+                            if (categoryFromId.Type != Category.CategoryType.Availability)
+                                total += item.DurationInMinutes;
+                            items.Add(item);
 
-                // Add new CalendarItemsByCategory to our list
-                summary.Add(new CalendarItemsByCategory
-                {
-                    Category = CategoryGroup.Key,
-                    Items = items,
-                    TotalBusyTime = total
-                });
+                        }
+                    }
+
+                    // Add new CalendarItemsByCategory to our list
+                    summary.Add(new CalendarItemsByCategory
+                    {
+                        Category = categoryName,
+                        Items = items,
+                        TotalBusyTime = total
+                    });
+                }
             }
 
             return summary;
@@ -1013,3 +1026,4 @@ namespace Calendar
 
     }
 }
+
