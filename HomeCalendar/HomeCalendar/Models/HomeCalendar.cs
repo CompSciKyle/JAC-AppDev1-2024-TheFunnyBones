@@ -276,7 +276,10 @@ namespace Calendar
             Double totalBusyTime = 0;
 
 
-            var cmd = new SQLiteCommand("SELECT c.Id as 'CategoryId', e.Id as 'EventId', e.StartDateTime as 'EventStartDateTime', c.Description as 'CategoryDescription', e.Details as 'EventDetails', e.DurationInMinutes as 'EventDurationInMinutes' FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end ORDER BY e.StartDateTime;", Connection);
+            var cmd = new SQLiteCommand("SELECT c.Id as 'CategoryId', e.Id as 'EventId', e.StartDateTime as 'EventStartDateTime', c.Description as 'CategoryDescription', e.Details as 'EventDetails', e.DurationInMinutes as 'EventDurationInMinutes'" + 
+            " FROM categories c JOIN events e ON e.CategoryId = c.Id " + 
+            "WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end " + 
+            "ORDER BY e.StartDateTime;", Connection);
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
@@ -293,7 +296,9 @@ namespace Calendar
                     // keep track of running totals while ignoring availability time
                     Category categoryFromId = _categories.GetCategoryFromId(Convert.ToInt32(reader["CategoryId"]));
                     if (categoryFromId.Type != Category.CategoryType.Availability)
+                    {
                         totalBusyTime = totalBusyTime + Convert.ToDouble(reader["EventDurationInMinutes"]);
+                    }
 
                     items.Add(new CalendarItem
                     {
@@ -448,13 +453,21 @@ namespace Calendar
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
 
-            var cmd = new SQLiteCommand("SELECT STRFTIME('%Y/%m', e.StartDateTime) as Month, c.Id as CategoryId, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY STRFTIME('%Y/%m', e.StartDateTime) ORDER BY STRFTIME('%Y/%m', e.StartDateTime);", Connection);
+            var cmd = new SQLiteCommand("SELECT STRFTIME('%Y/%m', e.StartDateTime) as Month, c.Id as CategoryId "+
+                "FROM categories c JOIN events e ON e.CategoryId = c.Id "+
+                "WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end"+
+                " GROUP BY STRFTIME('%Y/%m', e.StartDateTime) "+
+                "ORDER BY STRFTIME('%Y/%m', e.StartDateTime);", Connection);
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
             if (FilterFlag)
             {
-                cmd = new SQLiteCommand("SELECT STRFTIME('%Y/%m', e.StartDateTime) as Month, c.Id as CategoryId, e.Id, e.StartDateTime, c.Description, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end AND c.Id == @catId GROUP BY STRFTIME('%Y/%m', e.StartDateTime) ORDER BY STRFTIME('%Y/%m', e.StartDateTime);", Connection);
+                cmd = new SQLiteCommand("SELECT STRFTIME('%Y/%m', e.StartDateTime) as Month, c.Id as CategoryId, e.StartDateTime" +
+                    " FROM categories c JOIN events e ON e.CategoryId = c.Id"+
+                    " WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end AND c.Id == @catId "+
+                    "GROUP BY STRFTIME('%Y/%m', e.StartDateTime) "+
+                    "ORDER BY STRFTIME('%Y/%m', e.StartDateTime);", Connection);
                 cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
                 cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
                 cmd.Parameters.AddWithValue("@catId", CategoryID);
@@ -643,7 +656,10 @@ namespace Calendar
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
 
-            var cmd = new SQLiteCommand("SELECT c.Id as CategoryId, e.Id, e.StartDateTime, c.Description as CategoryName, e.Details, e.DurationInMinutes as DurationInMinutes FROM categories c JOIN events e ON e.CategoryId = c.Id WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end GROUP BY c.Description ORDER BY c.Description", Connection);
+            var cmd = new SQLiteCommand("SELECT c.Id as CategoryId, e.CategoryId, e.StartDateTime, c.Description as CategoryName " +
+                "FROM categories c JOIN events e ON e.CategoryId = c.Id "+
+                "WHERE e.StartDateTime >= @start AND e.StartDateTime <= @end "+
+                "GROUP BY c.Description ORDER BY c.Description", Connection);
             cmd.Parameters.AddWithValue("@start", Start?.ToString("yyyy-MM-dd H:mm:ss"));
             cmd.Parameters.AddWithValue("@end", End?.ToString("yyyy-MM-dd H:mm:ss"));
 
