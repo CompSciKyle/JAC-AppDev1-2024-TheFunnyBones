@@ -51,7 +51,7 @@ namespace Calendar
             string cs = @"Data Source=" + filename + ";Foreign Keys=1";
 
             _connection = new SQLiteConnection(cs);
-            dbConnection.Open();
+            dbConnection.Open();    
 
             var cmd = new SQLiteCommand(dbConnection);
             cmd.CommandText = "DROP TABLE IF EXISTS events";
