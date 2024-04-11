@@ -12,10 +12,10 @@
         <Border Margin="100 50 100 50" BorderThickness="1" BorderBrush="Black">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="110" />
                     <ColumnDefinition Width="3*" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
