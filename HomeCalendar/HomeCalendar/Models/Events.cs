@@ -47,7 +47,7 @@ namespace Calendar
         /// ]]>
         /// </code>
         /// </example>
-        public Events(SQLiteConnection connection) 
+        public Events(SQLiteConnection connection)
         {
             Connection = connection;
         }
@@ -76,15 +76,22 @@ namespace Calendar
         /// </example>
         public void Add(DateTime date, int category, Double duration, String details)
         {
-            var cmd = new SQLiteCommand(Connection);
+            try
+            {
+                var cmd = new SQLiteCommand(Connection);
 
-            cmd.CommandText = "INSERT INTO events(StartDateTime, Details, DurationInMinutes, CategoryId) VALUES (@date, @details, @duration, @categoryid)";
-            cmd.Parameters.AddWithValue("@date", date.ToString());
-            cmd.Parameters.AddWithValue("@details", details);
-            cmd.Parameters.AddWithValue("@duration", duration);
-            cmd.Parameters.AddWithValue("@categoryid", category);
-            cmd.ExecuteNonQuery();
+                cmd.CommandText = "INSERT INTO events(StartDateTime, Details, DurationInMinutes, CategoryId) VALUES (@date, @details, @duration, @categoryid)";
+                cmd.Parameters.AddWithValue("@date", date.ToString());
+                cmd.Parameters.AddWithValue("@details", details);
+                cmd.Parameters.AddWithValue("@duration", duration);
+                cmd.Parameters.AddWithValue("@categoryid", category);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
 
+                Console.WriteLine(e.Message);
+            }
         }
 
         // ====================================================================

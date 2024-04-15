@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace CalendarMVP
 {
-    class ViewInterface
+    interface ViewInterface
     {
-
+        void DisplayDB();
+        //string GetFileName();
+        //string GetFolderName();
+        void DisplayMessage(string message);
+        void ClosingConfirmation();
+        void ShowTypes();
+        void ShowCategory();
     }
 }
