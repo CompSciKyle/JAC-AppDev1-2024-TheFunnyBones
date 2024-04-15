@@ -20,8 +20,6 @@ namespace CalendarMVP
         public MainWindow()
         {
             InitializeComponent();
-            MonthView mv = new MonthView();
-            mv.Show();
         }
     }
 }
