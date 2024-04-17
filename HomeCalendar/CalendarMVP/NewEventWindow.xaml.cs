@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Calendar;
 
+
 namespace CalendarMVP
 {
     /// <summary>
@@ -57,8 +58,8 @@ namespace CalendarMVP
         private void Btn_Save(object sender, RoutedEventArgs e)
         {
             double duration = double.Parse(Txb_Duration.Text);
-            Category category = Cmb_Types.SelectedItem as Category;
-            DateTime startDate = Dtp_Date.Text;
+            Category category = Cmb_Categories.SelectedItem as Category;
+            DateTime startDate = DateTime.Parse(Dtp_Date.Text);
             presenter.NewEvent(startDate, category, duration, Txb_Details.Text);
         }
     }
