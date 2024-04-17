@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,14 @@ namespace CalendarMVP
     public partial class NewEventWindow : Window, ViewInterfaceForEventsAndCategories
     {
         private readonly Presenter presenter;
-        public NewEventWindow(Presenter p)
+        private MainWindow mainWindow;
+        public NewEventWindow(Presenter p, MainWindow main)
         {
             InitializeComponent();
             presenter = p;
             //presenter.RegisterEventView(this);
             Cmb_Categories.ItemsSource = presenter.GetAllCategories();
+            mainWindow = main;
         }
 
         public void ClosingConfirmation()
@@ -37,18 +40,15 @@ namespace CalendarMVP
 
         public void DisplayDB()
         {
-            throw new NotImplementedException();
+            this.Close();
+            mainWindow.Show();
         }
 
         public void DisplayMessage(string message)
         {
-            throw new NotImplementedException();
+           MessageBox.Show(message);
         }
 
-        public void ShowCategory()
-        {
-            throw new NotImplementedException();
-        }
 
         public void ShowTypes()
         {
@@ -57,10 +57,20 @@ namespace CalendarMVP
 
         private void Btn_Save(object sender, RoutedEventArgs e)
         {
+            try
+            {
+
             double duration = double.Parse(Txb_Duration.Text);
-            Category category = Cmb_Categories.SelectedItem as Category;
-            DateTime startDate = DateTime.Parse(Dtp_Date.Text);
-            presenter.NewEvent(startDate, category, duration, Txb_Details.Text);
+            int categoryId = (int)Cmb_Categories.SelectedValue;
+            string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
+            DateTime startDate;
+            DateTime.TryParseExact(dateTimeString, "yyyy-MM-dd H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
+            presenter.NewEvent(startDate, categoryId, duration, Txb_Details.Text);
+            Console.WriteLine("dateTimeString: " + dateTimeString);
+            }catch(Exception ex) 
+            {
+                DisplayMessage("Failed To create a event: " + ex.Message);
+            }
         }
     }
 }

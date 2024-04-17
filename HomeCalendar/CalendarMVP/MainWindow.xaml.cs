@@ -28,7 +28,7 @@ namespace CalendarMVP
             presenter = new Presenter(this);
 
             //Pop Up Event Window
-            NewEventWindow eventWindow = new NewEventWindow(presenter);
+            NewEventWindow eventWindow = new NewEventWindow(presenter, this);
             eventWindow.Show();
         }
 
