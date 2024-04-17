@@ -19,12 +19,12 @@ namespace CalendarMVP
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ViewInterfaceForDatabaseConnection
     {
         public MainWindow()
         {
             InitializeComponent();
-            //Presenter presenter = new Presenter(this);
+            Presenter presenter = new Presenter(this);
         }
 
         public void Btn_Click_File_Explore(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ namespace CalendarMVP
                 {
                     filePath += arrayOfPath[i] + '\\';
                 }
-                //presenter.ExsistingDB(filePath, fileName);
+                presenter.ExsistingDB(filePath, fileName);
             }
         }
     }

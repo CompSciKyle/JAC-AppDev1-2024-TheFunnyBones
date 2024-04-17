@@ -7,31 +7,48 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace CalendarMVP
 {
     class Presenter
     {
-        private readonly ViewInterface view;
+        private readonly ViewInterfaceForDatabaseConnection viewForDatabase;
+        private readonly ViewInterfaceForCalendar viewForCalendar;
+        private readonly ViewInterfaceForEventsAndCategories viewForEventAndCategories;
         private HomeCalendar model;
 
-        public Presenter(ViewInterface v)
+        public Presenter(ViewInterfaceForDatabaseConnection v)
         {
-            view = v;
+            viewForDatabase = v;
         }
 
         public void NewDB(string filePath, string fileName)
         {
             string fullPath = Path.Combine(filePath, fileName);
-            model = new HomeCalendar(fullPath, true);
-            view.DisplayDB();
+            if (File.Exists(fullPath))
+            {
+                model = (new HomeCalendar(fullPath, true));
+                viewForDatabase.DisplayDB();
+            }
+            else
+            {
+                viewForDatabase.DisplayError("Path does not exist");
+            }
         }
 
-        public void ExsistingDB(string filePath, string fileName)
+        public void ExistingDB(string filePath, string fileName)
         {
             string fullPath = Path.Combine(filePath, fileName);
-            model = (new HomeCalendar(fileName, false));
-            view.DisplayDB();
+            if (File.Exists(fullPath))
+            {
+                model = (new HomeCalendar(fullPath, false));
+            }
+            else
+            {
+                viewForDatabase.DisplayError("Path does not exist");
+            }
+            viewForDatabase.DisplayDB();
         }
 
         public void NewCategory(Category.CategoryType type, string description)
