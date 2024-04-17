@@ -56,7 +56,7 @@ namespace CalendarMVP
             bool valid = ValidatingCategoryData(type);
             if (!valid)
             {
-                view.DisplayMessage("Invalid type");
+                viewForEventAndCategories.DisplayMessage("Invalid type");
             }
             else
             {
@@ -68,10 +68,11 @@ namespace CalendarMVP
                 }
                 catch (Exception ex)
                 {
-                    view.DisplayMessage(ex.Message);
+                    viewForEventAndCategories.DisplayMessage(ex.Message);
                 }
-                view.DisplayMessage("Category has been created");
-                view.DisplayDB();
+                //Close window
+                viewForEventAndCategories.DisplayDB();
+                viewForCalendar.DisplayMessage("Category has been created");
             }
         }
 
@@ -80,7 +81,7 @@ namespace CalendarMVP
             bool valid = ValidatingEventData(startDateTime, categoryId, durationInMinutes);
             if (!valid)
             {
-                view.DisplayMessage("Fields are not valid");
+                viewForEventAndCategories.DisplayMessage("Fields are not valid");
             }
             else
             {
@@ -92,10 +93,10 @@ namespace CalendarMVP
                 }
                 catch (Exception ex)
                 {
-                    view.DisplayMessage(ex.Message);
+                    viewForEventAndCategories.DisplayMessage(ex.Message);
                 }
-                view.DisplayMessage("Event has been created");
-                view.DisplayDB();
+                viewForEventAndCategories.DisplayDB();
+                viewForCalendar.DisplayMessage("Event has been created");
             }
         }
 

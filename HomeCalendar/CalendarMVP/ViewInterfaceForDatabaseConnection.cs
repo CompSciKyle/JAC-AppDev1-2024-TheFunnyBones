@@ -9,7 +9,7 @@ namespace CalendarMVP
 {
     interface ViewInterfaceForDatabaseConnection
     {
-        void DisplayDB(HomeCalendar model);
+        void DisplayDB();
         void DisplayError(string message);
     }
 }

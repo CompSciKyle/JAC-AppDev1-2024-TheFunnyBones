@@ -21,10 +21,11 @@ namespace CalendarMVP
     /// </summary>
     public partial class MainWindow : Window, ViewInterfaceForDatabaseConnection
     {
+        readonly Presenter presenter;
         public MainWindow()
         {
             InitializeComponent();
-            Presenter presenter = new Presenter(this);
+            presenter = new Presenter(this);
         }
 
         public void Btn_Click_File_Explore(object sender, RoutedEventArgs e)
@@ -42,8 +43,18 @@ namespace CalendarMVP
                 {
                     filePath += arrayOfPath[i] + '\\';
                 }
-                presenter.ExsistingDB(filePath, fileName);
+                presenter.ExistingDB(filePath, fileName);
             }
+        }
+
+        public void DisplayDB()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayError(string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

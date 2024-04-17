@@ -9,6 +9,7 @@ namespace CalendarMVP
     interface ViewInterfaceForEventsAndCategories
     {
         void DisplayDB();
+        void DisplayMessage(string message);
         void ClosingConfirmation();
         void ShowTypes();
         void ShowCategory();
