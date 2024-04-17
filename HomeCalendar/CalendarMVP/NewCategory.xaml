@@ -26,7 +26,7 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
             <Button Width="70" Margin="5" x:Name="Btn_Save">Save</Button>
-            <Button Width="70" Margin="5" x:Name="Btn_Cancel">Cancel</Button>
+            <Button Width="70" Margin="5" x:Name="Btn_Cancel" Click="BtnClickCancel">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>
