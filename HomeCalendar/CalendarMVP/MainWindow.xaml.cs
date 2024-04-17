@@ -21,17 +21,17 @@ namespace CalendarMVP
     /// </summary>
     public partial class MainWindow : Window, ViewInterfaceForDatabaseConnection
     {
-        readonly Presenter presenter;
+        private Presenter presenter;
         public MainWindow()
         {
             InitializeComponent();
-            presenter = new Presenter(this);
         }
 
         public void Btn_Click_File_Explore(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Database File | *.db";
+            
             if (openFileDialog.ShowDialog() == true)
             {
                 string filePath = openFileDialog.FileName; //Gets the file path
@@ -39,22 +39,30 @@ namespace CalendarMVP
                 int lastIndext = arrayOfPath.Length - 1;
                 string fileName = arrayOfPath[lastIndext];
                 filePath = "";
+                
                 for (int i = 0; i < lastIndext; i++)
                 {
                     filePath += arrayOfPath[i] + '\\';
                 }
-                presenter.ExistingDB(filePath, fileName);
+
+                presenter = new Presenter(this, filePath, fileName, false);
             }
+        }
+        private void Btn_Click_New_Db(object sender, RoutedEventArgs e)
+        {
+            presenter = new Presenter(this, pathName.ToString(), fileName.ToString(), true);
         }
 
         public void DisplayDB()
         {
-            throw new NotImplementedException();
+            MonthView monthView = new MonthView(presenter);
+            this.Close();
         }
 
         public void DisplayError(string message)
         {
             throw new NotImplementedException();
         }
+
     }
 }

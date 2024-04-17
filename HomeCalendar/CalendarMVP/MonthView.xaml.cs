@@ -18,10 +18,12 @@ namespace CalendarMVP
     /// Interaction logic for MonthView.xaml
     /// </summary>
     public partial class MonthView : Window
-    {
-        public MonthView()
+    {   
+        private readonly Presenter presenter;
+        public MonthView(Presenter p)
         {
             InitializeComponent();
+            presenter = p;
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {

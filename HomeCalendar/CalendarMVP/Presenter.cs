@@ -11,24 +11,21 @@ using System.Windows.Media.Media3D;
 
 namespace CalendarMVP
 {
-    class Presenter
+    public class Presenter
     {
         private readonly ViewInterfaceForDatabaseConnection viewForDatabase;
-        private readonly ViewInterfaceForCalendar viewForCalendar;
-        private readonly ViewInterfaceForEventsAndCategories viewForEventAndCategories;
+        private ViewInterfaceForCalendar viewForCalendar;
+        private ViewInterfaceForEventsAndCategories viewForEventAndCategories;
         private HomeCalendar model;
 
-        public Presenter(ViewInterfaceForDatabaseConnection v)
+        public Presenter(ViewInterfaceForDatabaseConnection v, string filePath, string fileName, bool NewDB)
         {
             viewForDatabase = v;
-        }
 
-        public void NewDB(string filePath, string fileName)
-        {
             string fullPath = Path.Combine(filePath, fileName);
             if (File.Exists(fullPath))
             {
-                model = (new HomeCalendar(fullPath, true));
+                model = (new HomeCalendar(fullPath, NewDB));
                 viewForDatabase.DisplayDB();
             }
             else
@@ -37,18 +34,13 @@ namespace CalendarMVP
             }
         }
 
-        public void ExistingDB(string filePath, string fileName)
+        public void RegisterNewView(ViewInterfaceForCalendar v)
         {
-            string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath))
-            {
-                model = (new HomeCalendar(fullPath, false));
-            }
-            else
-            {
-                viewForDatabase.DisplayError("Path does not exist");
-            }
-            viewForDatabase.DisplayDB();
+            viewForCalendar = v;
+        }
+        public void RegisterNewView(ViewInterfaceForEventsAndCategories v)
+        {
+            viewForEventAndCategories = v;
         }
 
         public void NewCategory(Category.CategoryType type, string description)
