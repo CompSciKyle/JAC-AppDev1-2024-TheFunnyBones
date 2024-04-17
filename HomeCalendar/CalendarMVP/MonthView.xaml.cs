@@ -23,5 +23,14 @@ namespace CalendarMVP
         {
             InitializeComponent();
         }
+        private void BtnClickNewEvent(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnClickNewCategory(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
