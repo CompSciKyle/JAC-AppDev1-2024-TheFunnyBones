@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calendar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,20 @@ namespace CalendarMVP
     /// <summary>
     /// Interaction logic for Event.xaml
     /// </summary>
-    public partial class Event : Window
+    public partial class Event : Window, ViewInterface
     {
+        private readonly Presenter presenter;
         public Event()
         {
+
             InitializeComponent();
+            presenter = new Presenter(this);
+            Cmb_Types.ItemsSource = presenter.GetAllCategoryTypes();
+        }
+
+        private void Btn_Save(object sender, RoutedEventArgs e)
+        {
+           presenter.NewEvent(Txb_Date,)
         }
     }
 }

@@ -115,8 +115,18 @@ namespace CalendarMVP
 
         }
 
+        public List<Category> GetAllCategoryTypes()
+        {
+            List<Category>  allCategories = new List<Category>();   
 
+            if(model != null)
+            {
+                allCategories = model.categories.List(); 
+            }
 
+            return allCategories;
+            
+        }
 
     }
 

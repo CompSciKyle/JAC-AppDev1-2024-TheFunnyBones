@@ -17,25 +17,25 @@
 
         <TextBlock Grid.Row="0" Margin="10" FontSize="20" VerticalAlignment="Center" x:Name="Txb_DBName">DBName</TextBlock>
 
-        <GroupBox Grid.Row="1" Margin="20" Header="Date and Time" HorizontalAlignment="Stretch">
-            <TextBox x:Name="Txb_Date" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />
+        <GroupBox Grid.Row="1" Margin="20" Header="Start Date" HorizontalAlignment="Stretch">
+            <DatePicker x:Name="StartDate" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
         </GroupBox>
+        <GroupBox  Grid.Row="1" Margin="20" Header="Duration" HorizontalAlignment="Right">
+            <DatePicker x:Name="Txb_Time" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="50,10,50,10"></DatePicker>
+        </GroupBox> 
 
-        <GroupBox Grid.Row="2" Margin="20" Header="Description" HorizontalAlignment="Stretch">
-            <TextBox x:Name="Txb_Description" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />
+        <GroupBox Grid.Row="2" Margin="20" Header="Details" HorizontalAlignment="Stretch">
+            <TextBox x:Name="Txb_Des" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />
         </GroupBox>
 
         <GroupBox Grid.Row="3" Margin="10" Header="Type" HorizontalAlignment="Stretch">
-            <ComboBox HorizontalAlignment="Stretch" Margin="15">
-                <ComboBoxItem Content="Type 1" />
-                <ComboBoxItem Content="Type 2" />
-                <ComboBoxItem Content="Type 3" />
+            <ComboBox HorizontalAlignment="Stretch" Margin="15" x:Name="Cmb_Types">
             </ComboBox>
         </GroupBox>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-            <Button Width="70" Margin="5" x:Name="Btn_Save">Save</Button>
-            <Button Width="70" Margin="5" x:Name="Btn_Cancel">Cancel</Button>
+            <Button Width="70" Margin="5" x:Name="Btn_Save" Click="Btn_Save">Save</Button>
+            <Button Width="70" Margin="5" x:Name="Btn_Cancel" Click="Btn_Cancel">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>

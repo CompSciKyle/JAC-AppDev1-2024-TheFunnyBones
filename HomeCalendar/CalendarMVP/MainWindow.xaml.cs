@@ -20,6 +20,8 @@ namespace CalendarMVP
         public MainWindow()
         {
             InitializeComponent();
+            Window myWindow =  new Event();
+            myWindow.Show();
         }
     }
 }
