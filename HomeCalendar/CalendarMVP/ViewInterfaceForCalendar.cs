@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalendarMVP
 {
-    interface ViewInterfaceForCalendar
+    public interface ViewInterfaceForCalendar
     {
         void ShowDbName(string DBName);
         void DisplayMessage(string message);

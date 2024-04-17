@@ -11,7 +11,7 @@ using System.Windows.Media.Media3D;
 
 namespace CalendarMVP
 {
-    class Presenter
+    public class Presenter
     {
         private readonly ViewInterfaceForDatabaseConnection viewForDatabase;
         private readonly ViewInterfaceForCalendar viewForCalendar;
@@ -133,7 +133,7 @@ namespace CalendarMVP
 
         }
 
-        public List<Category> GetAllCategoryTypes()
+        public List<Category> GetAllCategories()
         {
             List<Category>  allCategories = new List<Category>();   
 

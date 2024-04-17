@@ -17,20 +17,26 @@
 
         <TextBlock Grid.Row="0" Margin="10" FontSize="20" VerticalAlignment="Center" x:Name="Txb_DBName">DBName</TextBlock>
 
-        <GroupBox Grid.Row="1" Margin="20" Header="Start Date" HorizontalAlignment="Stretch">
-            <DatePicker x:Name="StartDate" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
-        </GroupBox>
-        <GroupBox  Grid.Row="1" Margin="20" Header="Duration" HorizontalAlignment="Right">
-            <DatePicker x:Name="Txb_Time" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="50,10,50,10"></DatePicker>
-        </GroupBox> 
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Margin="20" Header="Start Date" HorizontalAlignment="Stretch">
+                <DatePicker x:Name="Dtp_Date" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10" />
+            </GroupBox>
+            <GroupBox Grid.Column="1" Margin="20" Header="Duration" HorizontalAlignment="Stretch">
+                <TextBox x:Name="Txb_Duration" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10" />
+            </GroupBox>
+        </Grid>
 
         <GroupBox Grid.Row="2" Margin="20" Header="Details" HorizontalAlignment="Stretch">
-            <TextBox x:Name="Txb_Des" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />
+            <TextBox x:Name="Txb_Details" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />
         </GroupBox>
 
         <GroupBox Grid.Row="3" Margin="10" Header="Type" HorizontalAlignment="Stretch">
-            <ComboBox HorizontalAlignment="Stretch" Margin="15" x:Name="Cmb_Types">
-            </ComboBox>
+            <ComboBox HorizontalAlignment="Stretch" Margin="15" x:Name="Cmb_Categories" />
         </GroupBox>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CalendarMVP
 {
-    interface ViewInterfaceForDatabaseConnection
+    public interface ViewInterfaceForDatabaseConnection
     {
         void DisplayDB();
         void DisplayError(string message);
