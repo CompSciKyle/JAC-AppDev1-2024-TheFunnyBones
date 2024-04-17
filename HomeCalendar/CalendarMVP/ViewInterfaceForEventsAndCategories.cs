@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace CalendarMVP
 {
-    interface ViewInterface
+    interface ViewInterfaceForEventsAndCategories
     {
         void DisplayDB();
-        //string GetFileName();
-        //string GetFolderName();
         void DisplayMessage(string message);
         void ClosingConfirmation();
         void ShowTypes();

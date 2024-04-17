@@ -7,31 +7,48 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace CalendarMVP
 {
     class Presenter
     {
-        private readonly ViewInterface view;
+        private readonly ViewInterfaceForDatabaseConnection viewForDatabase;
+        private readonly ViewInterfaceForCalendar viewForCalendar;
+        private readonly ViewInterfaceForEventsAndCategories viewForEventAndCategories;
         private HomeCalendar model;
 
-        public Presenter(ViewInterface v)
+        public Presenter(ViewInterfaceForDatabaseConnection v)
         {
-            view = v;
+            viewForDatabase = v;
         }
 
         public void NewDB(string filePath, string fileName)
         {
             string fullPath = Path.Combine(filePath, fileName);
-            model = new HomeCalendar(fullPath, true);
-            view.DisplayDB();
+            if (File.Exists(fullPath))
+            {
+                model = (new HomeCalendar(fullPath, true));
+                viewForDatabase.DisplayDB();
+            }
+            else
+            {
+                viewForDatabase.DisplayError("Path does not exist");
+            }
         }
 
-        public void ExsistingDB(string filePath, string fileName)
+        public void ExistingDB(string filePath, string fileName)
         {
             string fullPath = Path.Combine(filePath, fileName);
-            model = (new HomeCalendar(fileName, false));
-            view.DisplayDB();
+            if (File.Exists(fullPath))
+            {
+                model = (new HomeCalendar(fullPath, false));
+            }
+            else
+            {
+                viewForDatabase.DisplayError("Path does not exist");
+            }
+            viewForDatabase.DisplayDB();
         }
 
         public void NewCategory(Category.CategoryType type, string description)
@@ -39,7 +56,7 @@ namespace CalendarMVP
             bool valid = ValidatingCategoryData(type);
             if (!valid)
             {
-                view.DisplayMessage("Invalid type");
+                viewForEventAndCategories.DisplayMessage("Invalid type");
             }
             else
             {
@@ -51,10 +68,11 @@ namespace CalendarMVP
                 }
                 catch (Exception ex)
                 {
-                    view.DisplayMessage(ex.Message);
+                    viewForEventAndCategories.DisplayMessage(ex.Message);
                 }
-                view.DisplayMessage("Category has been created");
-                view.DisplayDB();
+                //Close window
+                viewForEventAndCategories.DisplayDB();
+                viewForCalendar.DisplayMessage("Category has been created");
             }
         }
 
@@ -63,7 +81,7 @@ namespace CalendarMVP
             bool valid = ValidatingEventData(startDateTime, categoryId, durationInMinutes);
             if (!valid)
             {
-                view.DisplayMessage("Fields are not valid");
+                viewForEventAndCategories.DisplayMessage("Fields are not valid");
             }
             else
             {
@@ -75,10 +93,10 @@ namespace CalendarMVP
                 }
                 catch (Exception ex)
                 {
-                    view.DisplayMessage(ex.Message);
+                    viewForEventAndCategories.DisplayMessage(ex.Message);
                 }
-                view.DisplayMessage("Event has been created");
-                view.DisplayDB();
+                viewForEventAndCategories.DisplayDB();
+                viewForCalendar.DisplayMessage("Event has been created");
             }
         }
 
