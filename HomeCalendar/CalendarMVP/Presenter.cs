@@ -17,13 +17,18 @@ namespace CalendarMVP
         private ViewInterfaceForCalendar viewForCalendar;
         private ViewInterfaceForEventsAndCategories viewForEventAndCategories;
         private HomeCalendar model;
+        private string _dbName;
 
-        public Presenter(ViewInterfaceForDatabaseConnection v, string filePath, string fileName, bool NewDB)
+        public Presenter(ViewInterfaceForDatabaseConnection v)
         {
             viewForDatabase = v;
+        }
 
+        public void ConnectToDB(string filePath, string fileName, bool NewDB)
+        {
+            _dbName = fileName;
             string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath))
+            if (File.Exists(fullPath) || NewDB)
             {
                 model = (new HomeCalendar(fullPath, NewDB));
                 viewForDatabase.DisplayDB();
@@ -37,6 +42,7 @@ namespace CalendarMVP
         public void RegisterNewView(ViewInterfaceForCalendar v)
         {
             viewForCalendar = v;
+            viewForCalendar.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
         public void RegisterNewView(ViewInterfaceForEventsAndCategories v)
         {

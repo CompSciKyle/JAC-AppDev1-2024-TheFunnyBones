@@ -17,7 +17,7 @@
             <RowDefinition Height="40*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Margin="13" Text="DB Name" FontSize="35"></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" Margin="13" Text="DB Name" FontSize="35" x:Name="dbName"></TextBlock>
             <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*"/>

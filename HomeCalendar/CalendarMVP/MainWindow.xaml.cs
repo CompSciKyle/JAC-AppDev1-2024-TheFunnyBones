@@ -21,7 +21,7 @@ namespace CalendarMVP
     /// </summary>
     public partial class MainWindow : Window, ViewInterfaceForDatabaseConnection
     {
-        private Presenter presenter;
+        public Presenter presenter;
         public MainWindow()
         {
             InitializeComponent();
@@ -45,23 +45,26 @@ namespace CalendarMVP
                     filePath += arrayOfPath[i] + '\\';
                 }
 
-                presenter = new Presenter(this, filePath, fileName, false);
+                presenter = new Presenter(this);
+                presenter.ConnectToDB(filePath, fileName, false);
             }
         }
         private void Btn_Click_New_Db(object sender, RoutedEventArgs e)
         {
-            presenter = new Presenter(this, pathName.ToString(), fileName.ToString(), true);
+            presenter = new Presenter(this);
+            presenter.ConnectToDB(pathName.Text, fileName.Text + ".db", true);
         }
 
         public void DisplayDB()
         {
             MonthView monthView = new MonthView(presenter);
+            monthView.Show();
             this.Close();
         }
 
         public void DisplayError(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message);
         }
 
     }
