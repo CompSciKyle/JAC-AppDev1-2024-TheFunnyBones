@@ -10,9 +10,11 @@ namespace CalendarMVP
     public partial class NewCategory : Window, ViewInterfaceForEventsAndCategories
     {
         TextBlock dbNameTxtBlock;
-        public NewCategory()
+        private Presenter presenter;
+        public NewCategory(Presenter p)
         {
             InitializeComponent();
+            presenter = p;
             dbNameTxtBlock = Txb_DBName;
         }
         private void BtnClickCancel(object sender, RoutedEventArgs e)
