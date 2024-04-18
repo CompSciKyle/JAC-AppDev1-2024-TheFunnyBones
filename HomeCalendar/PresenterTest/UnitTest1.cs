@@ -3,64 +3,54 @@ using CalendarMVP;
 
 namespace PresenterTest
 {
-    public class TestView : ViewInterfaceForCalendar, ViewInterfaceForDatabaseConnection, ViewInterfaceForEventsAndCategories
+    public class TestView : ViewInterfaceForCalendar, ViewInterfaceForDatabaseConnection, ViewInterfaceForCategories, ViewInterfaceForEvents
     {
         public bool calledClosingConfirmation = false;
         public bool calledDisplayDB = false;
+        //public bool 
         public bool calledDisplayError = false;
         public bool calledDisplayMessage = false;
         public bool calledShowDBName = false;
-        public bool calledShowTypes = false;
-        public bool calledShowTypesCategory = false;
         public bool calledShowTypesCategoryTypes = false;
+        public bool calledShowTypesCategory = false;
         public void ClosingConfirmation()
         {
-            throw new NotImplementedException();
+            calledClosingConfirmation = true;
         }
 
         public void DisplayDB()
         {
-            throw new NotImplementedException();
+            calledDisplayDB = true;
+        }
+
+        public void DisplayDB(string DBName)
+        {
+            calledDisplayDB = true;
         }
 
         public void DisplayError(string message)
         {
-            throw new NotImplementedException();
+            calledDisplayError = true;
         }
 
         public void DisplayMessage(string message)
         {
-            throw new NotImplementedException();
+            calledDisplayMessage = true;
         }
 
         public void ShowDbName(string DBName)
         {
-            throw new NotImplementedException();
+            calledShowDBName = true;
         }
 
-        void ViewInterfaceForEventsAndCategories.ClosingConfirmation()
+        public void ShowTypes(List<Category.CategoryType> allCategoryTypes)
         {
-            throw new NotImplementedException();
+            calledShowTypesCategoryTypes = true;
         }
 
-        void ViewInterfaceForEventsAndCategories.DisplayDB()
+        public void ShowTypes(List<Category> allCategories)
         {
-            throw new NotImplementedException();
-        }
-
-        void ViewInterfaceForEventsAndCategories.DisplayMessage(string message)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ViewInterfaceForEventsAndCategories.ShowTypes(List<Category> allCategories)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ViewInterfaceForEventsAndCategories.ShowTypes(List<Category.CategoryType> allCategories)
-        {
-            throw new NotImplementedException();
+            calledClosingConfirmation = true;
         }
     }
 

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Calendar;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Calendar;
 
 namespace CalendarMVP
 {
@@ -10,11 +10,11 @@ namespace CalendarMVP
     /// </summary>
     public partial class NewCategory : Window, ViewInterfaceForCategories
     {
-        private readonly Presenter presenter;
-        public NewCategory(Presenter p)
+        TextBlock dbNameTxtBlock;
+        public NewCategory()
         {
             InitializeComponent();
-            presenter = p;
+            dbNameTxtBlock = Txb_DBName;
         }
         private void BtnClickCancel(object sender, RoutedEventArgs e)
         {
@@ -34,9 +34,9 @@ namespace CalendarMVP
             }
             throw new NotImplementedException();
         }
-        public void DisplayDB(string DBName)
+        public void DisplayDB()
         {
-            Txb_DBName.Text = DBName; // Get the name of the db and assign it to the Text value of the TextBlock
+            dbNameTxtBlock.Text = DBName; // Get the name of the db and assign it to the Text value of the TextBlock
         }
         public void DisplayMessage(string message)
         {
@@ -46,8 +46,11 @@ namespace CalendarMVP
         {
             DisplayMessageBoxes.ClosingConfirmation(sender, e);
         }
+
+        public void ShowDbName(string DBName)
         public void ShowTypes(List<Category.CategoryType> allCategoryTypes)
         {
+            Txb_DBName.Text = DBName;
             Cmb_Types.ItemsSource = allCategoryTypes;
         }
     }

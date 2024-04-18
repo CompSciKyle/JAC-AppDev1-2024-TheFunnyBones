@@ -12,7 +12,8 @@ namespace CalendarMVP
     public interface ViewInterfaceForCategories
     { 
     
-        void DisplayDB(string DBName);
+        void DisplayDB();
+        void ShowDbName(string DBName);
         void DisplayMessage(string message);
         void ClosingConfirmation(object sender, CancelEventArgs e);
         void ShowTypes(List<Category.CategoryType> allCategoryTypes);

@@ -9,7 +9,8 @@ namespace CalendarMVP
 {
     public interface ViewInterfaceForEvents
     {
-        void DisplayDB(string DBName);
+        void DisplayDB();
+        void ShowDbName(string DBName);
         void DisplayMessage(string message);
         void ClosingConfirmation();
         void ShowTypes(List<Category> allCategories);
