@@ -29,7 +29,6 @@ namespace CalendarMVP
             InitializeComponent();
             presenter = p;
             //presenter.RegisterEventView(this);
-            Cmb_Categories.ItemsSource = presenter.GetAllCategories();
             mainWindow = main;
         }
 
@@ -47,13 +46,17 @@ namespace CalendarMVP
         public void DisplayMessage(string message)
         {
            MessageBox.Show(message);
-
         }
 
 
-        public void ShowTypes()
+        public void ShowTypes(List<Category> categories)
         {
-            Cmb_Categories.ItemsSource = presenter.GetAllCategories();
+            Cmb_Categories.ItemsSource = categories;
+        }
+
+        public void ShowTypes(List<Category.CategoryType> allCategories)
+        {
+            throw new NotImplementedException();
         }
 
         private void Btn_Save(object sender, RoutedEventArgs e)
