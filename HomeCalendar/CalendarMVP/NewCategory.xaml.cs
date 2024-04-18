@@ -10,11 +10,11 @@ namespace CalendarMVP
     /// </summary>
     public partial class NewCategory : Window, ViewInterfaceForCategories
     {
-        TextBlock dbNameTxtBlock;
-        public NewCategory()
+        private readonly Presenter presenter;
+        public NewCategory(Presenter p)
         {
             InitializeComponent();
-            dbNameTxtBlock = Txb_DBName;
+            presenter = p;
         }
         private void BtnClickCancel(object sender, RoutedEventArgs e)
         {
@@ -36,7 +36,7 @@ namespace CalendarMVP
         }
         public void DisplayDB()
         {
-            dbNameTxtBlock.Text = DBName; // Get the name of the db and assign it to the Text value of the TextBlock
+            this.Close();
         }
         public void DisplayMessage(string message)
         {
@@ -46,12 +46,12 @@ namespace CalendarMVP
         {
             DisplayMessageBoxes.ClosingConfirmation(sender, e);
         }
+        public void ShowTypes(List<Category.CategoryType> allCategoryTypes)
 
         public void ShowDbName(string DBName)
-        public void ShowTypes(List<Category.CategoryType> allCategoryTypes)
         {
-            Txb_DBName.Text = DBName;
             Cmb_Types.ItemsSource = allCategoryTypes;
+            Txb_DBName.Text = DBName;
         }
     }
 }
