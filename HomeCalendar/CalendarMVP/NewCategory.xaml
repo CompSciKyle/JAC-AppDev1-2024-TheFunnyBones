@@ -28,7 +28,7 @@
         </GroupBox>
 
         <GroupBox Grid.Row="2" Margin="20,20,14,20" Header="Type" Grid.ColumnSpan="2">
-            <ComboBox HorizontalAlignment="Stretch" Margin="15" />
+            <ComboBox x:Name="Cmb_Types" HorizontalAlignment="Stretch" Margin="15" />
         </GroupBox>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="145,20,0,20" Grid.ColumnSpan="2">

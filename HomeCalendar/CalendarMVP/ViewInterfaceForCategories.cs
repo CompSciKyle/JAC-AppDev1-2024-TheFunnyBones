@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CalendarMVP;
 using Calendar;
+using System.ComponentModel;
 
 namespace CalendarMVP
 {
@@ -13,7 +14,7 @@ namespace CalendarMVP
     
         void DisplayDB(string DBName);
         void DisplayMessage(string message);
-        void ClosingConfirmation();
+        void ClosingConfirmation(object sender, CancelEventArgs e);
         void ShowTypes(List<Category.CategoryType> allCategoryTypes);
 
     }
