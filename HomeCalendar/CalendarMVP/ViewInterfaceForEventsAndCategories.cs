@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace CalendarMVP
 {
-    interface ViewInterfaceForEventsAndCategories
+    public interface ViewInterfaceForEventsAndCategories
     {
         void DisplayDB(string DBName);
         void DisplayMessage(string message);
         void ClosingConfirmation(object sender, CancelEventArgs e);
         void ShowTypes();
-        void ShowCategory();
     }
 }

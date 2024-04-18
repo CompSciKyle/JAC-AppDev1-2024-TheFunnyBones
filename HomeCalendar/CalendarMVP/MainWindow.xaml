@@ -42,8 +42,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Margin="10" FontSize="25">Existing</Button>
-                    <Button Grid.Column="1" Margin="10" FontSize="25">New</Button>
+                    <Button Grid.Column="0" Margin="10" FontSize="25" Click="Btn_Click_File_Explore">Existing</Button>
+                    <Button Grid.Column="1" Margin="10" FontSize="25" Click="Btn_Click_New_Db">New</Button>
                 </Grid>
             </Grid>
         </Border>

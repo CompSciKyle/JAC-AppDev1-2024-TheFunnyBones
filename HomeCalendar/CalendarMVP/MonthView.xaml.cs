@@ -18,11 +18,14 @@ namespace CalendarMVP
     /// <summary>
     /// Interaction logic for MonthView.xaml
     /// </summary>
-    public partial class MonthView : Window
-    {
-        public MonthView()
+    public partial class MonthView : Window, ViewInterfaceForCalendar
+    {   
+        private readonly Presenter presenter;
+        public MonthView(Presenter p)
         {
             InitializeComponent();
+            presenter = p;
+            presenter.RegisterNewView(this);
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {
@@ -34,6 +37,16 @@ namespace CalendarMVP
         {
             NewCategory catView = new NewCategory();
             catView.Show();
+        }
+
+        public void ShowDbName(string DBName)
+        {
+            dbName.Text = DBName;
+        }
+
+        public void DisplayMessage(string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

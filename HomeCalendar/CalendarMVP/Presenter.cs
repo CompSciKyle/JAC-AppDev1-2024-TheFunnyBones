@@ -11,24 +11,26 @@ using System.Windows.Media.Media3D;
 
 namespace CalendarMVP
 {
-    class Presenter
+    public class Presenter
     {
         private readonly ViewInterfaceForDatabaseConnection viewForDatabase;
-        private readonly ViewInterfaceForCalendar viewForCalendar;
-        private readonly ViewInterfaceForEventsAndCategories viewForEventAndCategories;
+        private ViewInterfaceForCalendar viewForCalendar;
+        private ViewInterfaceForEventsAndCategories viewForEventAndCategories;
         private HomeCalendar model;
+        private string _dbName;
 
         public Presenter(ViewInterfaceForDatabaseConnection v)
         {
             viewForDatabase = v;
         }
 
-        public void NewDB(string filePath, string fileName)
+        public void ConnectToDB(string filePath, string fileName, bool NewDB)
         {
+            _dbName = fileName;
             string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath))
+            if (File.Exists(fullPath) || NewDB)
             {
-                model = (new HomeCalendar(fullPath, true));
+                model = (new HomeCalendar(fullPath, NewDB));
                 viewForDatabase.DisplayDB();
             }
             else
@@ -37,18 +39,14 @@ namespace CalendarMVP
             }
         }
 
-        public void ExistingDB(string filePath, string fileName)
+        public void RegisterNewView(ViewInterfaceForCalendar v)
         {
-            string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath))
-            {
-                model = (new HomeCalendar(fullPath, false));
-            }
-            else
-            {
-                viewForDatabase.DisplayError("Path does not exist");
-            }
-            viewForDatabase.DisplayDB();
+            viewForCalendar = v;
+            viewForCalendar.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
+        }
+        public void RegisterNewView(ViewInterfaceForEventsAndCategories v)
+        {
+            viewForEventAndCategories = v;
         }
 
         public void NewCategory(Category.CategoryType type, string description)
@@ -133,7 +131,7 @@ namespace CalendarMVP
 
         }
 
-        public List<Category> GetAllCategoryTypes()
+        public List<Category> GetAllCategories()
         {
             List<Category>  allCategories = new List<Category>();   
 
