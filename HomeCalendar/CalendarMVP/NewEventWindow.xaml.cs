@@ -47,6 +47,7 @@ namespace CalendarMVP
         public void DisplayMessage(string message)
         {
            MessageBox.Show(message);
+
         }
 
 
