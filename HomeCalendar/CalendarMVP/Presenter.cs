@@ -51,11 +51,13 @@ namespace CalendarMVP
             viewForEvent = v;
             List<Category> allCategories = GetAllCategories();
             viewForEvent.ShowTypes(allCategories);
+            viewForEvent.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
         public void RegisterNewView(ViewInterfaceForCategories v)
         {
             viewForCategory = v;
+            viewForCategory.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
         public void NewCategory(Category.CategoryType type, string description)
@@ -78,7 +80,7 @@ namespace CalendarMVP
                     viewForCategory.DisplayMessage(ex.Message);
                 }
                 //Close window
-                viewForCategory.DisplayDB(_dbName);
+                viewForCategory.DisplayDB();
                 viewForCalendar.DisplayMessage("Category has been created");
             }
         }
@@ -102,7 +104,7 @@ namespace CalendarMVP
                 {
                     viewForEvent.DisplayMessage(ex.Message);
                 }
-                viewForEvent.DisplayDB(_dbName);
+                viewForEvent.DisplayDB();
                 viewForCalendar.DisplayMessage("Event has been created");
             }
         }
