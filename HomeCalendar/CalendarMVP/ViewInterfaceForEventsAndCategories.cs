@@ -12,6 +12,5 @@ namespace CalendarMVP
         void DisplayMessage(string message);
         void ClosingConfirmation();
         void ShowTypes();
-        void ShowCategory();
     }
 }
