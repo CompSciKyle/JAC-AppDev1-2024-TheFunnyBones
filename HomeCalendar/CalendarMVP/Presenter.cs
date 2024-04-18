@@ -15,7 +15,8 @@ namespace CalendarMVP
     {
         private readonly ViewInterfaceForDatabaseConnection viewForDatabase;
         private ViewInterfaceForCalendar viewForCalendar;
-        private ViewInterfaceForEventsAndCategories viewForEventAndCategories;
+        private ViewInterfaceForEvents viewForEvent;
+        private ViewInterfaceForCategories viewForCategory;
         private HomeCalendar model;
         private string _dbName;
 
@@ -44,9 +45,17 @@ namespace CalendarMVP
             viewForCalendar = v;
             viewForCalendar.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
-        public void RegisterNewView(ViewInterfaceForEventsAndCategories v)
+
+        public void RegisterNewView(ViewInterfaceForEvents v)
         {
-            viewForEventAndCategories = v;
+            viewForEvent = v;
+            List<Category> allCategories = GetAllCategories();
+            viewForEvent.ShowTypes(allCategories);
+        }
+
+        public void RegisterNewView(ViewInterfaceForCategories v)
+        {
+            viewForCategory = v;
         }
 
         public void NewCategory(Category.CategoryType type, string description)
@@ -54,7 +63,7 @@ namespace CalendarMVP
             bool valid = ValidatingCategoryData(type);
             if (!valid)
             {
-                viewForEventAndCategories.DisplayMessage("Invalid type");
+                viewForCategory.DisplayMessage("Invalid type");
             }
             else
             {
@@ -66,10 +75,10 @@ namespace CalendarMVP
                 }
                 catch (Exception ex)
                 {
-                    viewForEventAndCategories.DisplayMessage(ex.Message);
+                    viewForCategory.DisplayMessage(ex.Message);
                 }
                 //Close window
-                viewForEventAndCategories.DisplayDB(_dbName);
+                viewForCategory.DisplayDB(_dbName);
                 viewForCalendar.DisplayMessage("Category has been created");
             }
         }
@@ -79,7 +88,7 @@ namespace CalendarMVP
             bool valid = ValidatingEventData(startDateTime, categoryId, durationInMinutes);
             if (!valid)
             {
-                viewForEventAndCategories.DisplayMessage("Fields are not valid");
+                viewForEvent.DisplayMessage("Fields are not valid");
             }
             else
             {
@@ -91,9 +100,9 @@ namespace CalendarMVP
                 }
                 catch (Exception ex)
                 {
-                    viewForEventAndCategories.DisplayMessage(ex.Message);
+                    viewForEvent.DisplayMessage(ex.Message);
                 }
-                viewForEventAndCategories.DisplayDB(_dbName);
+                viewForEvent.DisplayDB(_dbName);
                 viewForCalendar.DisplayMessage("Event has been created");
             }
         }
@@ -131,7 +140,7 @@ namespace CalendarMVP
 
         }
 
-        public List<Category> GetAllCategories()
+        private List<Category> GetAllCategories()
         {
             List<Category>  allCategories = new List<Category>();   
 
