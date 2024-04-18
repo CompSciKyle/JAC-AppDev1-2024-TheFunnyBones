@@ -78,7 +78,7 @@ namespace CalendarMVP
                     viewForCategory.DisplayMessage(ex.Message);
                 }
                 //Close window
-                viewForCategory.DisplayDB();
+                viewForCategory.DisplayDB(_dbName);
                 viewForCalendar.DisplayMessage("Category has been created");
             }
         }
@@ -102,7 +102,7 @@ namespace CalendarMVP
                 {
                     viewForEvent.DisplayMessage(ex.Message);
                 }
-                viewForEvent.DisplayDB();
+                viewForEvent.DisplayDB(_dbName);
                 viewForCalendar.DisplayMessage("Event has been created");
             }
         }
