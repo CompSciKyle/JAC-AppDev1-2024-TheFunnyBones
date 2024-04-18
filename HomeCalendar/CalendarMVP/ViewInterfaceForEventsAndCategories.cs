@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace CalendarMVP
 {
     public interface ViewInterfaceForEventsAndCategories
     {
-        void DisplayDB();
+        void DisplayDB(string DBName);
         void DisplayMessage(string message);
-        void ClosingConfirmation();
+        void ClosingConfirmation(object sender, CancelEventArgs e);
         void ShowTypes();
     }
 }

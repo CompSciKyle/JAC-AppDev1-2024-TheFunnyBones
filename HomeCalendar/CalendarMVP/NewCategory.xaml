@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarMVP"
         mc:Ignorable="d"
-        Title="NewCategory" Height="450" Width="450">
+        Title="NewCategory" Height="375" Width="450"
+        Closing="ClosingConfirmation"
+        >
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="167*"/>
+            <ColumnDefinition Width="277*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -14,19 +21,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Margin="20" FontSize="20" VerticalAlignment="Center" x:Name="Txb_DBName">DBName</TextBlock>
+        <TextBlock Margin="20,0,14,0" FontSize="20" VerticalAlignment="Center" x:Name="Txb_DBName" Grid.ColumnSpan="2"></TextBlock>
 
-        <GroupBox Grid.Row="1" Margin="20" Header="Description" HorizontalAlignment="Stretch">
+        <GroupBox Grid.Row="1" Margin="20,20,14,20" Header="Description" Grid.ColumnSpan="2">
             <TextBox x:Name="Txb_Description" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />
         </GroupBox>
 
-        <GroupBox Grid.Row="2" Margin="20" Header="Type" HorizontalAlignment="Stretch">
+        <GroupBox Grid.Row="2" Margin="20,20,14,20" Header="Type" Grid.ColumnSpan="2">
             <ComboBox HorizontalAlignment="Stretch" Margin="15" />
         </GroupBox>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="145,20,0,20" Grid.ColumnSpan="2">
             <Button Width="70" Margin="5" x:Name="Btn_Save">Save</Button>
-            <Button Width="70" Margin="5" x:Name="Btn_Cancel">Cancel</Button>
+            <Button Width="70" Margin="5" x:Name="Btn_Cancel" Click="BtnClickCancel">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>
