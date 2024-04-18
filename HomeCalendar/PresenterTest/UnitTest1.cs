@@ -36,15 +36,6 @@ namespace PresenterTest
             throw new NotImplementedException();
         }
 
-        public void ShowTypes(List<Category> allCategories)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowTypes(List<Category.CategoryType> allCategories)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class UnitTest1
