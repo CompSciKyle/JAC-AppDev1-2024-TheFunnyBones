@@ -21,11 +21,15 @@ namespace CalendarMVP
     /// </summary>
     public partial class MainWindow : Window, ViewInterfaceForDatabaseConnection
     {
-        readonly Presenter presenter;
+        private readonly Presenter presenter;
         public MainWindow()
         {
             InitializeComponent();
             presenter = new Presenter(this);
+
+            //Pop Up Event Window
+            NewEventWindow eventWindow = new NewEventWindow(presenter, this);
+            eventWindow.Show();
         }
 
         public void Btn_Click_File_Explore(object sender, RoutedEventArgs e)

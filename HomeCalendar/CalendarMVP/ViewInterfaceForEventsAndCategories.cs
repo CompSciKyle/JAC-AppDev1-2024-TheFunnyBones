@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace CalendarMVP
 {
-    interface ViewInterfaceForEventsAndCategories
+    public interface ViewInterfaceForEventsAndCategories
     {
         void DisplayDB();
         void DisplayMessage(string message);
         void ClosingConfirmation();
         void ShowTypes();
-        void ShowCategory();
     }
 }
