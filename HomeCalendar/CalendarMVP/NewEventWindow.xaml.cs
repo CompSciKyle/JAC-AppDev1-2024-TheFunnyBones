@@ -20,17 +20,14 @@ namespace CalendarMVP
     /// <summary>
     /// Interaction logic for NewEventWindow.xaml
     /// </summary>
-    public partial class NewEventWindow : Window, ViewInterfaceForEventsAndCategories
+    public partial class NewEventWindow : Window, ViewInterfaceForEvents
     {
         private readonly Presenter presenter;
-        private MainWindow mainWindow;
-        public NewEventWindow(Presenter p, MainWindow main)
+        public NewEventWindow(Presenter p)
         {
             InitializeComponent();
             presenter = p;
             //presenter.RegisterEventView(this);
-            Cmb_Categories.ItemsSource = presenter.GetAllCategories();
-            mainWindow = main;
         }
 
         public void ClosingConfirmation()
@@ -38,11 +35,11 @@ namespace CalendarMVP
             throw new NotImplementedException();
         }
 
-        public void DisplayDB()
+        public void DisplayDB(string DBName)
         {
             this.Close();
-            mainWindow.Show();
         }
+
 
         public void DisplayMessage(string message)
         {
@@ -50,9 +47,9 @@ namespace CalendarMVP
         }
 
 
-        public void ShowTypes()
+        public void ShowTypes(List<Category> categories)
         {
-            Cmb_Categories.ItemsSource = presenter.GetAllCategories();
+            Cmb_Categories.ItemsSource = categories;
         }
 
         private void Btn_Save(object sender, RoutedEventArgs e)

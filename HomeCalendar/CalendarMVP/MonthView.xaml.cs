@@ -29,7 +29,7 @@ namespace CalendarMVP
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {
-            Event eventView = new Event();
+            NewEventWindow eventView = new NewEventWindow(presenter);
             eventView.Show();   
         }
 
