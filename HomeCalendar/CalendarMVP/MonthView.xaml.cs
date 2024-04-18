@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calendar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,12 +29,14 @@ namespace CalendarMVP
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {
-
+            Event eventView = new Event();
+            eventView.Show();   
         }
 
         private void BtnClickNewCategory(object sender, RoutedEventArgs e)
         {
-
+            NewCategory catView = new NewCategory();
+            catView.Show();
         }
 
         public void ShowDbName(string DBName)
