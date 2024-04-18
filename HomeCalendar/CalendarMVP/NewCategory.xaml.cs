@@ -1,19 +1,22 @@
-﻿using System.ComponentModel;
+﻿using Calendar;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace CalendarMVP
 {
     /// <summary>
     /// Interaction logic for NewCategory.xaml
     /// </summary>
-    public partial class NewCategory : Window, ViewInterfaceForEventsAndCategories
+    public partial class NewCategory : Window, ViewInterfaceForCategories
     {
-        TextBlock dbNameTxtBlock;
-        public NewCategory()
+        private Presenter presenter;
+        public NewCategory(Presenter p)
         {
             InitializeComponent();
-            dbNameTxtBlock = Txb_DBName;
+            presenter = p;
+            presenter.RegisterNewView(this);
         }
         private void BtnClickCancel(object sender, RoutedEventArgs e)
         {
@@ -26,9 +29,9 @@ namespace CalendarMVP
 
             throw new NotImplementedException();
         }
-        public void DisplayDB(string DBName)
+        public void DisplayDB()
         {
-            dbNameTxtBlock.Text = DBName; // Get the name of the db and assign it to the Text value of the TextBlock
+            this.Close();
         }
         public void DisplayMessage(string message)
         {
@@ -52,13 +55,14 @@ namespace CalendarMVP
                 e.Cancel = true;
             }
         }
-        public void ShowTypes()
+        public void ShowTypes(List<Category.CategoryType> allCategoryTypes)
         {
             throw new NotImplementedException();
         }
-        public void ShowCategory()
+
+        public void ShowDbName(string DBName)
         {
-            throw new NotImplementedException();
+            Txb_DBName.Text = DBName;
         }
     }
 }

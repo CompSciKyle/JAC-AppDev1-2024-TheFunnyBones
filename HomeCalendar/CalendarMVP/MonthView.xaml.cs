@@ -35,8 +35,9 @@ namespace CalendarMVP
 
         private void BtnClickNewCategory(object sender, RoutedEventArgs e)
         {
-            NewCategory catView = new NewCategory();
-            catView.Show();
+            NewCategory newCategory = new NewCategory(presenter);
+            newCategory.Show();
+            //this.Close();
         }
 
         public void ShowDbName(string DBName)

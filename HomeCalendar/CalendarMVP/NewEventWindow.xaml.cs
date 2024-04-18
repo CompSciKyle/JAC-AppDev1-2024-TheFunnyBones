@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Calendar;
 
 
@@ -27,7 +28,7 @@ namespace CalendarMVP
         {
             InitializeComponent();
             presenter = p;
-            //presenter.RegisterEventView(this);
+            presenter.RegisterNewView(this);
         }
 
         public void ClosingConfirmation()
@@ -35,11 +36,10 @@ namespace CalendarMVP
             throw new NotImplementedException();
         }
 
-        public void DisplayDB(string DBName)
+        public void DisplayDB()
         {
             this.Close();
         }
-
 
         public void DisplayMessage(string message)
         {
@@ -68,6 +68,11 @@ namespace CalendarMVP
             {
                 DisplayMessage("Failed To create a event: " + ex.Message);
             }
+        }
+
+        public void ShowDbName(string DBName)
+        {
+            Txb_DBName.Text = DBName;
         }
     }
 }
