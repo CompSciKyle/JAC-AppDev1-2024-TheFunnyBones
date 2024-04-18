@@ -1,4 +1,6 @@
+using Calendar;
 using CalendarMVP;
+
 namespace PresenterTest
 {
     public class TestView : ViewInterfaceForCalendar, ViewInterfaceForDatabaseConnection, ViewInterfaceForEventsAndCategories
@@ -36,6 +38,30 @@ namespace PresenterTest
             throw new NotImplementedException();
         }
 
+        void ViewInterfaceForEventsAndCategories.ClosingConfirmation()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ViewInterfaceForEventsAndCategories.DisplayDB()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ViewInterfaceForEventsAndCategories.DisplayMessage(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ViewInterfaceForEventsAndCategories.ShowTypes(List<Category> allCategories)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ViewInterfaceForEventsAndCategories.ShowTypes(List<Category.CategoryType> allCategories)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class UnitTest1

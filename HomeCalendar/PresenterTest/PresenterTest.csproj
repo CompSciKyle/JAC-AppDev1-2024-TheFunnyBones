@@ -21,6 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CalendarMVP">
+      <HintPath>..\CalendarMVP\bin\Debug\net6.0-windows\CalendarMVP.dll</HintPath>
+    </Reference>
+    <Reference Include="HomeCalendar">
+      <HintPath>..\CalendarMVP\dll\HomeCalendarModel\HomeCalendar.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
