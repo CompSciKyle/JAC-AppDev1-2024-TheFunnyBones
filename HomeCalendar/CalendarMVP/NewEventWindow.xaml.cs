@@ -60,6 +60,7 @@ namespace CalendarMVP
                 DateTime.TryParseExact(dateTimeString, "yyyy-MM-dd H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
                 presenter.NewEvent(startDate, categoryId, duration, Txb_Details.Text);
                 Console.WriteLine("dateTimeString: " + dateTimeString);
+
             }catch(Exception ex) 
             {
                 DisplayMessage("Failed To create a event: " + ex.Message);
@@ -79,6 +80,11 @@ namespace CalendarMVP
             MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
             MessageBoxResult result;
             result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
+
+            if (result == MessageBoxResult.Yes) 
+            { 
+                this.Close();
+            }
         }
     }
 }
