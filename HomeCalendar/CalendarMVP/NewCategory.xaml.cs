@@ -18,46 +18,50 @@ namespace CalendarMVP
             presenter = p;
             presenter.RegisterNewView(this);
         }
-        private void BtnClickCancel(object sender, RoutedEventArgs e)
+        private void Btn_Cancel(object sender, RoutedEventArgs e)
         {
-
-            throw new NotImplementedException();
+            this.Close();
         }
 
-        private void BtnClickSave(object sender, RoutedEventArgs e)
+        private void Btn_Save(object sender, RoutedEventArgs e)
         {
-
-            throw new NotImplementedException();
+            presenter.NewCategory((Category.CategoryType)Cmb_CategoriesTypes.SelectedItem, Txb_Description.Text);
         }
+
         public void DisplayDB()
         {
             this.Close();
         }
+
         public void DisplayMessage(string message)
         {
-            string messageBoxCaption = "Error!";
-            MessageBoxButton messageBoxButton = MessageBoxButton.OK;
-            MessageBoxImage messageBoxImage = MessageBoxImage.Error;
-            MessageBoxResult result;
-            result = MessageBox.Show(message, messageBoxCaption, messageBoxButton, messageBoxImage);
-            throw new NotImplementedException();
+            //string messageBoxCaption = "Error!";
+            //MessageBoxButton messageBoxButton = MessageBoxButton.OK;
+            //MessageBoxImage messageBoxImage = MessageBoxImage.Error;
+            //MessageBoxResult result;
+            //result = MessageBox.Show(message, messageBoxCaption, messageBoxButton, messageBoxImage);
+            //throw new NotImplementedException();
+
+            MessageBox.Show(message);
         }
-        public void ClosingConfirmation(object sender, CancelEventArgs e)
-        {
-            string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
-            string messageBoxCaption = "Exit Window?";
-            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-            MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
-            MessageBoxResult result;
-            result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
-            if (result == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
-        }
+
+        //public void ClosingConfirmation(object sender, CancelEventArgs e)
+        //{
+        //    string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
+        //    string messageBoxCaption = "Exit Window?";
+        //    MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
+        //    MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
+        //    MessageBoxResult result;
+        //    result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
+        //    if (result == MessageBoxResult.No)
+        //    {
+        //        e.Cancel = true;
+        //    }
+        //}
+
         public void ShowTypes(List<Category.CategoryType> allCategoryTypes)
         {
-            throw new NotImplementedException();
+            Cmb_CategoriesTypes.ItemsSource = allCategoryTypes;
         }
 
         public void ShowDbName(string DBName)

@@ -1,5 +1,6 @@
 using Calendar;
 using CalendarMVP;
+using System.ComponentModel;
 
 namespace PresenterTest
 {
@@ -16,6 +17,11 @@ namespace PresenterTest
         public void ClosingConfirmation()
         {
             calledClosingConfirmation = true;
+        }
+
+        public void ClosingConfirmation(object sender, CancelEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public void DisplayDB()

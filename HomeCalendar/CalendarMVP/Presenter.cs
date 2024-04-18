@@ -57,23 +57,23 @@ namespace CalendarMVP
         public void RegisterNewView(ViewInterfaceForCategories v)
         {
             viewForCategory = v;
+            List<Category.CategoryType> allCategoryTypes = GetAllCategoryTypes();
+            viewForCategory.ShowTypes(allCategoryTypes);
             viewForCategory.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
         public void NewCategory(Category.CategoryType type, string description)
         {
-            bool valid = ValidatingCategoryData(type);
+            bool valid = ValidatingCategoryTypeData(type);
             if (!valid)
             {
                 viewForCategory.DisplayMessage("Invalid type");
             }
             else
             {
-
                 try
                 {
                     model.categories.Add(description, type);
-
                 }
                 catch (Exception ex)
                 {
@@ -98,7 +98,6 @@ namespace CalendarMVP
                 try
                 {
                     model.events.Add(startDateTime, categoryId, durationInMinutes, details);
-
                 }
                 catch (Exception ex)
                 {
@@ -135,12 +134,11 @@ namespace CalendarMVP
 
         }
 
-        private bool ValidatingCategoryData(Category.CategoryType type)
+        private bool ValidatingCategoryTypeData(Category.CategoryType type)
         {
-
             return Enum.IsDefined(typeof(Category.CategoryType), type);
-
         }
+
 
         private List<Category> GetAllCategories()
         {
@@ -153,6 +151,21 @@ namespace CalendarMVP
 
             return allCategories;
             
+        }
+
+        private List<Category.CategoryType> GetAllCategoryTypes() 
+        {
+            List<Category.CategoryType> allCategoryTypes = new List<Category.CategoryType>();
+
+            if(model != null)
+            {
+                foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
+                {
+                    allCategoryTypes.Add(categoryType);
+                }
+            }
+
+            return allCategoryTypes;
         }
 
     }

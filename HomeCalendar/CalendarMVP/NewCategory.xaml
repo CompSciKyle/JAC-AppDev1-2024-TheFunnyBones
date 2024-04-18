@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarMVP"
         mc:Ignorable="d"
-        Title="NewCategory" Height="375" Width="450"
-        Closing="ClosingConfirmation"
-        >
+        Title="NewCategory" Height="375" Width="450">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="167*"/>
@@ -28,12 +27,12 @@
         </GroupBox>
 
         <GroupBox Grid.Row="2" Margin="20,20,14,20" Header="Type" Grid.ColumnSpan="2">
-            <ComboBox HorizontalAlignment="Stretch" Margin="15" />
+            <ComboBox HorizontalAlignment="Stretch" Margin="15" x:Name="Cmb_CategoriesTypes" />
         </GroupBox>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="145,20,0,20" Grid.ColumnSpan="2">
-            <Button Width="70" Margin="5" x:Name="Btn_Save">Save</Button>
-            <Button Width="70" Margin="5" x:Name="Btn_Cancel" Click="BtnClickCancel">Cancel</Button>
+            <Button Width="70" Margin="5" Click="Btn_Save">Save</Button>
+            <Button Width="70" Margin="5"  Click="Btn_Cancel">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>

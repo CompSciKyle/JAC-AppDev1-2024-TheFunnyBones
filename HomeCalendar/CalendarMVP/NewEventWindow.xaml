@@ -18,6 +18,9 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Margin="0,0,0,10" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="Txb_DBName">DBName</TextBlock>
+        <Button Grid.Row="0" Margin="0,0,0,10" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Btn_Close">X</Button>
+        
+        
         <!-- Centered and reduced top margin -->
 
         <Grid Grid.Row="1">
