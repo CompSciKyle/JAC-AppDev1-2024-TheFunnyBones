@@ -28,12 +28,16 @@ namespace CalendarMVP
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {
-
+            NewEventWindow newEventWindow = new NewEventWindow(presenter, this);
+            newEventWindow.Show();
+            //this.Close();
         }
 
         private void BtnClickNewCategory(object sender, RoutedEventArgs e)
         {
-
+            NewCategory newCategory = new NewCategory(presenter);
+            newCategory.Show();
+            //this.Close();
         }
 
         public void ShowDbName(string DBName)

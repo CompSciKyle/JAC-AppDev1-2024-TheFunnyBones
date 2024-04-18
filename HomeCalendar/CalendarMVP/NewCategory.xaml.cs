@@ -19,9 +19,11 @@ namespace CalendarMVP
     /// </summary>
     public partial class NewCategory : Window
     {
-        public NewCategory()
+        private Presenter presenter;
+        public NewCategory(Presenter p)
         {
             InitializeComponent();
+            presenter = p;
         }
 
         public void test()

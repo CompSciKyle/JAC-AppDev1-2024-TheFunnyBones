@@ -23,8 +23,8 @@ namespace CalendarMVP
     public partial class NewEventWindow : Window, ViewInterfaceForEventsAndCategories
     {
         private readonly Presenter presenter;
-        private MainWindow mainWindow;
-        public NewEventWindow(Presenter p, MainWindow main)
+        private MonthView mainWindow;
+        public NewEventWindow(Presenter p, MonthView main)
         {
             InitializeComponent();
             presenter = p;
