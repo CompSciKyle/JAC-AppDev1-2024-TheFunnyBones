@@ -20,7 +20,7 @@ namespace CalendarMVP
     /// <summary>
     /// Interaction logic for NewEventWindow.xaml
     /// </summary>
-    public partial class NewEventWindow : Window, ViewInterfaceForEventsAndCategories
+    public partial class NewEventWindow : Window, ViewInterfaceForEvents
     {
         private readonly Presenter presenter;
         private MainWindow mainWindow;
