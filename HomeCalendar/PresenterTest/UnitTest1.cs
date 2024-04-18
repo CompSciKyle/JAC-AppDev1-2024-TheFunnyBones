@@ -7,7 +7,6 @@ namespace PresenterTest
     {
         public bool calledClosingConfirmation = false;
         public bool calledDisplayDB = false;
-        //public bool 
         public bool calledDisplayError = false;
         public bool calledDisplayMessage = false;
         public bool calledShowDBName = false;

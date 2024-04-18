@@ -37,7 +37,6 @@ namespace CalendarMVP
         {
             NewCategory newCategory = new NewCategory(presenter);
             newCategory.Show();
-            //this.Close();
         }
 
         public void ShowDbName(string DBName)
@@ -47,7 +46,7 @@ namespace CalendarMVP
 
         public void DisplayMessage(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message);
         }
     }
 }

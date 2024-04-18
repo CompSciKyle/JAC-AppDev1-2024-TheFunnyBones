@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -85,9 +86,13 @@ namespace CalendarMVP
             }
         }
 
-        public void NewEvent(DateTime startDateTime, int categoryId, double durationInMinutes, string details)
+        public void NewEvent(string startDateTime, Category category, string durationInMinutes, string details)
         {
-            bool valid = ValidatingEventData(startDateTime, categoryId, durationInMinutes);
+            double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+            DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+            bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
             if (!valid)
             {
                 viewForEvent.DisplayMessage("Fields are not valid");
@@ -97,7 +102,7 @@ namespace CalendarMVP
 
                 try
                 {
-                    model.events.Add(startDateTime, categoryId, durationInMinutes, details);
+                    model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
 
                 }
                 catch (Exception ex)
@@ -113,7 +118,7 @@ namespace CalendarMVP
         {
             bool valid = false;
 
-            if (startDateTime < DateTime.Now && durationInMinutes > 0)
+            if (startDateTime > DateTime.Now && durationInMinutes > 0)
             {
                 try
                 {

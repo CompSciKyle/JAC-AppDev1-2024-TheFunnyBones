@@ -56,15 +56,11 @@ namespace CalendarMVP
         {
             try
             {
+                string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
 
-            double duration = double.Parse(Txb_Duration.Text);
-            int categoryId = (int)Cmb_Categories.SelectedValue;
-            string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
-            DateTime startDate;
-            DateTime.TryParseExact(dateTimeString, "yyyy-MM-dd H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
-            presenter.NewEvent(startDate, categoryId, duration, Txb_Details.Text);
-            Console.WriteLine("dateTimeString: " + dateTimeString);
-            }catch(Exception ex) 
+                presenter.NewEvent(dateTimeString, (Category)Cmb_Categories.SelectedItem, Txb_Duration.Text, Txb_Details.Text);
+            }
+            catch(Exception ex) 
             {
                 DisplayMessage("Failed To create a event: " + ex.Message);
             }
