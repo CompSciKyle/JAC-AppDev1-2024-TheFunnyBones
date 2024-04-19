@@ -112,7 +112,7 @@ namespace CalendarMVP
         {
             bool valid = false;
 
-            if (startDateTime < DateTime.Now && durationInMinutes > 0)
+            if (startDateTime > DateTime.Now && durationInMinutes > 0)
             {
                 try
                 {
