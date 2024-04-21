@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarMVP"
         mc:Ignorable="d"
-        Title="MonthView" Height="450" Width="800">
+        Title="MonthView" Height="450" Width="800"
+        Closing="ClosingConfirmation">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15*"/>
@@ -18,7 +19,6 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" Margin="13" Text="DB Name" FontSize="35" x:Name="dbName"></TextBlock>
-            <Button  Margin="0,0,0,0" Padding="10"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" Click="Btn_Close">X</Button>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*"/>

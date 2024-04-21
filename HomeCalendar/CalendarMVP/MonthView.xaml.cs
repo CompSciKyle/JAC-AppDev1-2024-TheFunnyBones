@@ -1,6 +1,7 @@
 ﻿using Calendar;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,6 @@ namespace CalendarMVP
         {
             NewCategory newCategory = new NewCategory(presenter);
             newCategory.Show();
-            this.Close();
         }
         public void ShowDbName(string DBName)
         {
@@ -49,7 +49,7 @@ namespace CalendarMVP
             MessageBox.Show(message);
         }
 
-        public void Btn_Close(object sender, RoutedEventArgs e)
+        public void ClosingConfirmation(object sender, CancelEventArgs e)
         {
             string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
             string messageBoxCaption = "Exit Window?";
@@ -58,9 +58,9 @@ namespace CalendarMVP
             MessageBoxResult result;
             result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
 
-            if (result == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.No)
             {
-                this.Close();
+                e.Cancel = true;
             }
         }
     }

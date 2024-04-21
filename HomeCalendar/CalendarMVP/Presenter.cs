@@ -102,7 +102,7 @@ namespace CalendarMVP
 
                 try
                 {
-                    model.events.Add(startDateTime, categoryId, durationInMinutes, details);
+                    model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
                 }
                 catch (Exception ex)
                 {
