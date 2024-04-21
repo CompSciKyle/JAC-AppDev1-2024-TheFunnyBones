@@ -85,5 +85,10 @@ namespace CalendarMVP
         {
             this.Hide();
         }
+        public void Btn_AddType(object sender, RoutedEventArgs e)
+        {
+            NewCategory newCategory = new NewCategory(presenter, true);
+            newCategory.Show();
+        }
     }
 }

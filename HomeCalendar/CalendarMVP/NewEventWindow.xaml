@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarMVP"
         mc:Ignorable="d"
-        Title="NewEventWindow" Height="450" Width="600"
+        Title="NewEventWindow" Height="465" Width="600"
         Closing="ClosingConfirmation">
     <!-- Reduced Width to 600 -->
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -60,8 +61,12 @@
         <GroupBox Grid.Row="3" Margin="0,20,0,0" Header="Type" HorizontalAlignment="Stretch">
             <ComboBox HorizontalAlignment="Stretch" Margin="0" x:Name="Cmb_Categories" />
         </GroupBox>
+        
+        <GroupBox Grid.Row="4" Margin="0,20,0,0" Header="Add Type" HorizontalAlignment="Stretch">
+            <Button HorizontalAlignment="Stretch" Height="20" Content="+" VerticalAlignment="Center" Click="Btn_AddType"/>
+        </GroupBox>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
             <Button Width="70" Margin="5" Click="Btn_Save">Save</Button>
             <Button Width="70" Margin="5" Click="Btn_Cancel">Cancel</Button>
         </StackPanel>

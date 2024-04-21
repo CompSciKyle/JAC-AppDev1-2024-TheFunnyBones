@@ -12,11 +12,19 @@ namespace CalendarMVP
     public partial class NewCategory : Window, ViewInterfaceForCategories
     {
         private Presenter presenter;
+        private bool updateEvent;
         public NewCategory(Presenter p)
         {
             InitializeComponent();
             presenter = p;
             presenter.RegisterNewView(this);
+        }
+        public NewCategory(Presenter p, bool fromEvent)
+        {
+            InitializeComponent();
+            presenter = p;
+            presenter.RegisterNewView(this);
+            updateEvent = fromEvent;
         }
         private void Btn_Cancel(object sender, RoutedEventArgs e)
         {
@@ -25,7 +33,7 @@ namespace CalendarMVP
 
         private void Btn_Save(object sender, RoutedEventArgs e)
         {
-            presenter.NewCategory((Category.CategoryType)Cmb_CategoriesTypes.SelectedItem, Txb_Description.Text);
+            presenter.NewCategory((Category.CategoryType)Cmb_CategoriesTypes.SelectedItem, Txb_Description.Text, updateEvent);
         }
 
         public void DisplayDB()

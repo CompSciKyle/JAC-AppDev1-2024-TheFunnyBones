@@ -63,7 +63,7 @@ namespace CalendarMVP
             viewForCategory.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
-        public void NewCategory(Category.CategoryType type, string description)
+        public void NewCategory(Category.CategoryType type, string description, bool updateEvent)
         {
             bool valid = ValidatingCategoryTypeData(type);
             if (!valid)
@@ -83,6 +83,11 @@ namespace CalendarMVP
                 //Close window
                 viewForCategory.DisplayDB();
                 viewForCalendar.DisplayMessage("Category has been created");
+                if (updateEvent)
+                {
+                    List<Category> allCategories = GetAllCategories();
+                    viewForEvent.ShowTypes(allCategories);
+                }
             }
         }
 
