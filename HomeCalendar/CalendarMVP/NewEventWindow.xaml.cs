@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -31,11 +32,6 @@ namespace CalendarMVP
             presenter.RegisterNewView(this);
         }
 
-        public void ClosingConfirmation()
-        {
-            throw new NotImplementedException();
-        }
-
         public void DisplayDB()
         {
             this.Close();
@@ -57,13 +53,14 @@ namespace CalendarMVP
             try
             {
 
-            double duration = double.Parse(Txb_Duration.Text);
-            int categoryId = (int)Cmb_Categories.SelectedValue;
-            string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
-            DateTime startDate;
-            DateTime.TryParseExact(dateTimeString, "yyyy-MM-dd H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
-            presenter.NewEvent(startDate, categoryId, duration, Txb_Details.Text);
-            Console.WriteLine("dateTimeString: " + dateTimeString);
+                double duration = double.Parse(Txb_Duration.Text);
+                int categoryId = (int)Cmb_Categories.SelectedItem;
+                string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
+                DateTime startDate;
+                DateTime.TryParseExact(dateTimeString, "yyyy-MM-dd H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
+                presenter.NewEvent(startDate, categoryId, duration, Txb_Details.Text);
+                Console.WriteLine("dateTimeString: " + dateTimeString);
+
             }catch(Exception ex) 
             {
                 DisplayMessage("Failed To create a event: " + ex.Message);
@@ -73,6 +70,21 @@ namespace CalendarMVP
         public void ShowDbName(string DBName)
         {
             Txb_DBName.Text = DBName;
+        }
+
+        public void Btn_Close(object sender, RoutedEventArgs e)
+        {
+            string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
+            string messageBoxCaption = "Exit Window?";
+            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
+            MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
+            MessageBoxResult result;
+            result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
+
+            if (result == MessageBoxResult.Yes) 
+            { 
+                this.Close();
+            }
         }
     }
 }
