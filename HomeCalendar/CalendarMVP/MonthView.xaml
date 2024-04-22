@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarMVP"
         mc:Ignorable="d"
-        Title="MonthView" Height="450" Width="800">
+        Title="MonthView" Height="450" Width="800"
+        Closing="ClosingConfirmation">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15*"/>
@@ -17,17 +18,10 @@
             <RowDefinition Height="40*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" Margin="13" Text="DB Name" FontSize="35" x:Name="dbName"></TextBlock>
-            <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="90*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" Text="Month Name" FontSize="20"></TextBlock>
-            <Border BorderThickness="2" Grid.Row="1" Margin="10" BorderBrush="Black">
-                
-            </Border>
-        </Grid>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" Margin="13" Text="DB Name" FontSize="35" x:Name="dbName"></TextBlock>
+        <Viewbox Grid.Column="1" Grid.Row="1" Width="auto" Height="auto" >
+            <Calendar VerticalAlignment="Center"/>
+        </Viewbox>
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>

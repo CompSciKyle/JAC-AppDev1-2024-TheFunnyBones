@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -31,14 +32,9 @@ namespace CalendarMVP
             presenter.RegisterNewView(this);
         }
 
-        public void ClosingConfirmation()
-        {
-            throw new NotImplementedException();
-        }
-
         public void DisplayDB()
         {
-            this.Close();
+            this.Hide();
         }
 
         public void DisplayMessage(string message)
@@ -56,15 +52,11 @@ namespace CalendarMVP
         {
             try
             {
+                string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
+                presenter.NewEvent(dateTimeString, (Category)Cmb_Categories.SelectedItem, Txb_Duration.Text, Txb_Details.Text);
 
-            double duration = double.Parse(Txb_Duration.Text);
-            int categoryId = (int)Cmb_Categories.SelectedValue;
-            string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
-            DateTime startDate;
-            DateTime.TryParseExact(dateTimeString, "yyyy-MM-dd H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
-            presenter.NewEvent(startDate, categoryId, duration, Txb_Details.Text);
-            Console.WriteLine("dateTimeString: " + dateTimeString);
-            }catch(Exception ex) 
+            }
+            catch(Exception ex) 
             {
                 DisplayMessage("Failed To create a event: " + ex.Message);
             }
@@ -73,6 +65,30 @@ namespace CalendarMVP
         public void ShowDbName(string DBName)
         {
             Txb_DBName.Text = DBName;
+        }
+
+        public void ClosingConfirmation(object sender, CancelEventArgs e)
+        {
+            string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
+            string messageBoxCaption = "Exit Window?";
+            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
+            MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
+            MessageBoxResult result;
+            result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
+
+            if (result == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+        public void Btn_Cancel(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+        public void Btn_AddType(object sender, RoutedEventArgs e)
+        {
+            NewCategory newCategory = new NewCategory(presenter, true);
+            newCategory.Show();
         }
     }
 }
