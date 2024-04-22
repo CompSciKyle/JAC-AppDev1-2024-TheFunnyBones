@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarMVP"
         mc:Ignorable="d"
-        Title="NewCategory" Height="375" Width="450">
+        Title="NewCategory" Height="375" Width="450"
+        Closing="ClosingConfirmation">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,7 +22,6 @@
         </Grid.RowDefinitions>
 
         <TextBlock  Margin="0,5,0,5" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="Txb_DBName" Grid.ColumnSpan="2">DB Name</TextBlock>
-        <Button  Margin="0,0,10,0" Padding="5"  VerticalAlignment="Center" HorizontalAlignment="Right" Grid.ColumnSpan="2" Click="Btn_Close">X</Button>
 
         <GroupBox Grid.Row="1" Margin="20,20,14,20" Header="Description" Grid.ColumnSpan="2">
             <TextBox x:Name="Txb_Description" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15" />

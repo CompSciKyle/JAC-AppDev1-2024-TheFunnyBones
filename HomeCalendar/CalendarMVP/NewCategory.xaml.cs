@@ -12,25 +12,33 @@ namespace CalendarMVP
     public partial class NewCategory : Window, ViewInterfaceForCategories
     {
         private Presenter presenter;
+        private bool updateEvent;
         public NewCategory(Presenter p)
         {
             InitializeComponent();
             presenter = p;
             presenter.RegisterNewView(this);
         }
+        public NewCategory(Presenter p, bool fromEvent)
+        {
+            InitializeComponent();
+            presenter = p;
+            presenter.RegisterNewView(this);
+            updateEvent = fromEvent;
+        }
         private void Btn_Cancel(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         private void Btn_Save(object sender, RoutedEventArgs e)
         {
-            presenter.NewCategory((Category.CategoryType)Cmb_CategoriesTypes.SelectedItem, Txb_Description.Text);
+            presenter.NewCategory((Category.CategoryType)Cmb_CategoriesTypes.SelectedItem, Txb_Description.Text, updateEvent);
         }
 
         public void DisplayDB()
         {
-            this.Close();
+            this.Hide();
         }
 
         public void DisplayMessage(string message)
@@ -45,21 +53,7 @@ namespace CalendarMVP
             MessageBox.Show(message);
         }
 
-        //public void ClosingConfirmation(object sender, CancelEventArgs e)
-        //{
-        //    string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
-        //    string messageBoxCaption = "Exit Window?";
-        //    MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-        //    MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
-        //    MessageBoxResult result;
-        //    result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
-        //    if (result == MessageBoxResult.No)
-        //    {
-        //        e.Cancel = true;
-        //    }
-        //}
-
-        public void Btn_Close(object sender, RoutedEventArgs e)
+        public void ClosingConfirmation(object sender, CancelEventArgs e)
         {
             string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
             string messageBoxCaption = "Exit Window?";
@@ -67,10 +61,9 @@ namespace CalendarMVP
             MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
             MessageBoxResult result;
             result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
-
-            if(result == MessageBoxResult.Yes) 
+            if (result == MessageBoxResult.No)
             {
-                this.Close();
+                e.Cancel = true;
             }
         }
 

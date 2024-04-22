@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -62,7 +63,7 @@ namespace CalendarMVP
             viewForCategory.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
-        public void NewCategory(Category.CategoryType type, string description)
+        public void NewCategory(Category.CategoryType type, string description, bool updateEvent)
         {
             bool valid = ValidatingCategoryTypeData(type);
             if (!valid)
@@ -82,12 +83,21 @@ namespace CalendarMVP
                 //Close window
                 viewForCategory.DisplayDB();
                 viewForCalendar.DisplayMessage("Category has been created");
+                if (updateEvent)
+                {
+                    List<Category> allCategories = GetAllCategories();
+                    viewForEvent.ShowTypes(allCategories);
+                }
             }
         }
 
-        public void NewEvent(DateTime startDateTime, int categoryId, double durationInMinutes, string details)
+        public void NewEvent(string startDateTime, Category category, string durationInMinutes, string details)
         {
-            bool valid = ValidatingEventData(startDateTime, categoryId, durationInMinutes);
+            double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+            DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+            bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
             if (!valid)
             {
                 viewForEvent.DisplayMessage("Fields are not valid");
@@ -97,7 +107,7 @@ namespace CalendarMVP
 
                 try
                 {
-                    model.events.Add(startDateTime, categoryId, durationInMinutes, details);
+                    model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
                 }
                 catch (Exception ex)
                 {
