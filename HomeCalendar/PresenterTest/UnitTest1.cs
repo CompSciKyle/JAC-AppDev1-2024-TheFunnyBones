@@ -71,6 +71,11 @@ namespace PresenterTest
             calledShowTypesCategory = true;
             countOfAllCategories = allCategories.Count;
         }
+
+        public void ClosingConfirmation()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TestViewCategory : ViewInterfaceForCategories
@@ -267,7 +272,7 @@ namespace PresenterTest
             presenter.RegisterNewView(viewCalendar);
 
             // Act
-            presenter.NewCategory(type, description);
+            presenter.NewCategory(type, description, false);
 
             // Assert
             Assert.True(categoryView.calledDisplayDB);
@@ -293,11 +298,14 @@ namespace PresenterTest
             presenter.ConnectToDB(filePath, fileName, newDB);
 
             //Input Fields for event
-            var startDateTime = DateTime.Now;
-            var categoryId = 1;
-            var durationInMinutes = 60;
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
             var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
             
+
+
             //Resetting variables
             eventView.calledDisplayDB = false;
             viewCalendar.calledDisplayMessage = false;
@@ -307,7 +315,7 @@ namespace PresenterTest
             presenter.RegisterNewView(viewCalendar);
 
             // Act
-            presenter.NewEvent(startDateTime, categoryId, durationInMinutes, details);
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
 
             // Assert
             Assert.True(eventView.calledDisplayDB);
@@ -332,9 +340,10 @@ namespace PresenterTest
 
             //Input Fields for event
             var startDateTime = DateTime.Now;
-            var categoryId = 1;
-            var durationInMinutes = -60;
+            string  startDate = startDateTime.ToString();
+            string durationInMinutes = "-60";
             var details = "Some event details";
+            Category categoryId = new Category(20, "here");
 
             //Resetting variables
             eventView.calledDisplayDB = false;
@@ -346,7 +355,7 @@ namespace PresenterTest
             presenter.RegisterNewView(viewCalendar);
 
             // Act
-            presenter.NewEvent(startDateTime, categoryId, durationInMinutes, details);
+            presenter.NewEvent(startDate, categoryId, durationInMinutes, details);
 
             // Assert
             Assert.False(eventView.calledDisplayDB);
@@ -372,8 +381,11 @@ namespace PresenterTest
 
             //Input Fields for event
             var startDateTime = DateTime.Now.AddMonths(-100);
-            var categoryId = 1;
-            var durationInMinutes = 60;
+            string startDate = startDateTime.ToString();
+            Category categoryId = new Category(20, "shouldn't be here");
+
+
+            var durationInMinutes = "60";
             var details = "Some event details";
 
             //Resetting variables
@@ -384,9 +396,9 @@ namespace PresenterTest
             //Registering the views
             presenter.RegisterNewView(eventView);
             presenter.RegisterNewView(viewCalendar);
-
+            
             // Act
-            presenter.NewEvent(startDateTime, categoryId, durationInMinutes, details);
+            presenter.NewEvent(startDate, categoryId, durationInMinutes, details);
 
             // Assert
             Assert.False(eventView.calledDisplayDB);
@@ -412,8 +424,11 @@ namespace PresenterTest
 
             //Input Fields for event
             var startDateTime = DateTime.Now.AddMonths(-100);
-            var categoryId = 55;
-            var durationInMinutes = 60;
+            string newDate = startDateTime.ToString();
+            Category.CategoryType nonExistent = new Category.CategoryType();
+            Category categoryId = new Category(20, "shouldn't be here", nonExistent);
+
+            string durationInMinutes = "60";
             var details = "Some event details";
 
             //Resetting variables
@@ -426,7 +441,7 @@ namespace PresenterTest
             presenter.RegisterNewView(viewCalendar);
 
             // Act
-            presenter.NewEvent(startDateTime, categoryId, durationInMinutes, details);
+            presenter.NewEvent(newDate, categoryId, durationInMinutes, details);
 
             // Assert
             Assert.False(eventView.calledDisplayDB);

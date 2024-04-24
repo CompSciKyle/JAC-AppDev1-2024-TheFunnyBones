@@ -150,7 +150,7 @@ namespace CalendarMVP
         }
 
 
-        private List<Category> GetAllCategories()
+        public List<Category> GetAllCategories()
         {
             List<Category>  allCategories = new List<Category>();   
 
