@@ -118,6 +118,16 @@ namespace CalendarMVP
             }
         }
 
+        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, int CategoryID)
+        {
+            //DateTime Start = ;
+            //if (startDateTime != null)
+            //{
+            //    Start = Convert.ToDateTime(startDateTime);
+            //    model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
+            //}
+        }
+
         private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
         {
             bool valid = false;

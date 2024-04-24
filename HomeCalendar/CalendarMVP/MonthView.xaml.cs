@@ -63,5 +63,10 @@ namespace CalendarMVP
                 e.Cancel = true;
             }
         }
+
+        public void DisplayBoard(List<Event> users)
+        {
+            myDataGrid.ItemsSource = users;
+        }
     }
 }
