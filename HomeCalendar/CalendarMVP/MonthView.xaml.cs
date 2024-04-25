@@ -64,6 +64,11 @@ namespace CalendarMVP
             }
         }
 
+        public void DisplayBoard(List<Event> users)
+        {
+            myDataGrid.ItemsSource = users;
+        }
+
         public void ShowTypes(List<Category> categories)
         {
             Cmb_All_Categories.ItemsSource = categories;
