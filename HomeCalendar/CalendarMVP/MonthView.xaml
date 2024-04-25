@@ -42,8 +42,8 @@
             <GroupBox Header="Summary"  Margin="5,5,5,15">
                 <StackPanel>
 
-                    <CheckBox Content="By Month" x:Name="Ctb_Month"></CheckBox>
-                    <CheckBox Content="By Category"  x:Name="Ctb_Category"></CheckBox>
+                    <CheckBox Content="By Month" x:Name="Ctb_Month" Click="GetAllEventsByMonth" ></CheckBox>
+                    <CheckBox Content="By Category"  x:Name="Ctb_Category" Click="GetAllEventsByCategory"></CheckBox>
 
                 </StackPanel>
             </GroupBox>
