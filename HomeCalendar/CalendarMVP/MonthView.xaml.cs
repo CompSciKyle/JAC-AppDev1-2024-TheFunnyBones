@@ -20,18 +20,19 @@ namespace CalendarMVP
     /// Interaction logic for MonthView.xaml
     /// </summary>
     public partial class MonthView : Window, ViewInterfaceForCalendar
-    {   
+    {
         private readonly Presenter presenter;
         public MonthView(Presenter p)
         {
             InitializeComponent();
             presenter = p;
             presenter.RegisterNewView(this);
+            //presenter.DisplayAll();
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {
             NewEventWindow eventView = new NewEventWindow(presenter);
-            eventView.Show();   
+            eventView.Show();
         }
 
         private void BtnClickNewCategory(object sender, RoutedEventArgs e)
@@ -64,14 +65,62 @@ namespace CalendarMVP
             }
         }
 
-        public void DisplayBoard(List<Event> users)
+        public void DisplayBoard(List<CalendarItem> events)
         {
-            myDataGrid.ItemsSource = users;
+            myDataGrid.ClearValue(ItemsControl.ItemsSourceProperty);
+            myDataGrid.Items.Clear();
+            myDataGrid.ItemsSource = events;
+
         }
 
         public void ShowTypes(List<Category> categories)
         {
             Cmb_All_Categories.ItemsSource = categories;
         }
+
+        private void Item_Click(object sender, RoutedEventArgs e)
+        {
+            // the selected object will always be a of the type that was originally put in the ItemsSource
+            string hi = "hi";
+        }
+
+        private void Item_DoubleClick(object sender, RoutedEventArgs e)
+        {
+            // the selected object will always be a of the type that was originally put in the ItemsSource
+            string hi = "hi";
+        }
+
+        private void startDateChanged(object sender, RoutedEventArgs e)
+        {
+            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;   
+            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
+            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
+            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+        }
+
+        private void endDateChanged(object sender, RoutedEventArgs e)
+        {
+            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
+            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
+            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
+            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+        }
+
+        private void FilterByCategory(object sender, RoutedEventArgs e)
+        {
+            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
+            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
+            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
+            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+        }
+
+         private void SelectsCategory(object sender, RoutedEventArgs e)
+        {
+            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
+            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
+            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
+            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+        }
+
     }
 }

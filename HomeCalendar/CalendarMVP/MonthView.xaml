@@ -26,24 +26,24 @@
                 <StackPanel>
 
                     <GroupBox Header="Start Date" Margin="5">
-                        <DatePicker></DatePicker>
+                        <DatePicker SelectedDateChanged="startDateChanged" x:Name="Dtb_StartDate"></DatePicker>
                     </GroupBox>
 
 
                     <GroupBox Header="End Date" Margin="5">
-                        <DatePicker></DatePicker>
+                        <DatePicker SelectedDateChanged="endDateChanged" x:Name="Dtb_EndDate"></DatePicker>
                     </GroupBox>
 
-                    <CheckBox Content="Filter By Category" Margin="5" ></CheckBox>
-                    <ComboBox HorizontalAlignment="Stretch" x:Name="Cmb_All_Categories" />
+                    <CheckBox Content="Filter By Category" Margin="5" Click="FilterByCategory" x:Name="Ctb_FilterByCategory" ></CheckBox>
+                    <ComboBox HorizontalAlignment="Stretch" SelectionChanged="SelectsCategory" x:Name="Cmb_All_Categories"/>
                 </StackPanel>
             </GroupBox>
 
             <GroupBox Header="Summary"  Margin="5,5,5,15">
                 <StackPanel>
 
-                    <CheckBox Content="By Month"></CheckBox>
-                    <CheckBox Content="By Category"></CheckBox>
+                    <CheckBox Content="By Month" x:Name="Ctb_Month"></CheckBox>
+                    <CheckBox Content="By Category"  x:Name="Ctb_Category"></CheckBox>
 
                 </StackPanel>
             </GroupBox>
@@ -52,7 +52,7 @@
 
         <!--List of events-->
         <DataGrid Grid.Column="1" Grid.Row="1" Width="auto" Height="auto" x:Name="myDataGrid" Margin="0,0,15,0">
-            <MenuItem Click="Item_Click" Header="Click" MouseDoubleClick="Item_Double_Click"></MenuItem>
+            <!--<MenuItem Click="Item_Click" Header="Click" MouseDoubleClick="Item_DoubleClick"></MenuItem>-->
         </DataGrid>
 
         <Grid Grid.Row="2" Grid.Column="1">

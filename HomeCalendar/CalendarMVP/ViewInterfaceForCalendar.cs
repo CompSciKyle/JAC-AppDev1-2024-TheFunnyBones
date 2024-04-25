@@ -11,6 +11,7 @@ namespace CalendarMVP
     {
         void ShowDbName(string DBName);
         void DisplayMessage(string message);
-        void ShowTypes(List<Categories> categories);
+        void ShowTypes(List<Category> categories);
+        void DisplayBoard(List<CalendarItem> events);
     }
 }

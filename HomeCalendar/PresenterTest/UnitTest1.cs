@@ -9,7 +9,7 @@ namespace PresenterTest
         public bool calledDisplayDB = false;
         public bool calledDisplayError = false;
         public string displayedMessage = "";
-  
+
 
         public void DisplayDB()
         {
@@ -17,7 +17,7 @@ namespace PresenterTest
         }
 
         public void DisplayError(string message)
-        {   
+        {
             calledDisplayError = true;
             displayedMessage = message;
 
@@ -39,7 +39,7 @@ namespace PresenterTest
         {
             calledShowDBName = true;
             dbName = DBName;
-    }
+        }
     }
 
     public class TestViewEvent : ViewInterfaceForEvents
@@ -118,7 +118,7 @@ namespace PresenterTest
             // Arrange
             TestDBView view = new TestDBView();
             Presenter presenter = new Presenter(view);
-            string filePath =  Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
             string fileName = "databaseTest.db";
             bool newDB = true;
             view.calledDisplayDB = false;
@@ -147,7 +147,7 @@ namespace PresenterTest
             // Assert
             Assert.True(view.calledDisplayError);
             Assert.Equal("Path does not exist", view.displayedMessage);
-            
+
         }
 
         [Fact]
@@ -157,7 +157,7 @@ namespace PresenterTest
             TestDBView view = new TestDBView();
             Presenter presenter = new Presenter(view);
             var projectDirectory = Directory.GetCurrentDirectory(); //Gets the current directory of the project
-            string filePath = projectDirectory; 
+            string filePath = projectDirectory;
             string fileName = "testDBInput.db";
             bool newDB = true;
             view.calledDisplayDB = false;
@@ -290,7 +290,7 @@ namespace PresenterTest
             Presenter presenter = new Presenter(view);
             TestViewEvent eventView = new TestViewEvent();
             TestViewCalendar viewCalendar = new TestViewCalendar();
-            
+
             //Create new db
             string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
             string fileName = "databaseTest.db";
@@ -303,7 +303,7 @@ namespace PresenterTest
             string durationInMinutes = "60";
             var details = "Some event details";
             List<Category> mycategories = presenter.GetAllCategories();
-            
+
 
 
             //Resetting variables
@@ -340,7 +340,7 @@ namespace PresenterTest
 
             //Input Fields for event
             var startDateTime = DateTime.Now;
-            string  startDate = startDateTime.ToString();
+            string startDate = startDateTime.ToString();
             string durationInMinutes = "-60";
             var details = "Some event details";
             Category categoryId = new Category(20, "here");
@@ -396,7 +396,7 @@ namespace PresenterTest
             //Registering the views
             presenter.RegisterNewView(eventView);
             presenter.RegisterNewView(viewCalendar);
-            
+
             // Act
             presenter.NewEvent(startDate, categoryId, durationInMinutes, details);
 
