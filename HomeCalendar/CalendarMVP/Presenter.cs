@@ -1,5 +1,6 @@
 ﻿using Calendar;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -116,6 +117,55 @@ namespace CalendarMVP
                 viewForEvent.DisplayDB();
                 viewForCalendar.DisplayMessage("Event has been created");
             }
+        }
+
+        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, int CategoryID, bool monthChecked, bool categoryChecked)
+        {
+            DateTime Start = new DateTime(1900, 1, 1);
+            DateTime End = new DateTime(2500, 1, 1);
+            if (startDateTime != null)
+            {
+                Start = Convert.ToDateTime(startDateTime);
+            }
+            if (endDateTime != null)
+            {
+                End = Convert.ToDateTime(endDateTime);
+            }
+
+
+            if (categoryChecked && monthChecked)
+            {
+
+            }
+            else if (monthChecked)
+            {
+
+            }
+            else if (categoryChecked)
+            {
+
+            }
+            else
+            {
+                CalendarItems(Start, End, FilterFlag, CategoryID);
+            }
+        }
+        private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItem> events = model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoard(events);
+        }
+        private void CalendarItemsByMonth()
+        {
+
+        }
+        private void CalendarItemsByCategory()
+        {
+
+        }
+        private void CalendarItemsByMonthAndCategory()
+        {
+
         }
 
         private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
