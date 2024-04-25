@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace CalendarMVP
 {
@@ -102,6 +103,15 @@ namespace CalendarMVP
         private void GetAllEventsByMonth(object sender, RoutedEventArgs e)
         {
             FilterEvents();
+            myDataGrid.Columns.Clear();                      
+            var columnMonth = new DataGridTextColumn();     
+            columnMonth.Header = "Month";
+            columnMonth.Binding = new Binding("Month");
+
+            var column = new DataGridTextColumn();
+            columnMonth.Header = "Totals";
+            columnMonth.Binding = new Binding("Totals");
+
         }
 
         private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
