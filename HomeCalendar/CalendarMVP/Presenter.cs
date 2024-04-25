@@ -44,6 +44,8 @@ namespace CalendarMVP
         public void RegisterNewView(ViewInterfaceForCalendar v)
         {
             viewForCalendar = v;
+            List<Category> allCategories = GetAllCategories();
+            viewForCalendar.ShowTypes(allCategories);
             viewForCalendar.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 

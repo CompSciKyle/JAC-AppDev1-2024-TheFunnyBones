@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calendar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace CalendarMVP
     {
         void ShowDbName(string DBName);
         void DisplayMessage(string message);
+        void ShowTypes(List<Categories> categories);
     }
 }

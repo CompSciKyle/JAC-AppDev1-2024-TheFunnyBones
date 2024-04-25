@@ -63,5 +63,10 @@ namespace CalendarMVP
                 e.Cancel = true;
             }
         }
+
+        public void ShowTypes(List<Category> categories)
+        {
+            Cmb_All_Categories.ItemsSource = categories;
+        }
     }
 }
