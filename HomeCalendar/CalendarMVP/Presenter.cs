@@ -45,6 +45,8 @@ namespace CalendarMVP
         public void RegisterNewView(ViewInterfaceForCalendar v)
         {
             viewForCalendar = v;
+            List<Category> allCategories = GetAllCategories();
+            viewForCalendar.ShowTypes(allCategories);
             viewForCalendar.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
@@ -119,17 +121,20 @@ namespace CalendarMVP
             }
         }
 
-        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, Category category, bool monthChecked, bool categoryChecked)
+        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, Category? category, bool monthChecked, bool categoryChecked)
         {
-            int CategoryID = category.Id;
+            int CategoryID = 1;
+            if (category != null)
+            {
+               CategoryID = category.Id;
+            }
             DateTime Start = new DateTime(1900, 1, 1);
             DateTime End = new DateTime(2500, 1, 1);
-
-            if (startDateTime != null)
+            if (startDateTime != "")
             {
                 Start = Convert.ToDateTime(startDateTime);
             }
-            if (endDateTime != null)
+            if (endDateTime != "")
             {
                 End = Convert.ToDateTime(endDateTime);
             }
@@ -212,22 +217,22 @@ namespace CalendarMVP
 
         public List<Category> GetAllCategories()
         {
-            List<Category>  allCategories = new List<Category>();   
+            List<Category> allCategories = new List<Category>();
 
-            if(model != null)
+            if (model != null)
             {
-                allCategories = model.categories.List(); 
+                allCategories = model.categories.List();
             }
 
             return allCategories;
-            
+
         }
 
-        private List<Category.CategoryType> GetAllCategoryTypes() 
+        private List<Category.CategoryType> GetAllCategoryTypes()
         {
             List<Category.CategoryType> allCategoryTypes = new List<Category.CategoryType>();
 
-            if(model != null)
+            if (model != null)
             {
                 foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
                 {
