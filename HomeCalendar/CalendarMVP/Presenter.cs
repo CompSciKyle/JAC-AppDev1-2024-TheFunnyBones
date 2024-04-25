@@ -33,7 +33,7 @@ namespace CalendarMVP
         {
             _dbName = fileName;
             string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath) || NewDB)
+            if (System.IO.File.Exists(fullPath) || NewDB)
             {
                 model = (new HomeCalendar(fullPath, NewDB));
                 viewForDatabase.DisplayDB();
