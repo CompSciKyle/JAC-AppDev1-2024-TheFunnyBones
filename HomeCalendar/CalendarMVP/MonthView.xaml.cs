@@ -113,7 +113,7 @@ namespace CalendarMVP
         {
             bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
             bool eventsByMonth = Ctb_Month.IsChecked ?? false;
-            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
+            bool eventsByCategory = Ctb_Category.IsChecked ?? false;
             presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
         }
 
