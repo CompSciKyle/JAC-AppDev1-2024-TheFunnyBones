@@ -1,18 +1,7 @@
 ﻿using Calendar;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CalendarMVP
 {
@@ -92,29 +81,35 @@ namespace CalendarMVP
 
         private void startDateChanged(object sender, RoutedEventArgs e)
         {
-            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;   
-            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
-            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
-            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+            FilterEvents();
         }
 
         private void endDateChanged(object sender, RoutedEventArgs e)
         {
-            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
-            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
-            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
-            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+            FilterEvents();
         }
 
         private void FilterByCategory(object sender, RoutedEventArgs e)
         {
-            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
-            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
-            bool eventsByCategory = Ctb_Month.IsChecked ?? false;
-            presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
+            FilterEvents();
         }
 
-         private void SelectsCategory(object sender, RoutedEventArgs e)
+        private void SelectsCategory(object sender, RoutedEventArgs e)
+        {
+            FilterEvents();
+        }
+
+        private void GetAllEventsByMonth(object sender, RoutedEventArgs e)
+        {
+            FilterEvents();
+        }
+
+        private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
+        {
+            FilterEvents();
+        }
+
+        private void FilterEvents()
         {
             bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
             bool eventsByMonth = Ctb_Month.IsChecked ?? false;
