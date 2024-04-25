@@ -122,5 +122,25 @@ namespace CalendarMVP
             presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
         }
 
+        public void DisplayBoardDictionary(List<Dictionary<string, object>> events)
+        {
+            myDataGrid.ClearValue(ItemsControl.ItemsSourceProperty);
+            myDataGrid.Items.Clear();
+            myDataGrid.ItemsSource = events;
+        }
+
+        public void DisplayBoardByMonth(List<CalendarItemsByMonth> events)
+        {
+            myDataGrid.ClearValue(ItemsControl.ItemsSourceProperty);
+            myDataGrid.Items.Clear();
+            myDataGrid.ItemsSource = events;
+        }
+
+        public void DisplayBoardByCategory(List<CalendarItemsByCategory> events)
+        {
+            myDataGrid.ClearValue(ItemsControl.ItemsSourceProperty);
+            myDataGrid.Items.Clear();
+            myDataGrid.ItemsSource = events;
+        }
     }
 }

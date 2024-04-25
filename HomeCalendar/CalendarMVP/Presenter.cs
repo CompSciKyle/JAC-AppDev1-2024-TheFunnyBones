@@ -170,17 +170,17 @@ namespace CalendarMVP
         private void CalendarItemsByMonth(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
             List<CalendarItemsByMonth> events = model.GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayBoard(events);
+            viewForCalendar.DisplayBoardByMonth(events);
         }
         private void CalendarItemsByCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
             List<CalendarItemsByCategory> events = model.GetCalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayBoard(events);
+            viewForCalendar.DisplayBoardByCategory(events);
         }
         private void CalendarItemsByMonthAndCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
             List<Dictionary<string, object>> events = model.GetCalendarDictionaryByCategoryAndMonth(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayDictionaryBoard(events);
+            viewForCalendar.DisplayBoardDictionary(events);
         }
 
         private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
