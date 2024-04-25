@@ -27,7 +27,7 @@ namespace CalendarMVP
             InitializeComponent();
             presenter = p;
             presenter.RegisterNewView(this);
-            //presenter.DisplayAll();
+            presenter.DisplayAll();
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
         {
