@@ -119,10 +119,12 @@ namespace CalendarMVP
             }
         }
 
-        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, int CategoryID, bool monthChecked, bool categoryChecked)
+        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, Category category, bool monthChecked, bool categoryChecked)
         {
+            int CategoryID = category.Id;
             DateTime Start = new DateTime(1900, 1, 1);
             DateTime End = new DateTime(2500, 1, 1);
+
             if (startDateTime != null)
             {
                 Start = Convert.ToDateTime(startDateTime);
@@ -135,37 +137,45 @@ namespace CalendarMVP
 
             if (categoryChecked && monthChecked)
             {
-
+                CalendarItemsByMonthAndCategory(Start, End, FilterFlag, CategoryID);
             }
             else if (monthChecked)
             {
-
+                CalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
             }
             else if (categoryChecked)
             {
-
+                CalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
             }
             else
             {
                 CalendarItems(Start, End, FilterFlag, CategoryID);
             }
         }
+        public void DisplayAll()
+        {
+            List<CalendarItem> events = model.GetCalendarItems(null,null, false, 1);
+            viewForCalendar.DisplayBoard(events);
+        }
         private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
             List<CalendarItem> events = model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
             viewForCalendar.DisplayBoard(events);
         }
-        private void CalendarItemsByMonth()
+        private void CalendarItemsByMonth(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
-
+            List<CalendarItemsByMonth> events = model.GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoard(events);
         }
-        private void CalendarItemsByCategory()
+        private void CalendarItemsByCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
-
+            List<CalendarItemsByCategory> events = model.GetCalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoard(events);
         }
-        private void CalendarItemsByMonthAndCategory()
+        private void CalendarItemsByMonthAndCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
-
+            List<Dictionary<string, object>> events = model.GetCalendarDictionaryByCategoryAndMonth(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayDictionaryBoard(events);
         }
 
         private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
