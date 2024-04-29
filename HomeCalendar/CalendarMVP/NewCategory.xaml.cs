@@ -41,14 +41,7 @@ namespace CalendarMVP
 
         public void DisplayMessage(string message)
         {
-            //string messageBoxCaption = "Error!";
-            //MessageBoxButton messageBoxButton = MessageBoxButton.OK;
-            //MessageBoxImage messageBoxImage = MessageBoxImage.Error;
-            //MessageBoxResult result;
-            //result = MessageBox.Show(message, messageBoxCaption, messageBoxButton, messageBoxImage);
-            //throw new NotImplementedException();
-
-            MessageBox.Show(message);
+            DisplayMessageBoxes.DisplayMessage(message);
         }
 
         public void ClosingConfirmation(object sender, CancelEventArgs e)
@@ -63,7 +56,6 @@ namespace CalendarMVP
 
         public void ShowDbName(string DBName)
         {
-            Cmb_Types.ItemsSource = allCategoryTypes;
             Txb_DBName.Text = DBName;
         }
     }

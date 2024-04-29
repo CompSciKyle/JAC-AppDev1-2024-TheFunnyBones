@@ -12,9 +12,9 @@ namespace CalendarMVP
     {
         public static void DisplayMessage(string message)
         {
-            string messageBoxCaption = "Error!";
+            string messageBoxCaption = "Notification";
             MessageBoxButton messageBoxButton = MessageBoxButton.OK;
-            MessageBoxImage messageBoxImage = MessageBoxImage.Error;
+            MessageBoxImage messageBoxImage = MessageBoxImage.Information;
             MessageBoxResult result;
             result = MessageBox.Show(message, messageBoxCaption, messageBoxButton, messageBoxImage);
         }
@@ -30,6 +30,10 @@ namespace CalendarMVP
             {
                 e.Cancel = true; 
             }
+        }
+        public static void ContextMenuItemSingleClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
