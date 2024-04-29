@@ -1,5 +1,6 @@
 ﻿using Calendar;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -8,7 +9,9 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.Media3D;
+using static System.Net.WebRequestMethods;
 
 namespace CalendarMVP
 {
@@ -30,7 +33,7 @@ namespace CalendarMVP
         {
             _dbName = fileName;
             string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath) || NewDB)
+            if (System.IO.File.Exists(fullPath) || NewDB)
             {
                 model = (new HomeCalendar(fullPath, NewDB));
                 viewForDatabase.DisplayDB();
@@ -44,6 +47,8 @@ namespace CalendarMVP
         public void RegisterNewView(ViewInterfaceForCalendar v)
         {
             viewForCalendar = v;
+            List<Category> allCategories = GetAllCategories();
+            viewForCalendar.ShowTypes(allCategories);
             viewForCalendar.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
@@ -118,6 +123,68 @@ namespace CalendarMVP
             }
         }
 
+        public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, Category? category, bool monthChecked, bool categoryChecked)
+        {
+            int CategoryID = 1;
+            if (category != null)
+            {
+               CategoryID = category.Id;
+            }
+            DateTime Start = new DateTime(1900, 1, 1);
+            DateTime End = new DateTime(2500, 1, 1);
+            if (startDateTime != "")
+            {
+                Start = Convert.ToDateTime(startDateTime);
+            }
+            if (endDateTime != "")
+            {
+                End = Convert.ToDateTime(endDateTime);
+            }
+
+
+            if (categoryChecked && monthChecked)
+            {
+                CalendarItemsByMonthAndCategory(Start, End, FilterFlag, CategoryID);
+            }
+            else if (monthChecked)
+            {
+                CalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
+            }
+            else if (categoryChecked)
+            {
+                CalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
+            }
+            else
+            {
+                CalendarItems(Start, End, FilterFlag, CategoryID);
+            }
+        }
+        public void DisplayAll()
+        {
+            List<CalendarItem> events = model.GetCalendarItems(null,null, false, 1);
+            viewForCalendar.DisplayBoard(events);
+        }
+        private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItem> events = model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoard(events);
+        }
+        private void CalendarItemsByMonth(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItemsByMonth> events = model.GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoardByMonth(events);
+        }
+        private void CalendarItemsByCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItemsByCategory> events = model.GetCalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoardByCategory(events);
+        }
+        private void CalendarItemsByMonthAndCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<Dictionary<string, object>> events = model.GetCalendarDictionaryByCategoryAndMonth(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoardDictionary(events);
+        }
+
         private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
         {
             bool valid = false;
@@ -152,22 +219,22 @@ namespace CalendarMVP
 
         public List<Category> GetAllCategories()
         {
-            List<Category>  allCategories = new List<Category>();   
+            List<Category> allCategories = new List<Category>();
 
-            if(model != null)
+            if (model != null)
             {
-                allCategories = model.categories.List(); 
+                allCategories = model.categories.List();
             }
 
             return allCategories;
-            
+
         }
 
-        private List<Category.CategoryType> GetAllCategoryTypes() 
+        private List<Category.CategoryType> GetAllCategoryTypes()
         {
             List<Category.CategoryType> allCategoryTypes = new List<Category.CategoryType>();
 
-            if(model != null)
+            if (model != null)
             {
                 foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
                 {
