@@ -94,6 +94,7 @@ namespace CalendarMVP
                     viewForEvent.ShowTypes(allCategories);
                 }
             }
+
         }
 
         public void NewEvent(string startDateTime, Category category, string durationInMinutes, string details)
@@ -120,6 +121,7 @@ namespace CalendarMVP
                 }
                 viewForEvent.DisplayDB();
                 viewForCalendar.DisplayMessage("Event has been created");
+                DisplayAll();
             }
         }
 
