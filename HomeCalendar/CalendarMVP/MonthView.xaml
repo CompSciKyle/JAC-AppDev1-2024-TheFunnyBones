@@ -52,7 +52,7 @@
 
         <!--List of events-->
         <DataGrid Grid.Column="1" Grid.Row="1" Width="auto" Height="auto" x:Name="myDataGrid" Margin="0,0,15,0">
-            <!--<MenuItem Click="Item_Click" Header="Click" MouseDoubleClick="Item_DoubleClick"></MenuItem>-->
+            <MenuItem Click="Item_Click" Header="Click" MouseDoubleClick="Item_DoubleClick"></MenuItem>
         </DataGrid>
 
         <Grid Grid.Row="2" Grid.Column="1">

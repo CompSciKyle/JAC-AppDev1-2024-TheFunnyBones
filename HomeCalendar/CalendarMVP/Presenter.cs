@@ -9,7 +9,9 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.Media3D;
+using static System.Net.WebRequestMethods;
 
 namespace CalendarMVP
 {
@@ -31,7 +33,7 @@ namespace CalendarMVP
         {
             _dbName = fileName;
             string fullPath = Path.Combine(filePath, fileName);
-            if (File.Exists(fullPath) || NewDB)
+            if (System.IO.File.Exists(fullPath) || NewDB)
             {
                 model = (new HomeCalendar(fullPath, NewDB));
                 viewForDatabase.DisplayDB();
