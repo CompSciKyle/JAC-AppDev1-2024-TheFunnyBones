@@ -128,7 +128,7 @@ namespace CalendarMVP
             int CategoryID = 1;
             if (category != null)
             {
-               CategoryID = category.Id;
+                CategoryID = category.Id;
             }
             DateTime Start = new DateTime(1900, 1, 1);
             DateTime End = new DateTime(2500, 1, 1);
@@ -161,14 +161,16 @@ namespace CalendarMVP
         }
         public void DisplayAll()
         {
-            List<CalendarItem> events = model.GetCalendarItems(null,null, false, 1);
+            List<CalendarItem> events = model.GetCalendarItems(null, null, false, 1);
             viewForCalendar.DisplayBoard(events);
         }
+
         private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
             List<CalendarItem> events = model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
             viewForCalendar.DisplayBoard(events);
         }
+
         private void CalendarItemsByMonth(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
             List<CalendarItemsByMonth> events = model.GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
