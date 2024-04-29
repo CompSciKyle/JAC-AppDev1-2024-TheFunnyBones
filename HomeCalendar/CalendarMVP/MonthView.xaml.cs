@@ -108,7 +108,11 @@ namespace CalendarMVP
 
         private void GetAllEventsByMonth(object sender, RoutedEventArgs e)
         {
-            if ((bool)Ctb_Month.IsChecked)
+            if ((bool)Ctb_Category.IsChecked && (bool)Ctb_Month.IsChecked)
+            {
+                LoadCalendarItemsByMonthAndCategory();
+            }
+            else if ((bool)Ctb_Month.IsChecked)
             {
                 LoadCalendarItemsByMonth();
             }
@@ -122,7 +126,11 @@ namespace CalendarMVP
 
         private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
         {
-            if ((bool)Ctb_Category.IsChecked)
+            if((bool)Ctb_Category.IsChecked && (bool)Ctb_Month.IsChecked)
+            {
+                LoadCalendarItemsByMonthAndCategory();
+            }
+            else if ((bool)Ctb_Category.IsChecked)
             {
                 LoadCalendarItemsByCategory();
             }
@@ -130,6 +138,8 @@ namespace CalendarMVP
             {
                 LoadCalendarItemColumns();
             }
+
+           
             FilterEvents();
         }
 
@@ -249,7 +259,7 @@ namespace CalendarMVP
 
             var columnCanadianHolidays = new DataGridTextColumn();
             columnCanadianHolidays.Header = "Canadian Holidays";
-            columnCanadianHolidays.Binding = new Binding("[CanadianHolidays]");
+            columnCanadianHolidays.Binding = new Binding("[Canadian Holidays]");
             myDataGrid.Columns.Add(columnCanadianHolidays);
 
             var columnFun = new DataGridTextColumn();
@@ -269,7 +279,7 @@ namespace CalendarMVP
 
             var columnOnCall = new DataGridTextColumn();
             columnOnCall.Header = "On call";
-            columnOnCall.Binding = new Binding("[OnCall]");
+            columnOnCall.Binding = new Binding("[On call]");
             myDataGrid.Columns.Add(columnOnCall);
 
             var columnSchool = new DataGridTextColumn();
@@ -289,7 +299,7 @@ namespace CalendarMVP
 
             var columnWellnessDays = new DataGridTextColumn();
             columnWellnessDays.Header = "Wellness days";
-            columnWellnessDays.Binding = new Binding("[WellnessDays]");
+            columnWellnessDays.Binding = new Binding("[Wellness days]");
             myDataGrid.Columns.Add(columnWellnessDays);
 
             var columnWork = new DataGridTextColumn();
