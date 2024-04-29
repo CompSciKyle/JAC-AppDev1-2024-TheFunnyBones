@@ -1,4 +1,5 @@
 ﻿using Calendar;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,7 @@ namespace CalendarMVP
             InitializeComponent();
             presenter = p;
             presenter.RegisterNewView(this);
+            LoadCalendarItemColumns();
             presenter.DisplayAll();
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
@@ -106,16 +108,28 @@ namespace CalendarMVP
 
         private void GetAllEventsByMonth(object sender, RoutedEventArgs e)
         {
-
-            LoadCalendarItemsByMonth();
+            if ((bool)Ctb_Month.IsChecked)
+            {
+                LoadCalendarItemsByMonth();
+            }
+            else
+            {
+                LoadCalendarItemColumns();
+            }
             FilterEvents();
 
         }
 
         private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
         {
-
-            LoadCalendarItemsByCategory();
+            if ((bool)Ctb_Category.IsChecked)
+            {
+                LoadCalendarItemsByCategory();
+            }
+            else
+            {
+                LoadCalendarItemColumns();
+            }
             FilterEvents();
         }
 
@@ -157,13 +171,14 @@ namespace CalendarMVP
             var columnDate = new DataGridTextColumn();
             columnDate.Header = "StartDate";
             columnDate.Binding = new Binding("StartDateTime");
+            columnDate.Binding.StringFormat = "dd/MM/yyyy";
             myDataGrid.Columns.Add(columnDate);
 
-            //Need to add StartTime
-            //
-            //
-            //
-            //
+            var columnStartTime = new DataGridTextColumn();
+            columnStartTime.Header = "StartTime";
+            columnStartTime.Binding = new Binding("StartDateTime");
+            columnStartTime.Binding.StringFormat = "HH:mm:ss";
+            myDataGrid.Columns.Add(columnStartTime);
 
             var columnCategory = new DataGridTextColumn();
             columnCategory.Header = "Category";
