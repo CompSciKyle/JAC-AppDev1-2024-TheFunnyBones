@@ -143,7 +143,7 @@ namespace CalendarMVP
             }
             catch (Exception ex)
             {
-                viewForUpdate.DisplayMessage("Failed To create event: " + ex.Message);
+                viewForEvent.DisplayMessage("Failed To create event: " + ex.Message);
             }
         }
 
