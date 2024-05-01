@@ -57,7 +57,7 @@
                 <ContextMenu>
                     <MenuItem Click="Item_Click_Edit" Header="Edit Event" MouseDoubleClick="Item_DoubleClick"/>
                     <MenuItem Click="Item_Click_Delete" Header="Delete Event" MouseDoubleClick="Item_DoubleClick"/>
-                    <MenuItem Click="Item_Click_Cancel" Header="Cancel" MouseDoubleClick="Item_DoubleClick"/>
+                    <MenuItem Header="Cancel" MouseDoubleClick="Item_DoubleClick"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
