@@ -67,8 +67,19 @@ namespace CalendarMVP
         }
         void PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
         {
+            Dtp_Date.DataContext = startDateTime;
+            Txb_Time_Hour.Text = startDateHour;
+            Txb_Time_Minutes.Text = startDateMinute;
+            Txb_Time_Second.Text = startDateSecond;
+            Txb_Duration.Text = durationInMinutes;
+            Txb_Details.Text = details;
+            Cmb_Categories.SelectedItem = category;
 
         }
 
+        void ViewInterfaceForUpdatingEvent.PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
