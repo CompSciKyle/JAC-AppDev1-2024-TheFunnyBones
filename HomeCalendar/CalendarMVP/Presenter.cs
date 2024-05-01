@@ -9,6 +9,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using static System.Net.WebRequestMethods;
@@ -94,6 +95,7 @@ namespace CalendarMVP
                     viewForEvent.ShowTypes(allCategories);
                 }
             }
+
         }
 
         public void NewEvent(string startDateTime, Category category, string durationInMinutes, string details)
@@ -245,6 +247,19 @@ namespace CalendarMVP
             }
 
             return allCategoryTypes;
+        }
+
+        public void DeleteEvent(int eventId)
+        {
+            if(eventId != null)
+            {
+               model.events.Delete(eventId);
+            }
+            else
+            {
+                viewForCalendar.DisplayMessage("Event not found");
+            }
+           
         }
 
     }
