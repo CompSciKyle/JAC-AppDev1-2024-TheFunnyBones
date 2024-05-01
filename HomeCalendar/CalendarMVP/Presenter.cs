@@ -108,34 +108,42 @@ namespace CalendarMVP
 
         public void NewEvent(string startDateTime, Category category, string durationInMinutes, string details)
         {
-            double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
-
-            DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
-
-            if(category == null)
-            {
-                viewForEvent.DisplayMessage("Must select category");
-            }
-
-            bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
-            if (!valid)
-            {
-                viewForEvent.DisplayMessage("Fields are not valid");
-            }
-            else
+            try
             {
 
-                try
+                double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+                DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+                if (category == null)
                 {
-                    model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    viewForEvent.DisplayMessage("Must select category");
                 }
-                catch (Exception ex)
+
+                bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
+                if (!valid)
                 {
-                    viewForEvent.DisplayMessage(ex.Message);
+                    viewForEvent.DisplayMessage("Fields are not valid");
                 }
-                viewForEvent.DisplayDB();
-                viewForCalendar.UpdateBoard();
-                viewForCalendar.DisplayMessage("Event has been created");
+                else
+                {
+
+                    try
+                    {
+                        model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    }
+                    catch (Exception ex)
+                    {
+                        viewForEvent.DisplayMessage(ex.Message);
+                    }
+                    viewForEvent.DisplayDB();
+                    viewForCalendar.UpdateBoard();
+                    viewForCalendar.DisplayMessage("Event has been created");
+                }
+            }
+            catch (Exception ex)
+            {
+                viewForUpdate.DisplayMessage("Failed To create event: " + ex.Message);
             }
         }
 
@@ -265,47 +273,55 @@ namespace CalendarMVP
 
         public void DeleteEvent(CalendarItem calItem)
         {
-            if(calItem.EventID != null)
+            if (calItem.EventID != null)
             {
-               model.events.Delete(calItem.EventID);
+                model.events.Delete(calItem.EventID);
                 viewForCalendar.UpdateBoard();
             }
             else
             {
                 viewForCalendar.DisplayMessage("Event not found");
             }
-           
+
         }
         public void UpdateEvent(CalendarItem calItem, string startDateTime, Category category, string durationInMinutes, string details)
         {
-            double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
-
-            DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
-
-            if (category == null)
-            {
-                viewForEvent.DisplayMessage("Must select category");
-            }
-
-            bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
-            if (!valid)
-            {
-                viewForUpdate.DisplayMessage("Fields are not valid");
-            }
-            else
+            try
             {
 
-                try
+                double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+                DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+                if (category == null)
                 {
-                    model.events.UpdateProperties(calItem.EventID, startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    viewForEvent.DisplayMessage("Must select category");
                 }
-                catch (Exception ex)
+
+                bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
+                if (!valid)
                 {
-                    viewForUpdate.DisplayMessage(ex.Message);
+                    viewForUpdate.DisplayMessage("Fields are not valid");
                 }
-                viewForUpdate.DisplayDB();
-                viewForCalendar.UpdateBoard();
-                viewForCalendar.DisplayMessage("Event has been updated");
+                else
+                {
+
+                    try
+                    {
+                        model.events.UpdateProperties(calItem.EventID, startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    }
+                    catch (Exception ex)
+                    {
+                        viewForUpdate.DisplayMessage(ex.Message);
+                    }
+                    viewForUpdate.DisplayDB();
+                    viewForCalendar.UpdateBoard();
+                    viewForCalendar.DisplayMessage("Event has been updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                viewForUpdate.DisplayMessage("Failed To update event: " + ex.Message);
             }
         }
         public void PopulateUpdateWindow(CalendarItem calItem)

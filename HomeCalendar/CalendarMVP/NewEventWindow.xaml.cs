@@ -39,7 +39,7 @@ namespace CalendarMVP
 
         public void DisplayMessage(string message)
         {
-           DisplayMessageBoxes.DisplayMessage(message);
+            DisplayMessageBoxes.DisplayMessage(message);
         }
 
 
@@ -50,16 +50,10 @@ namespace CalendarMVP
 
         private void Btn_Save(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
-                presenter.NewEvent(dateTimeString, (Category)Cmb_Categories.SelectedItem, Txb_Duration.Text, Txb_Details.Text);
 
-            }
-            catch(Exception ex) 
-            {
-                DisplayMessage("Failed To create a event: " + ex.Message);
-            }
+            string dateTimeString = $"{Dtp_Date.Text} {Txb_Time_Hour.Text}:{Txb_Time_Minutes.Text}:{Txb_Time_Second.Text}";
+            presenter.NewEvent(dateTimeString, (Category)Cmb_Categories.SelectedItem, Txb_Duration.Text, Txb_Details.Text);
+
         }
 
         public void ShowDbName(string DBName)
