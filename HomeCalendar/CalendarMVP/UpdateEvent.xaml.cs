@@ -70,15 +70,16 @@ namespace CalendarMVP
             presenter.DeleteEvent(selectedItem);
             this.Hide();
         }
-        public void PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
+        public void PopulateFields(DateTime startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
         {
-            Dtp_Date.DataContext = startDateTime;
+            Dtp_Date.SelectedDate = startDateTime;
             Txb_Time_Hour.Text = startDateHour;
             Txb_Time_Minutes.Text = startDateMinute;
             Txb_Time_Second.Text = startDateSecond;
             Txb_Duration.Text = durationInMinutes;
             Txb_Details.Text = details;
             Cmb_Categories.SelectedItem = category;
+            Cmb_Categories.Text = category.Description;
 
         }
 

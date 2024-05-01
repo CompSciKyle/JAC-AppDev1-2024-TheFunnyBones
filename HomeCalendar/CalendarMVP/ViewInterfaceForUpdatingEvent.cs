@@ -13,6 +13,6 @@ namespace CalendarMVP
         void ShowDbName(string DBName);
         void DisplayMessage(string message);
         void ShowTypes(List<Category> allCategories);
-        void PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details);
+        void PopulateFields(DateTime startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details);
     }
 }

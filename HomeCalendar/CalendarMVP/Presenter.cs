@@ -112,6 +112,11 @@ namespace CalendarMVP
 
             DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
 
+            if(category == null)
+            {
+                viewForEvent.DisplayMessage("Must select category");
+            }
+
             bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
             if (!valid)
             {
@@ -202,7 +207,7 @@ namespace CalendarMVP
         {
             bool valid = false;
 
-            if (startDateTime > DateTime.Now && durationInMinutes > 0)
+            if (durationInMinutes > 0)
             {
                 try
                 {
@@ -263,6 +268,7 @@ namespace CalendarMVP
             if(calItem.EventID != null)
             {
                model.events.Delete(calItem.EventID);
+                viewForCalendar.UpdateBoard();
             }
             else
             {
@@ -276,10 +282,15 @@ namespace CalendarMVP
 
             DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
 
+            if (category == null)
+            {
+                viewForEvent.DisplayMessage("Must select category");
+            }
+
             bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
             if (!valid)
             {
-                viewForEvent.DisplayMessage("Fields are not valid");
+                viewForUpdate.DisplayMessage("Fields are not valid");
             }
             else
             {
@@ -299,15 +310,15 @@ namespace CalendarMVP
         }
         public void PopulateUpdateWindow(CalendarItem calItem)
         {
-            string startDateTime = calItem.StartDateTime.ToString("yyyy-MM-dd");
-            string startDateHour = calItem.StartDateTime.ToString("H");
+            //string startDateTime = calItem.StartDateTime.ToString("yyyy-MM-dd");
+            string startDateHour = calItem.StartDateTime.ToString("HH");
             string startDateMinute = calItem.StartDateTime.ToString("mm");
             string startDateSecond = calItem.StartDateTime.ToString("ss");
             Category category = model.categories.GetCategoryFromId(calItem.CategoryID);
             string durationInMinutes = Convert.ToString(calItem.DurationInMinutes);
             string details = calItem.ShortDescription;
 
-            viewForUpdate.PopulateFields(startDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
+            viewForUpdate.PopulateFields(calItem.StartDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
         }
 
     }
