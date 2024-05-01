@@ -31,6 +31,8 @@ namespace CalendarMVP
         {
             NewCategory newCategory = new NewCategory(presenter);
             newCategory.Show();
+            //this.Close();
+            //this.Close();
         }
         public void ShowDbName(string DBName)
         {
@@ -39,22 +41,12 @@ namespace CalendarMVP
 
         public void DisplayMessage(string message)
         {
-            MessageBox.Show(message);
+            DisplayMessageBoxes.DisplayMessage(message);
         }
 
         public void ClosingConfirmation(object sender, CancelEventArgs e)
         {
-            string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
-            string messageBoxCaption = "Exit Window?";
-            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-            MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
-            MessageBoxResult result;
-            result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
-
-            if (result == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
+            DisplayMessageBoxes.ClosingConfirmation(sender, e);
         }
 
         public void DisplayBoard(List<CalendarItem> events)
@@ -70,16 +62,27 @@ namespace CalendarMVP
             Cmb_All_Categories.ItemsSource = categories;
         }
 
-        private void Item_Click(object sender, RoutedEventArgs e)
+        private void Item_Click_Edit(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            string hi = "hi";
+            //UpdateEvent eventView = new UpdateEvent(presenter);
+            //eventView.Show();
+
+        }
+        private void Item_Click_Delete(object sender, RoutedEventArgs e)
+        {
+            CalendarItem calItem = myDataGrid.SelectedItem as CalendarItem;
+            presenter.DeleteEvent(calItem);
+        }
+        private void Item_Click_Cancel(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Item_DoubleClick(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            string hi = "hi";
+            DisplayMessageBoxes.DisplayMessage("The double click is done when you do that");
         }
 
         private void startDateChanged(object sender, RoutedEventArgs e)

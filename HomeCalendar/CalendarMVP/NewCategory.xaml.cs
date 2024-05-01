@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Linq;
 
 namespace CalendarMVP
 {
@@ -17,7 +16,6 @@ namespace CalendarMVP
         {
             InitializeComponent();
             presenter = p;
-            presenter.RegisterNewView(this);
         }
         public NewCategory(Presenter p, bool fromEvent)
         {
@@ -43,28 +41,12 @@ namespace CalendarMVP
 
         public void DisplayMessage(string message)
         {
-            //string messageBoxCaption = "Error!";
-            //MessageBoxButton messageBoxButton = MessageBoxButton.OK;
-            //MessageBoxImage messageBoxImage = MessageBoxImage.Error;
-            //MessageBoxResult result;
-            //result = MessageBox.Show(message, messageBoxCaption, messageBoxButton, messageBoxImage);
-            //throw new NotImplementedException();
-
-            MessageBox.Show(message);
+            DisplayMessageBoxes.DisplayMessage(message);
         }
 
         public void ClosingConfirmation(object sender, CancelEventArgs e)
         {
-            string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
-            string messageBoxCaption = "Exit Window?";
-            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-            MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
-            MessageBoxResult result;
-            result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
-            if (result == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
+            DisplayMessageBoxes.ClosingConfirmation(sender, e);
         }
 
         public void ShowTypes(List<Category.CategoryType> allCategoryTypes)

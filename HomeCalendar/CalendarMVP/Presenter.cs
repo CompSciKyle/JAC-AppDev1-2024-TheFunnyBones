@@ -249,11 +249,11 @@ namespace CalendarMVP
             return allCategoryTypes;
         }
 
-        public void DeleteEvent(int eventId)
+        public void DeleteEvent(CalendarItem calItem)
         {
-            if(eventId != null)
+            if(calItem.EventID != null)
             {
-               model.events.Delete(eventId);
+               model.events.Delete(calItem.EventID);
             }
             else
             {
