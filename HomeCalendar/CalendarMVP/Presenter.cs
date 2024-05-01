@@ -270,9 +270,32 @@ namespace CalendarMVP
             }
            
         }
-        public void UpdateEvent(CalendarItem calItem)
+        public void UpdateEvent(CalendarItem calItem, string startDateTime, Category category, string durationInMinutes, string details)
         {
-            
+            double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+            DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+            bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
+            if (!valid)
+            {
+                viewForEvent.DisplayMessage("Fields are not valid");
+            }
+            else
+            {
+
+                try
+                {
+                    model.events.UpdateProperties(calItem.EventID, startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                }
+                catch (Exception ex)
+                {
+                    viewForUpdate.DisplayMessage(ex.Message);
+                }
+                viewForUpdate.DisplayDB();
+                viewForCalendar.UpdateBoard();
+                viewForCalendar.DisplayMessage("Event has been updated");
+            }
         }
         public void PopulateUpdateWindow(CalendarItem calItem)
         {
