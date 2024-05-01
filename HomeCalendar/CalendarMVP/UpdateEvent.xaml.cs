@@ -70,7 +70,7 @@ namespace CalendarMVP
             presenter.DeleteEvent(selectedItem);
             this.Hide();
         }
-        void PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
+        public void PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
         {
             Dtp_Date.DataContext = startDateTime;
             Txb_Time_Hour.Text = startDateHour;
@@ -82,9 +82,5 @@ namespace CalendarMVP
 
         }
 
-        void ViewInterfaceForUpdatingEvent.PopulateFields(string startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
