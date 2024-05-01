@@ -51,13 +51,13 @@
         </StackPanel>
 
         <!--List of events-->
-        <DataGrid Grid.Column="1" Grid.Row="1" Width="auto" Height="auto" x:Name="myDataGrid" Margin="0,0,15,0" IsReadOnly="True">
+        <DataGrid Grid.Column="1" Grid.Row="1" Width="auto" Height="auto" x:Name="myDataGrid" Margin="0,0,15,0" IsReadOnly="True" MouseDoubleClick="Item_DoubleClick">
 
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Click="Item_Click_Edit" Header="Edit Event" MouseDoubleClick="Item_DoubleClick"/>
-                    <MenuItem Click="Item_Click_Delete" Header="Delete Event" MouseDoubleClick="Item_DoubleClick"/>
-                    <MenuItem Click="Item_Click_Cancel" Header="Cancel" MouseDoubleClick="Item_DoubleClick"/>
+                    <MenuItem Click="Item_Click_Edit" Header="Edit Event"/>
+                    <MenuItem Click="Item_Click_Delete" Header="Delete Event"/>
+                    <MenuItem Header="Cancel"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
