@@ -62,7 +62,10 @@ namespace CalendarMVP
             myDataGrid.ClearValue(ItemsControl.ItemsSourceProperty);
             myDataGrid.Items.Clear();
             myDataGrid.ItemsSource = events;
-
+        }
+        public void UpdateBoard()
+        {
+            FilterEvents();
         }
 
         public void ShowTypes(List<Category> categories)
@@ -308,13 +311,13 @@ namespace CalendarMVP
             myDataGrid.Columns.Add(columnTotal);
         }
 
-        //private void AddCollumn(string first, string second)
-        //{
-        //    var column = new DataGridTextColumn();
-        //    column.Header = first;
-        //    column.Binding = new Binding(second);
-        //    myDataGrid.Columns.Add(column);
-        //}
+        private void AddCollumn(string first, string second)
+        {
+            var column = new DataGridTextColumn();
+            column.Header = first;
+            column.Binding = new Binding(second);
+            myDataGrid.Columns.Add(column);
+        }
 
     }
 }

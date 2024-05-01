@@ -13,6 +13,7 @@ namespace CalendarMVP
         void DisplayMessage(string message);
         void ShowTypes(List<Category> categories);
         void DisplayBoard(List<CalendarItem> events);
+        void UpdateBoard();
         void DisplayBoardDictionary(List<Dictionary<string, object>> events);
         void DisplayBoardByMonth(List<CalendarItemsByMonth> events);
         void DisplayBoardByCategory(List<CalendarItemsByCategory> events);

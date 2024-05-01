@@ -119,6 +119,7 @@ namespace CalendarMVP
                     viewForEvent.DisplayMessage(ex.Message);
                 }
                 viewForEvent.DisplayDB();
+                viewForCalendar.UpdateBoard();
                 viewForCalendar.DisplayMessage("Event has been created");
             }
         }
