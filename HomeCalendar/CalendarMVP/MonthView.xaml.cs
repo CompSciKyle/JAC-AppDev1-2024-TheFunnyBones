@@ -84,20 +84,17 @@ namespace CalendarMVP
 
         private void startDateChanged(object sender, RoutedEventArgs e)
         {
-            LoadCalendarItemColumns();
             FilterEvents();
 
         }
 
         private void endDateChanged(object sender, RoutedEventArgs e)
         {
-            LoadCalendarItemColumns();
             FilterEvents();
         }
 
         private void FilterByCategory(object sender, RoutedEventArgs e)
         {
-            LoadCalendarItemColumns();
             FilterEvents();
         }
 
@@ -108,9 +105,29 @@ namespace CalendarMVP
 
         private void GetAllEventsByMonth(object sender, RoutedEventArgs e)
         {
+            FilterEvents();
+        }
+
+        private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
+        {   
+            FilterEvents();
+        }
+
+        private void FilterEvents()
+        {
+            //If they are not checked they are false
+            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
+            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
+            bool eventsByCategory = Ctb_Category.IsChecked ?? false;
+
+            //Checks which filters are checked and loads the columns accordingly
             if ((bool)Ctb_Category.IsChecked && (bool)Ctb_Month.IsChecked)
             {
                 LoadCalendarItemsByMonthAndCategory();
+            }
+            else if ((bool)Ctb_Category.IsChecked)
+            {
+                LoadCalendarItemsByCategory();
             }
             else if ((bool)Ctb_Month.IsChecked)
             {
@@ -120,34 +137,7 @@ namespace CalendarMVP
             {
                 LoadCalendarItemColumns();
             }
-            FilterEvents();
 
-        }
-
-        private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
-        {
-            if((bool)Ctb_Category.IsChecked && (bool)Ctb_Month.IsChecked)
-            {
-                LoadCalendarItemsByMonthAndCategory();
-            }
-            else if ((bool)Ctb_Category.IsChecked)
-            {
-                LoadCalendarItemsByCategory();
-            }
-            else
-            {
-                LoadCalendarItemColumns();
-            }
-
-           
-            FilterEvents();
-        }
-
-        private void FilterEvents()
-        {
-            bool filterCategory = Ctb_FilterByCategory.IsChecked ?? false;
-            bool eventsByMonth = Ctb_Month.IsChecked ?? false;
-            bool eventsByCategory = Ctb_Category.IsChecked ?? false;
             presenter.PopulateDataGrid(Dtb_StartDate.Text, Dtb_EndDate.Text, filterCategory, (Category)Cmb_All_Categories.SelectedItem, eventsByMonth, eventsByCategory);
         }
 
