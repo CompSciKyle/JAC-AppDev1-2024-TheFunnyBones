@@ -22,6 +22,7 @@ namespace CalendarMVP
         private ViewInterfaceForCalendar viewForCalendar;
         private ViewInterfaceForEvents viewForEvent;
         private ViewInterfaceForCategories viewForCategory;
+        private ViewInterfaceForUpdatingEvent viewForUpdate;
         private HomeCalendar model;
         private string _dbName;
 
@@ -67,6 +68,13 @@ namespace CalendarMVP
             List<Category.CategoryType> allCategoryTypes = GetAllCategoryTypes();
             viewForCategory.ShowTypes(allCategoryTypes);
             viewForCategory.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
+        }
+        public void RegisterNewView(ViewInterfaceForUpdatingEvent v)
+        {
+            viewForUpdate = v;
+            List<Category> allCategories = GetAllCategories();
+            viewForUpdate.ShowTypes(allCategories);
+            viewForUpdate.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
 
         public void NewCategory(Category.CategoryType type, string description, bool updateEvent)
@@ -261,6 +269,22 @@ namespace CalendarMVP
                 viewForCalendar.DisplayMessage("Event not found");
             }
            
+        }
+        public void UpdateEvent(CalendarItem calItem)
+        {
+            
+        }
+        public void PopulateUpdateWindow(CalendarItem calItem)
+        {
+            string startDateTime = calItem.StartDateTime.ToString("yyyy-MM-dd");
+            string startDateHour = calItem.StartDateTime.ToString("H");
+            string startDateMinute = calItem.StartDateTime.ToString("mm");
+            string startDateSecond = calItem.StartDateTime.ToString("ss");
+            Category category = model.categories.GetCategoryFromId(calItem.CategoryID);
+            string durationInMinutes = Convert.ToString(calItem.DurationInMinutes);
+            string details = calItem.ShortDescription;
+
+            viewForUpdate.PopulateFields(startDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
         }
 
     }
