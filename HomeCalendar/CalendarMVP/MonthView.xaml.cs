@@ -65,11 +65,14 @@ namespace CalendarMVP
         private void Item_Click_Edit(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            
+            //UpdateEvent eventView = new UpdateEvent(presenter);
+            //eventView.Show();
+
         }
         private void Item_Click_Delete(object sender, RoutedEventArgs e)
         {
-
+            CalendarItem calItem = myDataGrid.SelectedItem as CalendarItem;
+            presenter.DeleteEvent(calItem);
         }
         private void Item_Click_Cancel(object sender, RoutedEventArgs e)
         {
@@ -79,7 +82,7 @@ namespace CalendarMVP
         private void Item_DoubleClick(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            
+            DisplayMessageBoxes.DisplayMessage("The double click is done when you do that");
         }
 
         private void startDateChanged(object sender, RoutedEventArgs e)
