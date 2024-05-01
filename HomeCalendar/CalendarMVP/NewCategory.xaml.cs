@@ -16,6 +16,7 @@ namespace CalendarMVP
         {
             InitializeComponent();
             presenter = p;
+            presenter.RegisterNewView(this);
         }
         public NewCategory(Presenter p, bool fromEvent)
         {
