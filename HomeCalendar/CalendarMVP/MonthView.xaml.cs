@@ -1,4 +1,5 @@
 ﻿using Calendar;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,7 @@ namespace CalendarMVP
             InitializeComponent();
             presenter = p;
             presenter.RegisterNewView(this);
+            LoadCalendarItemColumns();
             presenter.DisplayAll();
         }
         private void BtnClickNewEvent(object sender, RoutedEventArgs e)
@@ -106,16 +108,38 @@ namespace CalendarMVP
 
         private void GetAllEventsByMonth(object sender, RoutedEventArgs e)
         {
-
-            LoadCalendarItemsByMonth();
+            if ((bool)Ctb_Category.IsChecked && (bool)Ctb_Month.IsChecked)
+            {
+                LoadCalendarItemsByMonthAndCategory();
+            }
+            else if ((bool)Ctb_Month.IsChecked)
+            {
+                LoadCalendarItemsByMonth();
+            }
+            else
+            {
+                LoadCalendarItemColumns();
+            }
             FilterEvents();
 
         }
 
         private void GetAllEventsByCategory(object sender, RoutedEventArgs e)
         {
+            if((bool)Ctb_Category.IsChecked && (bool)Ctb_Month.IsChecked)
+            {
+                LoadCalendarItemsByMonthAndCategory();
+            }
+            else if ((bool)Ctb_Category.IsChecked)
+            {
+                LoadCalendarItemsByCategory();
+            }
+            else
+            {
+                LoadCalendarItemColumns();
+            }
 
-            LoadCalendarItemsByCategory();
+           
             FilterEvents();
         }
 
@@ -157,13 +181,14 @@ namespace CalendarMVP
             var columnDate = new DataGridTextColumn();
             columnDate.Header = "StartDate";
             columnDate.Binding = new Binding("StartDateTime");
+            columnDate.Binding.StringFormat = "dd/MM/yyyy";
             myDataGrid.Columns.Add(columnDate);
 
-            //Need to add StartTime
-            //
-            //
-            //
-            //
+            var columnStartTime = new DataGridTextColumn();
+            columnStartTime.Header = "StartTime";
+            columnStartTime.Binding = new Binding("StartDateTime");
+            columnStartTime.Binding.StringFormat = "HH:mm:ss";
+            myDataGrid.Columns.Add(columnStartTime);
 
             var columnCategory = new DataGridTextColumn();
             columnCategory.Header = "Category";
@@ -216,5 +241,90 @@ namespace CalendarMVP
             columnTotal.Binding = new Binding("TotalBusyTime");
             myDataGrid.Columns.Add(columnTotal);
         }
+
+        private void LoadCalendarItemsByMonthAndCategory()
+        {
+            myDataGrid.Columns.Clear();
+            myDataGrid.AutoGenerateColumns = false;
+
+            var columnMonth = new DataGridTextColumn();
+            columnMonth.Header = "Month";
+            columnMonth.Binding = new Binding("[Month]");
+            myDataGrid.Columns.Add(columnMonth);
+
+            var columnBirthdays = new DataGridTextColumn();
+            columnBirthdays.Header = "Birthdays";
+            columnBirthdays.Binding = new Binding("[Birthdays]");
+            myDataGrid.Columns.Add(columnBirthdays);
+
+            var columnCanadianHolidays = new DataGridTextColumn();
+            columnCanadianHolidays.Header = "Canadian Holidays";
+            columnCanadianHolidays.Binding = new Binding("[Canadian Holidays]");
+            myDataGrid.Columns.Add(columnCanadianHolidays);
+
+            var columnFun = new DataGridTextColumn();
+            columnFun.Header = "Fun";
+            columnFun.Binding = new Binding("[Fun]");
+            myDataGrid.Columns.Add(columnFun);
+
+            var columnHomework = new DataGridTextColumn();
+            columnHomework.Header = "Homework";
+            columnHomework.Binding = new Binding("[Homework]");
+            myDataGrid.Columns.Add(columnHomework);
+
+            var columnMedical = new DataGridTextColumn();
+            columnMedical.Header = "Medical";
+            columnMedical.Binding = new Binding("[Medical]");
+            myDataGrid.Columns.Add(columnMedical);
+
+            var columnOnCall = new DataGridTextColumn();
+            columnOnCall.Header = "On call";
+            columnOnCall.Binding = new Binding("[On call]");
+            myDataGrid.Columns.Add(columnOnCall);
+
+            var columnSchool = new DataGridTextColumn();
+            columnSchool.Header = "School";
+            columnSchool.Binding = new Binding("[School]");
+            myDataGrid.Columns.Add(columnSchool);
+
+            var columnSleep = new DataGridTextColumn();
+            columnSleep.Header = "Sleep";
+            columnSleep.Binding = new Binding("[Sleep]");
+            myDataGrid.Columns.Add(columnSleep);
+
+            var columnVacation = new DataGridTextColumn();
+            columnVacation.Header = "Vacation";
+            columnVacation.Binding = new Binding("[Vacation]");
+            myDataGrid.Columns.Add(columnVacation);
+
+            var columnWellnessDays = new DataGridTextColumn();
+            columnWellnessDays.Header = "Wellness days";
+            columnWellnessDays.Binding = new Binding("[Wellness days]");
+            myDataGrid.Columns.Add(columnWellnessDays);
+
+            var columnWork = new DataGridTextColumn();
+            columnWork.Header = "Work";
+            columnWork.Binding = new Binding("[Work]");
+            myDataGrid.Columns.Add(columnWork);
+
+            var columnWorking = new DataGridTextColumn();
+            columnWorking.Header = "Working";
+            columnWorking.Binding = new Binding("[Working]");
+            myDataGrid.Columns.Add(columnWorking);
+
+            var columnTotal = new DataGridTextColumn();
+            columnTotal.Header = "Total Busy Time";
+            columnTotal.Binding = new Binding("[TotalBusyTime]");
+            myDataGrid.Columns.Add(columnTotal);
+        }
+
+        //private void AddCollumn(string first, string second)
+        //{
+        //    var column = new DataGridTextColumn();
+        //    column.Header = first;
+        //    column.Binding = new Binding(second);
+        //    myDataGrid.Columns.Add(column);
+        //}
+
     }
 }
