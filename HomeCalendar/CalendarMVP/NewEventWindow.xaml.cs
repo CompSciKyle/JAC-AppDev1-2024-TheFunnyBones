@@ -39,7 +39,7 @@ namespace CalendarMVP
 
         public void DisplayMessage(string message)
         {
-           MessageBox.Show(message);
+           DisplayMessageBoxes.DisplayMessage(message);
         }
 
 
@@ -69,17 +69,7 @@ namespace CalendarMVP
 
         public void ClosingConfirmation(object sender, CancelEventArgs e)
         {
-            string messageBoxText = "Are you sure you would like to exit the window? Any unsaved changes will be lost."; // Create a class that makes this code a static method so anywhere that needs to use it will have access to it. 
-            string messageBoxCaption = "Exit Window?";
-            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-            MessageBoxImage messageBoxImage = MessageBoxImage.Exclamation;
-            MessageBoxResult result;
-            result = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
-
-            if (result == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
+            DisplayMessageBoxes.ClosingConfirmation(sender, e);
         }
         public void Btn_Cancel(object sender, RoutedEventArgs e)
         {
