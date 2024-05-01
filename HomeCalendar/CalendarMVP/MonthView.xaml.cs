@@ -54,7 +54,10 @@ namespace CalendarMVP
             myDataGrid.ClearValue(ItemsControl.ItemsSourceProperty);
             myDataGrid.Items.Clear();
             myDataGrid.ItemsSource = events;
-
+        }
+        public void UpdateBoard()
+        {
+            FilterEvents();
         }
 
         public void ShowTypes(List<Category> categories)
@@ -77,7 +80,11 @@ namespace CalendarMVP
         private void Item_DoubleClick(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            DisplayMessageBoxes.DisplayMessage("The double click is done when you do that");
+            CalendarItem calItem = myDataGrid.SelectedItem as CalendarItem;
+            UpdateEvent window = new UpdateEvent(presenter, calItem);
+            window.Show();
+            presenter.PopulateUpdateWindow(calItem);
+
         }
 
         private void startDateChanged(object sender, RoutedEventArgs e)
@@ -306,13 +313,13 @@ namespace CalendarMVP
             myDataGrid.Columns.Add(columnTotal);
         }
 
-        //private void AddCollumn(string first, string second)
-        //{
-        //    var column = new DataGridTextColumn();
-        //    column.Header = first;
-        //    column.Binding = new Binding(second);
-        //    myDataGrid.Columns.Add(column);
-        //}
+        private void AddCollumn(string first, string second)
+        {
+            var column = new DataGridTextColumn();
+            column.Header = first;
+            column.Binding = new Binding(second);
+            myDataGrid.Columns.Add(column);
+        }
 
     }
 }

@@ -22,6 +22,7 @@ namespace CalendarMVP
         private ViewInterfaceForCalendar viewForCalendar;
         private ViewInterfaceForEvents viewForEvent;
         private ViewInterfaceForCategories viewForCategory;
+        private ViewInterfaceForUpdatingEvent viewForUpdate;
         private HomeCalendar model;
         private string _dbName;
 
@@ -68,6 +69,13 @@ namespace CalendarMVP
             viewForCategory.ShowTypes(allCategoryTypes);
             viewForCategory.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
         }
+        public void RegisterNewView(ViewInterfaceForUpdatingEvent v)
+        {
+            viewForUpdate = v;
+            List<Category> allCategories = GetAllCategories();
+            viewForUpdate.ShowTypes(allCategories);
+            viewForUpdate.ShowDbName(_dbName.Substring(0, _dbName.Length - 3));
+        }
 
         public void NewCategory(Category.CategoryType type, string description, bool updateEvent)
         {
@@ -100,28 +108,42 @@ namespace CalendarMVP
 
         public void NewEvent(string startDateTime, Category category, string durationInMinutes, string details)
         {
-            double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
-
-            DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
-
-            bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
-            if (!valid)
+            try
             {
-                viewForEvent.DisplayMessage("Fields are not valid");
+
+                double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+                DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+                if (category == null)
+                {
+                    viewForEvent.DisplayMessage("Must select category");
+                }
+
+                bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
+                if (!valid)
+                {
+                    viewForEvent.DisplayMessage("Fields are not valid");
+                }
+                else
+                {
+
+                    try
+                    {
+                        model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    }
+                    catch (Exception ex)
+                    {
+                        viewForEvent.DisplayMessage(ex.Message);
+                    }
+                    viewForEvent.DisplayDB();
+                    viewForCalendar.UpdateBoard();
+                    viewForCalendar.DisplayMessage("Event has been created");
+                }
             }
-            else
+            catch (Exception ex)
             {
-
-                try
-                {
-                    model.events.Add(startDateTimeToParse, category.Id, durationInMinutesDouble, details);
-                }
-                catch (Exception ex)
-                {
-                    viewForEvent.DisplayMessage(ex.Message);
-                }
-                viewForEvent.DisplayDB();
-                viewForCalendar.DisplayMessage("Event has been created");
+                viewForUpdate.DisplayMessage("Failed To create event: " + ex.Message);
             }
         }
 
@@ -193,7 +215,7 @@ namespace CalendarMVP
         {
             bool valid = false;
 
-            if (startDateTime > DateTime.Now && durationInMinutes > 0)
+            if (durationInMinutes > 0)
             {
                 try
                 {
@@ -251,15 +273,68 @@ namespace CalendarMVP
 
         public void DeleteEvent(CalendarItem calItem)
         {
-            if(calItem.EventID != null)
+            if (calItem.EventID != null)
             {
-               model.events.Delete(calItem.EventID);
+                model.events.Delete(calItem.EventID);
+                viewForCalendar.UpdateBoard();
             }
             else
             {
                 viewForCalendar.DisplayMessage("Event not found");
             }
-           
+
+        }
+        public void UpdateEvent(CalendarItem calItem, string startDateTime, Category category, string durationInMinutes, string details)
+        {
+            try
+            {
+
+                double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+                DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+                if (category == null)
+                {
+                    viewForEvent.DisplayMessage("Must select category");
+                }
+
+                bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
+                if (!valid)
+                {
+                    viewForUpdate.DisplayMessage("Fields are not valid");
+                }
+                else
+                {
+
+                    try
+                    {
+                        model.events.UpdateProperties(calItem.EventID, startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    }
+                    catch (Exception ex)
+                    {
+                        viewForUpdate.DisplayMessage(ex.Message);
+                    }
+                    viewForUpdate.DisplayDB();
+                    viewForCalendar.UpdateBoard();
+                    viewForCalendar.DisplayMessage("Event has been updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                viewForUpdate.DisplayMessage("Failed To update event: " + ex.Message);
+            }
+        }
+        public void PopulateUpdateWindow(CalendarItem calItem)
+        {
+            //string startDateTime = calItem.StartDateTime.ToString("yyyy-MM-dd");
+            string startDateHour = calItem.StartDateTime.ToString("HH");
+            string startDateMinute = calItem.StartDateTime.ToString("mm");
+            string startDateSecond = calItem.StartDateTime.ToString("ss");
+            Category category = model.categories.GetCategoryFromId(calItem.CategoryID);
+            string durationInMinutes = Convert.ToString(calItem.DurationInMinutes);
+            string details = calItem.ShortDescription;
+
+            viewForUpdate.PopulateFields(calItem.StartDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
         }
 
     }
