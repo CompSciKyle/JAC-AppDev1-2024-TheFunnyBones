@@ -74,13 +74,13 @@ namespace CalendarMVP
         }
         private void Item_Click_Delete(object sender, RoutedEventArgs e)
         {
-            CalendarItem calItem = myDataGrid.SelectedItem as CalendarItem;
+            CalendarItem? calItem = myDataGrid.SelectedItem as CalendarItem;
             presenter.DeleteEvent(calItem);
         }
         private void Item_DoubleClick(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            CalendarItem calItem = myDataGrid.SelectedItem as CalendarItem;
+            CalendarItem? calItem = myDataGrid.SelectedItem as CalendarItem;
             UpdateEvent window = new UpdateEvent(presenter, calItem);
             window.Show();
             presenter.PopulateUpdateWindow(calItem);
