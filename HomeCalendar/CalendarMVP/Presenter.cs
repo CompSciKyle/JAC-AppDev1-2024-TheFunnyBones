@@ -188,61 +188,6 @@ namespace CalendarMVP
             List<CalendarItem> events = model.GetCalendarItems(null, null, false, 1);
             viewForCalendar.DisplayBoard(events);
         }
-
-        private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
-        {
-            List<CalendarItem> events = model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayBoard(events);
-        }
-
-        private void CalendarItemsByMonth(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
-        {
-            List<CalendarItemsByMonth> events = model.GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayBoardByMonth(events);
-        }
-        private void CalendarItemsByCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
-        {
-            List<CalendarItemsByCategory> events = model.GetCalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayBoardByCategory(events);
-        }
-        private void CalendarItemsByMonthAndCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
-        {
-            List<Dictionary<string, object>> events = model.GetCalendarDictionaryByCategoryAndMonth(Start, End, FilterFlag, CategoryID);
-            viewForCalendar.DisplayBoardDictionary(events);
-        }
-
-        private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
-        {
-            bool valid = false;
-
-            if (durationInMinutes > 0)
-            {
-                try
-                {
-                    model.categories.GetCategoryFromId(categoryId);
-                    valid = true;
-
-                }
-                catch (Exception ex)
-                {
-                    valid = false;
-                }
-            }
-            else
-            {
-                valid = false;
-            }
-
-            return valid;
-
-        }
-
-        private bool ValidatingCategoryTypeData(Category.CategoryType type)
-        {
-            return Enum.IsDefined(typeof(Category.CategoryType), type);
-        }
-
-
         public List<Category> GetAllCategories()
         {
             List<Category> allCategories = new List<Category>();
@@ -255,22 +200,6 @@ namespace CalendarMVP
             return allCategories;
 
         }
-
-        private List<Category.CategoryType> GetAllCategoryTypes()
-        {
-            List<Category.CategoryType> allCategoryTypes = new List<Category.CategoryType>();
-
-            if (model != null)
-            {
-                foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
-                {
-                    allCategoryTypes.Add(categoryType);
-                }
-            }
-
-            return allCategoryTypes;
-        }
-
         public void DeleteEvent(CalendarItem calItem)
         {
             if (calItem.EventID != null)
@@ -336,6 +265,78 @@ namespace CalendarMVP
 
             viewForUpdate.PopulateFields(calItem.StartDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
         }
+
+        private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItem> events = model.GetCalendarItems(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoard(events);
+        }
+
+        private void CalendarItemsByMonth(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItemsByMonth> events = model.GetCalendarItemsByMonth(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoardByMonth(events);
+        }
+        private void CalendarItemsByCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<CalendarItemsByCategory> events = model.GetCalendarItemsByCategory(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoardByCategory(events);
+        }
+        private void CalendarItemsByMonthAndCategory(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
+        {
+            List<Dictionary<string, object>> events = model.GetCalendarDictionaryByCategoryAndMonth(Start, End, FilterFlag, CategoryID);
+            viewForCalendar.DisplayBoardDictionary(events);
+        }
+
+        private bool ValidatingEventData(DateTime startDateTime, int categoryId, double durationInMinutes)
+        {
+            bool valid = false;
+
+            if (durationInMinutes > 0)
+            {
+                try
+                {
+                    model.categories.GetCategoryFromId(categoryId);
+                    valid = true;
+
+                }
+                catch (Exception ex)
+                {
+                    valid = false;
+                }
+            }
+            else
+            {
+                valid = false;
+            }
+
+            return valid;
+
+        }
+
+        private bool ValidatingCategoryTypeData(Category.CategoryType type)
+        {
+            return Enum.IsDefined(typeof(Category.CategoryType), type);
+        }
+
+
+
+        private List<Category.CategoryType> GetAllCategoryTypes()
+        {
+            List<Category.CategoryType> allCategoryTypes = new List<Category.CategoryType>();
+
+            if (model != null)
+            {
+                foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
+                {
+                    allCategoryTypes.Add(categoryType);
+                }
+            }
+
+            return allCategoryTypes;
+        }
+
+        
 
     }
 

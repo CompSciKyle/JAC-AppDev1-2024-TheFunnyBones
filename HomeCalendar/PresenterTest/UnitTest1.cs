@@ -449,6 +449,22 @@ namespace PresenterTest
             Assert.True(eventView.calledDisplayMessage);
         }
 
+        [Fact]
+        public void TestMonthView_DisplayAll()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewCalendar viewCalendar = new TestViewCalendar();
 
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            Assert.True(viewCalendar.calledDisplayMessage);
+        }
+
+        [Fact]
+        public void 
     }
 }
