@@ -465,6 +465,42 @@ namespace PresenterTest
         }
 
         [Fact]
-        public void 
-    }
+        public void TestDelete_DeleteEvent()
+        {
+            // Arrange
+            //Setting up Views and Presenter
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            eventView.calledDisplayDB = false;
+            viewCalendar.calledDisplayMessage = false;
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            // Act
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            presenter.DeleteEvent(viewCalendar.items[0]);
+
+        }
 }

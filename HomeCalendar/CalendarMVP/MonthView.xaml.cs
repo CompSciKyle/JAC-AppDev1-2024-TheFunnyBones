@@ -68,8 +68,10 @@ namespace CalendarMVP
         private void Item_Click_Edit(object sender, RoutedEventArgs e)
         {
             // the selected object will always be a of the type that was originally put in the ItemsSource
-            //UpdateEvent eventView = new UpdateEvent(presenter);
-            //eventView.Show();
+            CalendarItem calItem = myDataGrid.SelectedItem as CalendarItem;
+            UpdateEvent window = new UpdateEvent(presenter, calItem);
+            window.Show();
+            presenter.PopulateUpdateWindow(calItem);
 
         }
         private void Item_Click_Delete(object sender, RoutedEventArgs e)
