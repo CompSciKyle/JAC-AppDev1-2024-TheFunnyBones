@@ -29,6 +29,44 @@ namespace PresenterTest
         public bool calledDisplayMessage = false;
         public bool calledShowDBName = false;
         public string dbName = "";
+        public bool calledDisplayBoard = false;
+        public bool calledDisplayBoardByMonth = false;
+        public bool calledDisplayBoardByCategory = false;
+        public bool calledDisplayBoardByDictionary = false;
+        public bool calledShowTypes = false;
+        public bool calledUpdateBoard = false;
+
+        public List<CalendarItem> items = new List<CalendarItem>();
+        public List<CalendarItemsByCategory> categoryItems = new List<CalendarItemsByCategory>();
+        public List<CalendarItemsByMonth> MonthItems = new List<CalendarItemsByMonth>();
+        List<Dictionary<string, object>> DictionaryItems = new List<Dictionary<string, object>>();
+        public List<Category> allCategories = new List<Category>();
+
+
+        public void DisplayBoard(List<CalendarItem> events)
+        {
+            calledDisplayBoard = true;
+            items = events;
+
+        }
+
+        public void DisplayBoardByCategory(List<CalendarItemsByCategory> events)
+        {
+            calledDisplayBoardByCategory = true;
+            categoryItems = events;
+        }
+
+        public void DisplayBoardByMonth(List<CalendarItemsByMonth> events)
+        {
+            calledDisplayBoardByMonth = true;
+            MonthItems = events;
+        }
+
+        public void DisplayBoardDictionary(List<Dictionary<string, object>> events)
+        {
+            calledDisplayBoardByDictionary = true;
+            DictionaryItems = events;
+        }
 
         public void DisplayMessage(string message)
         {
@@ -39,6 +77,17 @@ namespace PresenterTest
         {
             calledShowDBName = true;
             dbName = DBName;
+        }
+
+        public void ShowTypes(List<Category> categories)
+        {
+            calledShowTypes = true;
+            allCategories = categories;
+        }
+
+        public void UpdateBoard()
+        {
+            calledUpdateBoard = true;
         }
     }
 
@@ -107,8 +156,46 @@ namespace PresenterTest
             calledShowTypesCategoryTypes = true;
             countOfCategoriesTypes = allCategoryTypes.Count;
         }
+
+        public void ClosingConfirmation(object sender, CancelEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 
+    public class UpdateView : ViewInterfaceForUpdatingEvent
+    {
+        public bool calledDisplayDB = false;
+        public bool calledDisplayMessage = false;
+        public bool calledPopulateFields = false;
+        public bool ShowDBName = false;
+        public bool calledShowTypes = false;
+
+        public void DisplayDB()
+        {
+            calledDisplayDB = true;
+        }
+
+        public void DisplayMessage(string message)
+        {
+            calledDisplayMessage = true;
+        }
+
+        public void PopulateFields(DateTime startDateTime, string startDateHour, string startDateMinute, string startDateSecond, Category category, string durationInMinutes, string details)
+        {
+            calledDisplayMessage = true;
+        }
+
+        public void ShowDbName(string DBName)
+        {
+            ShowDBName = true;
+        }
+
+        public void ShowTypes(List<Category> allCategories)
+        {
+            calledShowTypes = true;
+        }
+    }
 
     public class UnitTest1
     {
