@@ -202,16 +202,17 @@ namespace CalendarMVP
         }
         public void DeleteEvent(CalendarItem calItem)
         {
-            if (calItem.EventID != null)
+            List<CalendarItem> events = model.GetCalendarItems(null, null, false, 1);
+
+            if(events.Contains(calItem))
             {
                 model.events.Delete(calItem.EventID);
                 viewForCalendar.UpdateBoard();
             }
             else
             {
-                viewForCalendar.DisplayMessage("Event not found");
+                viewForCalendar.DisplayMessage("Event not found");   
             }
-
         }
         public void UpdateEvent(CalendarItem calItem, string startDateTime, Category category, string durationInMinutes, string details)
         {
