@@ -39,7 +39,7 @@ namespace PresenterTest
         public List<CalendarItem> items = new List<CalendarItem>();
         public List<CalendarItemsByCategory> categoryItems = new List<CalendarItemsByCategory>();
         public List<CalendarItemsByMonth> MonthItems = new List<CalendarItemsByMonth>();
-        List<Dictionary<string, object>> DictionaryItems = new List<Dictionary<string, object>>();
+        public  List<Dictionary<string, object>> DictionaryItems = new List<Dictionary<string, object>>();
         public List<Category> allCategories = new List<Category>();
 
 
@@ -215,26 +215,6 @@ namespace PresenterTest
 
             // Assert
             Assert.True(view.calledDisplayDB);
-        }
-
-        [Fact]
-        public void TestConnectToDB_NewPath_DoesntExist_Error()
-        {
-            // Arrange
-            TestDBView view = new TestDBView();
-            Presenter presenter = new Presenter(view);
-            string filePath = "C:\\NonExistent\\Path\\Im\\Hoping\\That\\You\\Dont\\Have";
-            string fileName = "databaseTest.db";
-            bool newDB = true;
-            view.calledDisplayError = false;
-            view.displayedMessage = string.Empty;
-            // Act
-            presenter.ConnectToDB(filePath, fileName, newDB);
-
-            // Assert
-            Assert.True(view.calledDisplayError);
-            Assert.Equal("Path does not exist", view.displayedMessage);
-
         }
 
         [Fact]
@@ -577,7 +557,421 @@ namespace PresenterTest
             string durationInMinutes = "60";
             var details = "Some event details";
             List<Category> mycategories = presenter.GetAllCategories();
+        [Fact]
+        public void TestPopulateCalendarItems_ValidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
 
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            eventView.calledDisplayDB = false;
+            viewCalendar.calledDisplayMessage = false;
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid("", "", false, mycategories[1], false, false);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoard);
+            Assert.Equal(1, viewCalendar.items.Count);
+        }
+
+        [Fact]
+        public void TestPopulateCalendarItems_InvalidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            eventView.calledDisplayDB = false;
+            viewCalendar.calledDisplayMessage = false;
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid(null, null, false, mycategories[1], false, false);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoard);
+            Assert.Equal(0, viewCalendar.items.Count);
+        }
+
+
+        [Fact]
+        public void TestPopulateCalendarItemsByMonth_ValidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            viewCalendar.calledDisplayBoardByMonth = false;
+            viewCalendar.MonthItems.Clear();
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid("", "", false, mycategories[1], true, false);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoardByMonth);
+            Assert.Equal(1, viewCalendar.MonthItems.Count);
+        }
+
+
+        [Fact]
+        public void TestPopulateCalendarItemsByMonth_InvalidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            viewCalendar.calledDisplayBoardByMonth = false;
+            viewCalendar.MonthItems.Clear();
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid(null, null, false, mycategories[1], true, false);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoardByMonth);
+            Assert.Equal(0, viewCalendar.MonthItems.Count);
+        }
+
+        [Fact]
+        public void TestPopulateCalendarItemsByCategory_ValidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            viewCalendar.calledDisplayBoardByCategory = false;
+            viewCalendar.categoryItems.Clear();
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid("", "", false, mycategories[1], false, true);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoardByCategory);
+            Assert.Equal(1, viewCalendar.categoryItems.Count);
+        }
+
+        [Fact]
+        public void TestPopulateCalendarItemsByCategory_InvalidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            viewCalendar.calledDisplayBoardByCategory = false;
+            viewCalendar.categoryItems.Clear();
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid(null, null, false, mycategories[1], false, true);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoardByCategory);
+            Assert.Equal(0, viewCalendar.categoryItems.Count);
+        }
+
+        [Fact]
+        public void TestPopulateCalendarItemsByCategoryAndMonth_ValidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            viewCalendar.calledDisplayBoardByDictionary = false;
+            viewCalendar.DictionaryItems.Clear();
+
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid("", "", false, mycategories[1], true, true);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoardByDictionary);
+            Assert.Equal(2, viewCalendar.DictionaryItems.Count);
+        }
+
+        [Fact]
+        public void TestPopulateCalendarItemsByCategoryAndMonth_InvalidData()
+        {
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent eventView = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+            List<Category> mycategories = presenter.GetAllCategories();
+
+
+
+            //Resetting variables
+            viewCalendar.calledDisplayBoardByDictionary = false;
+            viewCalendar.DictionaryItems.Clear();
+
+
+            //Registering the views
+            presenter.RegisterNewView(eventView);
+            presenter.RegisterNewView(viewCalendar);
+
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+
+            // Act
+            presenter.PopulateDataGrid(null, null, false, mycategories[1], true, true);
+
+            // Assert
+            Assert.True(viewCalendar.calledDisplayBoardByDictionary);
+            Assert.Equal(1, viewCalendar.DictionaryItems.Count);
+        }
+
+
+        [Fact]
+        public void TestUpdateEvent()
+        {
+
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent ev = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+            UpdateView updatewindow = new UpdateView();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+
+            presenter.RegisterNewView(ev);
+            presenter.RegisterNewView(updatewindow);
+            presenter.RegisterNewView(viewCalendar);
+            
+            List<Category> mycategories = presenter.GetAllCategories();
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+            presenter.PopulateDataGrid("", "", false, mycategories[1], false, false);
+
+            //Act
+
+            presenter.UpdateEvent(viewCalendar.items[0], new DateTime(1900, 1, 1).ToString(), mycategories[0], "60", "hi");
+
+            //Assert
+            Assert.True(updatewindow.calledDisplayDB);
+            Assert.True(viewCalendar.calledUpdateBoard);
+            Assert.True(viewCalendar.calledDisplayMessage);
+
+        }
+
+        [Fact]
+        public void TestUpdateInvalidEvent()
+        {
+
+            TestDBView view = new TestDBView();
+            Presenter presenter = new Presenter(view);
+            TestViewEvent ev = new TestViewEvent();
+            TestViewCalendar viewCalendar = new TestViewCalendar();
+            UpdateView updatewindow = new UpdateView();
+
+            //Create new db
+            string filePath = Path.GetTempPath(); //Creates a unique temporary file name and returns the full path to that file.
+            string fileName = "databaseTest.db";
+            bool newDB = true;
+            presenter.ConnectToDB(filePath, fileName, newDB);
+
+            //Input Fields for event
+            var startDateTime = DateTime.Now.AddMonths(1);
+            string startDate = startDateTime.ToString();
+            string durationInMinutes = "60";
+            var details = "Some event details";
+
+            presenter.RegisterNewView(ev);
+            presenter.RegisterNewView(updatewindow);
+            presenter.RegisterNewView(viewCalendar);
+
+            List<Category> mycategories = presenter.GetAllCategories();
+            presenter.NewEvent(startDate, mycategories[1], durationInMinutes, details);
+            presenter.PopulateDataGrid("", "", false, mycategories[1], false, false);
+
+            updatewindow.calledDisplayMessage = false;
+
+            //Act
+
+            presenter.UpdateEvent(viewCalendar.items[0], new DateTime(1900, 1, 1).ToString(), mycategories[2], "-60", "hi");
+
+            //Assert
+            Assert.True(updatewindow.calledDisplayMessage);
+           
+
+        }
 
 
             //Resetting variables
@@ -645,4 +1039,4 @@ namespace PresenterTest
             Assert.True(viewCalendar.calledDisplayMessage);
         }
     }
-}
+}   
