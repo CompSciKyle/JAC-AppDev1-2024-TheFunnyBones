@@ -188,6 +188,84 @@ namespace CalendarMVP
             List<CalendarItem> events = model.GetCalendarItems(null, null, false, 1);
             viewForCalendar.DisplayBoard(events);
         }
+        public List<Category> GetAllCategories()
+        {
+            List<Category> allCategories = new List<Category>();
+
+            if (model != null)
+            {
+                allCategories = model.categories.List();
+            }
+
+            return allCategories;
+
+        }
+        public void DeleteEvent(CalendarItem calItem)
+        {
+            List<CalendarItem> events = model.GetCalendarItems(null, null, false, 1);
+
+            if(events.Contains(calItem))
+            {
+                model.events.Delete(calItem.EventID);
+                viewForCalendar.UpdateBoard();
+            }
+            else
+            {
+                viewForCalendar.DisplayMessage("Event not found");   
+            }
+        }
+        public void UpdateEvent(CalendarItem calItem, string startDateTime, Category category, string durationInMinutes, string details)
+        {
+            try
+            {
+
+                double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
+
+                DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
+
+                if (category == null)
+                {
+                    viewForEvent.DisplayMessage("Must select category");
+                }
+
+                bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
+                if (!valid)
+                {
+                    viewForUpdate.DisplayMessage("Fields are not valid");
+                }
+                else
+                {
+
+                    try
+                    {
+                        model.events.UpdateProperties(calItem.EventID, startDateTimeToParse, category.Id, durationInMinutesDouble, details);
+                    }
+                    catch (Exception ex)
+                    {
+                        viewForUpdate.DisplayMessage(ex.Message);
+                    }
+                    viewForUpdate.DisplayDB();
+                    viewForCalendar.UpdateBoard();
+                    viewForCalendar.DisplayMessage("Event has been updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                viewForUpdate.DisplayMessage("Failed To update event: " + ex.Message);
+            }
+        }
+        public void PopulateUpdateWindow(CalendarItem calItem)
+        {
+            //string startDateTime = calItem.StartDateTime.ToString("yyyy-MM-dd");
+            string startDateHour = calItem.StartDateTime.ToString("HH");
+            string startDateMinute = calItem.StartDateTime.ToString("mm");
+            string startDateSecond = calItem.StartDateTime.ToString("ss");
+            Category category = model.categories.GetCategoryFromId(calItem.CategoryID);
+            string durationInMinutes = Convert.ToString(calItem.DurationInMinutes);
+            string details = calItem.ShortDescription;
+
+            viewForUpdate.PopulateFields(calItem.StartDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
+        }
 
         private void CalendarItems(DateTime Start, DateTime End, bool FilterFlag, int CategoryID)
         {
@@ -243,18 +321,6 @@ namespace CalendarMVP
         }
 
 
-        public List<Category> GetAllCategories()
-        {
-            List<Category> allCategories = new List<Category>();
-
-            if (model != null)
-            {
-                allCategories = model.categories.List();
-            }
-
-            return allCategories;
-
-        }
 
         private List<Category.CategoryType> GetAllCategoryTypes()
         {
@@ -271,71 +337,7 @@ namespace CalendarMVP
             return allCategoryTypes;
         }
 
-        public void DeleteEvent(CalendarItem calItem)
-        {
-            if (calItem.EventID != null)
-            {
-                model.events.Delete(calItem.EventID);
-                viewForCalendar.UpdateBoard();
-            }
-            else
-            {
-                viewForCalendar.DisplayMessage("Event not found");
-            }
-
-        }
-        public void UpdateEvent(CalendarItem calItem, string startDateTime, Category category, string durationInMinutes, string details)
-        {
-            try
-            {
-
-                double durationInMinutesDouble = Convert.ToDouble(durationInMinutes);
-
-                DateTime startDateTimeToParse = Convert.ToDateTime(startDateTime);
-
-                if (category == null)
-                {
-                    viewForEvent.DisplayMessage("Must select category");
-                }
-
-                bool valid = ValidatingEventData(startDateTimeToParse, category.Id, durationInMinutesDouble);
-                if (!valid)
-                {
-                    viewForUpdate.DisplayMessage("Fields are not valid");
-                }
-                else
-                {
-
-                    try
-                    {
-                        model.events.UpdateProperties(calItem.EventID, startDateTimeToParse, category.Id, durationInMinutesDouble, details);
-                    }
-                    catch (Exception ex)
-                    {
-                        viewForUpdate.DisplayMessage(ex.Message);
-                    }
-                    viewForUpdate.DisplayDB();
-                    viewForCalendar.UpdateBoard();
-                    viewForCalendar.DisplayMessage("Event has been updated");
-                }
-            }
-            catch (Exception ex)
-            {
-                viewForUpdate.DisplayMessage("Failed To update event: " + ex.Message);
-            }
-        }
-        public void PopulateUpdateWindow(CalendarItem calItem)
-        {
-            //string startDateTime = calItem.StartDateTime.ToString("yyyy-MM-dd");
-            string startDateHour = calItem.StartDateTime.ToString("HH");
-            string startDateMinute = calItem.StartDateTime.ToString("mm");
-            string startDateSecond = calItem.StartDateTime.ToString("ss");
-            Category category = model.categories.GetCategoryFromId(calItem.CategoryID);
-            string durationInMinutes = Convert.ToString(calItem.DurationInMinutes);
-            string details = calItem.ShortDescription;
-
-            viewForUpdate.PopulateFields(calItem.StartDateTime, startDateHour, startDateMinute, startDateSecond, category, durationInMinutes, details);
-        }
+        
 
     }
 
