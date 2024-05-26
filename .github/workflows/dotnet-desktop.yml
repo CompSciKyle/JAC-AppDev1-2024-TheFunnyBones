@@ -37,18 +37,19 @@ jobs:
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
-      
-    # Added - Setup vstest
-    - name: Setup vstest
-      uses: darenm/Setup-VSTest@v1
+
+    # Don't have a DLL inside of my presenter/bin/release..
+    # # Added - Setup vstest
+    # - name: Setup vstest
+    #   uses: darenm/Setup-VSTest@v1
  
-    #  Added 
-    - name: Execute unit tests
-      run: vstest.console.exe $env:Test_DLL
- 
-    # # Execute all unit tests in the solution
+    # #  Added 
     # - name: Execute unit tests
-    #   run: dotnet test ${{ env.Test_Project_Path }}
+    #   run: vstest.console.exe $env:Test_DLL
+ 
+    # Execute all unit tests in the solution
+    - name: Execute unit tests
+      run: dotnet test ${{ env.Test_Project_Path }}
     
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration /p:Platform=$env:TargetPlatform
