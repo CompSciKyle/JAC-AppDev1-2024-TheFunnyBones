@@ -51,10 +51,10 @@ jobs:
         RuntimeIdentifier: win-${{ matrix.targetPlatform }}
         TargetPlatform: ${{ matrix.targetPlatform }}
 
+     # Execute all unit tests in the solution
+     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test ${{ env.Test_Project_Path }} --configuration ${{ matrix.configuration }} --framework net6.0-windows
-      env:
-        DOTNET_ROOT: C:\Program Files\dotnet
+      run: dotnet test ${{ env.Test_Project_Path }}
 
     - name: Decode the pfx
       run: |
