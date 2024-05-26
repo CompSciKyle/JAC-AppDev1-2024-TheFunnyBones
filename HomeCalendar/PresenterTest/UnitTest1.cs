@@ -42,6 +42,11 @@ namespace PresenterTest
         public List<Dictionary<string, object>> DictionaryItems = new List<Dictionary<string, object>>();
         public List<Category> allCategories = new List<Category>();
 
+        public void HighlightRow(CalendarItem ev)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public void DisplayBoard(List<CalendarItem> events)
         {
