@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeCalendar", "HomeCalendar\HomeCalendar.csproj", "{56C7E4BF-B38C-4C3A-9FD1-926FA98EA54B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarTesting", "CalendarTesting\CalendarTesting.csproj", "{7F1B43B3-AADC-426E-80F0-30C185FABBC9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarMVP", "CalendarMVP\CalendarMVP.csproj", "{E98D59A2-C3B8-4EC5-A4A5-4771C67F3409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresenterTest", "PresenterTest\PresenterTest.csproj", "{C82953DB-08DF-42B2-AB85-EAB3D82B994D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenterTest", "PresenterTest\PresenterTest.csproj", "{C82953DB-08DF-42B2-AB85-EAB3D82B994D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{56C7E4BF-B38C-4C3A-9FD1-926FA98EA54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56C7E4BF-B38C-4C3A-9FD1-926FA98EA54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56C7E4BF-B38C-4C3A-9FD1-926FA98EA54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56C7E4BF-B38C-4C3A-9FD1-926FA98EA54B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F1B43B3-AADC-426E-80F0-30C185FABBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F1B43B3-AADC-426E-80F0-30C185FABBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F1B43B3-AADC-426E-80F0-30C185FABBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F1B43B3-AADC-426E-80F0-30C185FABBC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E98D59A2-C3B8-4EC5-A4A5-4771C67F3409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E98D59A2-C3B8-4EC5-A4A5-4771C67F3409}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98D59A2-C3B8-4EC5-A4A5-4771C67F3409}.Release|Any CPU.ActiveCfg = Release|Any CPU
