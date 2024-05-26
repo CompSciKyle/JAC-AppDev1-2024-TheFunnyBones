@@ -17,5 +17,7 @@ namespace CalendarMVP
         void DisplayBoardDictionary(List<Dictionary<string, object>> events);
         void DisplayBoardByMonth(List<CalendarItemsByMonth> events);
         void DisplayBoardByCategory(List<CalendarItemsByCategory> events);
+        void HighlightRow(CalendarItem ev);
+
     }
 }

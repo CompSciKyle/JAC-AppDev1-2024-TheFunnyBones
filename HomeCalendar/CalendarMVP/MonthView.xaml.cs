@@ -34,6 +34,18 @@ namespace CalendarMVP
             //this.Close();
             //this.Close();
         }
+
+        private void Btn_Search_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = Txt_Search.Text.ToLower();
+            presenter.SearchCategories(searchText, myDataGrid.ItemsSource as List<CalendarItem>);
+        }
+
+        public void HighlightRow(CalendarItem ev)
+        {
+            myDataGrid.SelectedItem = ev;
+        }
+
         public void ShowDbName(string DBName)
         {
             dbName.Text = DBName;
@@ -88,6 +100,8 @@ namespace CalendarMVP
             presenter.PopulateUpdateWindow(calItem);
 
         }
+        
+
 
         private void startDateChanged(object sender, RoutedEventArgs e)
         {

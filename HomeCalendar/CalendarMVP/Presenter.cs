@@ -26,6 +26,10 @@ namespace CalendarMVP
         private HomeCalendar model;
         private string _dbName;
 
+        private string previousInput;
+        private int indexOfHighlight;
+        
+
         public Presenter(ViewInterfaceForDatabaseConnection v)
         {
             viewForDatabase = v;
@@ -145,6 +149,30 @@ namespace CalendarMVP
             {
                 viewForEvent.DisplayMessage("Failed To create event: " + ex.Message);
             }
+        }
+
+        public void SearchCategories(string searchText, List<CalendarItem> items)
+        {
+            if(items == null)
+            {
+                viewForCalendar.DisplayMessage("Items must contain a description and duration in minutes.");
+            }
+            if (string.IsNullOrEmpty(searchText))
+            {
+                viewForCalendar.DisplayMessage("Search text can't be empty.");
+            }
+            else if(!string.IsNullOrEmpty(previousInput) && previousInput == searchText)
+            {
+                indexOfHighlight += 1;
+            }
+            else
+            {
+                previousInput = searchText;
+                indexOfHighlight = 0;
+            }
+
+            List<CalendarItem> searchResults = items.Where(c => c.ShortDescription.ToLower().Contains(searchText.ToLower()) || c.DurationInMinutes.ToString().Contains(searchText.ToLower())).ToList();
+            viewForCalendar.HighlightRow(searchResults.ElementAt(indexOfHighlight % searchResults.Count()));
         }
 
         public void PopulateDataGrid(string? startDateTime, string? endDateTime, bool FilterFlag, Category? category, bool monthChecked, bool categoryChecked)
