@@ -22,7 +22,6 @@ jobs:
       Test_Project_Path: HomeCalendar\PresenterTest\PresenterTest.csproj
       Wap_Project_Directory: HomeCalendar\WAP
       Wap_Project_Path: HomeCalendar\WAP\WAP.wapproj
-      # Test_DLL: PresenterTest\bin\${{ matrix.targetPlatform }}\${{ matrix.configuration }}\net6.0-windows\PresenterTest.dll
 
     steps:
     - name: Checkout
@@ -38,25 +37,18 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
-    # Don't have a DLL inside of my presenter/bin/release..
-    # # Added - Setup vstest
-    # - name: Setup vstest
-    #   uses: darenm/Setup-VSTest@v1
- 
-    # #  Added 
-    # - name: Execute unit tests
-    #   run: vstest.console.exe $env:Test_DLL
- 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test ${{ env.Test_Project_Path }}
-    
+      run: dotnet test ${{ env.Test_Project_Path }} --configuration ${{ matrix.configuration }} --framework net6.0-windows --no-build
+      env:
+        DOTNET_ROOT: C:\Program Files\dotnet
+
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration /p:Platform=$env:TargetPlatform
       env:
         Configuration: ${{ matrix.configuration }}
-        RuntimeIdentifier: win-${{ matrix.targetplatform }}
-        TargetPlatform: ${{ matrix.targetplatform }}
+        RuntimeIdentifier: win-${{ matrix.targetPlatform }}
+        TargetPlatform: ${{ matrix.targetPlatform }}
 
     - name: Decode the pfx
       run: |
@@ -69,8 +61,8 @@ jobs:
       env:
         Appx_Bundle: Never
         BuildMode: SideLoadOnly
-        Configuration: ${{ matrix.Configuration }}
-        TargetPlatform: ${{ matrix.targetplatform }}
+        Configuration: ${{ matrix.configuration }}
+        TargetPlatform: ${{ matrix.targetPlatform }}
 
     - name: Remove the pfx
       run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
