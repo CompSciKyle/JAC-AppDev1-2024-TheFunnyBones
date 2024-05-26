@@ -22,7 +22,7 @@ jobs:
       Test_Project_Path: HomeCalendar\PresenterTest\PresenterTest.csproj
       Wap_Project_Directory: HomeCalendar\WAP
       Wap_Project_Path: HomeCalendar\WAP\WAP.wapproj
-      Test_DLL: PresenterTest\bin\${{ matrix.targetPlatform }}\${{ matrix.configuration }}\net6.0-windows\HomeCalendar.dll
+      Test_DLL: PresenterTest\bin\${{ matrix.targetPlatform }}\${{ matrix.configuration }}\net6.0-windows\PresenterTest.dll
 
     steps:
     - name: Checkout
