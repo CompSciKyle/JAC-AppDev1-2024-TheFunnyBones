@@ -10,7 +10,7 @@ This repository contains a WPF Calendar application developed as a school projec
   - Assign descriptions, times, and dates to events.
 - **Reminder Notifications**: Set reminders for important events.
 - **Data Persistence**: Save and load event data locally.
-- **Customizable Themes**: Choose between light and dark modes.
+-**SQLite Database**: Stored users calendar locally on their device
 
 ## Technologies Used
 
